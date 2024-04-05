@@ -8,8 +8,8 @@ Public Class MoveComponent
         mMoveForce.Y = 0.0
         mMoveAccel.X = 0.0
         mMoveAccel.Y = 0.0
-        mRotForce = 0.0F
-        mRotAccel = 0.0F
+        mRotForce = 0.0
+        mRotAccel = 0.0
         mMoveResist = 0.0
         mRotResist = 0.0
     End Sub

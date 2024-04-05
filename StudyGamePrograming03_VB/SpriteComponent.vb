@@ -50,6 +50,8 @@ Public Class SpriteComponent
         mTexture = tex
         mTexWidth = tex.Width
         mTexHeight = tex.Height
+        ' 高さと幅の平均をActorの直径とする。
+        mOwner.mRadius = (mTexWidth + mTexHeight) / 4
     End Sub
     Public mTexture As Image
     Public mDrawOrder As Integer

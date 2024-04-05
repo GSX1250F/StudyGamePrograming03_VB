@@ -34,20 +34,61 @@ Public Class Ship
 
     Public Overrides Sub UpdateActor(deltaTime As Single)
         MyBase.UpdateActor(deltaTime)
+        If crash = False Then
+            '画面外にでたら反対の位置に移動（ラッピング処理）
+            If mPosition.X < 0.0 - 1 * mRadius Or
+               mPosition.X > mGame.mWindowW + 1 * mRadius Then
+                mPosition.X = mGame.mWindowW - mPosition.X
+            End If
+            If mPosition.Y < 0.0 - 1 * mRadius Or
+               mPosition.Y > mGame.mWindowH + 1 * mRadius Then
+                mPosition.Y = mGame.mWindowH - mPosition.Y
+            End If
 
+            mLaserCooldown -= deltaTime     'レーザーを次に撃てるまでの時間
+
+            For Each ast In mGame.mAsteroids
+                If (mCircle.Intersect(mCircle, ast.mCircle)) Then
+                    '小惑星と衝突したとき
+                    crashPos = mPosition
+                    crashRot = mRotation
+                    'ゲーム自体を終了する場合
+                    'mGame.SetRunning(False)
+
+                    crash = True
+                    Exit For
+                End If
+            Next
+
+        Else
+            If crashTime >= 0.0 And deactiveTime >= 0.0 Then
+
+                mPosition = crashPos        ' MoveComponentが更新されても衝突したときの位置に置きなおし
+                crashRot -= 3.0 * 2 * Math.PI * deltaTime
+                mRotation = crashRot        ' MoveComponentが更新されても衝突してからの回転角度に置きなおし
+                crashTime -= deltaTime
+            ElseIf crashTime < 0.0 And deactiveTime >= 0.0 Then
+                mState = State.EPaused
+                deactiveTime -= deltaTime
+            Else
+                '初期位置へリセット
+                Init()
+            End If
+        End If
     End Sub
 
     Public Overrides Sub ActorInput(keyState As KeyEventArgs)
         MyBase.ActorInput(keyState)
-        If Not keyState Is Nothing Then
-            If crash = False Then
+
+        If crash = False Then
+            If Not keyState Is Nothing Then
                 If keyState.KeyCode = Keys.Left Then
                     mAnimComponent.SetAnimNum(2, 2, False)
                 ElseIf keyState.KeyCode = Keys.Right Then
                     mAnimComponent.SetAnimNum(3, 3, False)
-                ElseIf keyState.KeyCode = Keys.UP Then
+                ElseIf keyState.KeyCode = Keys.Up Then
                     mAnimComponent.SetAnimNum(4, 4, False)
-                ElseIf keyState.KeyCode = Keys.DOWN Then
+                ElseIf keyState.KeyCode = Keys.Down Then
                     mAnimComponent.SetAnimNum(5, 5, False)
                 ElseIf mAnimComponent.mIsAnimating = False Then
                     ' アニメーション中が終わっていたら元のループに戻る。
@@ -77,7 +118,7 @@ Public Class Ship
         mPosition.X = mGame.mWindowW / 2
         mPosition.Y = mGame.mWindowH / 2
 
-        mRotation = 2 * Math.PI * Random.Next()
+        mRotation = 2 * Math.PI * Random.NextSingle()
         mScale = 0.7
         mMass = 1.0
 

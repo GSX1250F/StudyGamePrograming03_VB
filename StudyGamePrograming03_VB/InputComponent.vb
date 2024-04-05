@@ -10,10 +10,11 @@
 
 	Public Overrides Sub ProcessInput(keyState As KeyEventArgs)
 		MyBase.ProcessInput(keyState)
+		Dim forwardforce As Single = 0.0
+		Dim rotforce As Single = 0.0
 		If Not keyState Is Nothing Then
 			'古典物理学でMoveComponentのための計算
 			'MoveComponentには前進か回転方向の力の最大値だけを渡す
-			Dim forwardforce As Single = 0.0
 			If keyState.KeyValue = mForwardKey Then
 				forwardforce += mMaxForwardForce
 			ElseIf keyState.KeyValue = mBackwardKey Then
@@ -21,7 +22,6 @@
 			End If
 			mMoveForce = forwardforce * mOwner.GetForward()
 
-			Dim rotforce As Single = 0.0
 			If keyState.KeyValue = mClockwiseKey Then
 				rotforce -= mMaxRotForce        '角度の+方向はCCW
 			ElseIf keyState.KeyValue = mCounterClockwiseKey Then

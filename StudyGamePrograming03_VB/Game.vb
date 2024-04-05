@@ -30,9 +30,9 @@ Public Class Game
 
     'game specific
     Public mShip As Ship
-    Public numAsteroids As Integer = 20
+    Public numAsteroids As Integer = 1
     Public mAsteroid(numAsteroids) As Asteroid
-    Public mAsteroids As List(Of Asteroid)
+    Public mAsteroids As New List(Of Asteroid)
 
     'コンストラクタ
     Public Sub Game_Load(sender As Object, e As EventArgs) Handles MyBase.Load
@@ -202,10 +202,10 @@ Public Class Game
         mShip = New Ship(Me)
 
         '小惑星を複数生成
-        For i As Integer = 0 To numAsteroids - 1
-            mAsteroid(i) = New Asteroid(Me)
-            mAsteroids.Add(mAsteroid(i))
-        Next
+        'For i As Integer = 0 To numAsteroids - 1
+        'mAsteroid(i) = New Asteroid(Me)
+        'mAsteroids.Add(mAsteroid(i))
+        'Next
 
     End Sub
 
