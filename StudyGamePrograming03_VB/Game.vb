@@ -31,7 +31,7 @@ Public Class Game
     'game specific
     Public mShip As Ship
     Public numAsteroids As Integer = 20
-    Public mAsteroid(numAsteroid) As Asteroid
+    Public mAsteroid(numAsteroids) As Asteroid
     Public mAsteroids As List(Of Asteroid)
 
     'コンストラクタ
