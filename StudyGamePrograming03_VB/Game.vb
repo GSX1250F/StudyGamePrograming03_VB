@@ -36,8 +36,6 @@ Public Class Game
 
     'コンストラクタ
     Public Sub Game_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        'mWindow = nullptr
-        'mRenderer = nullptr
         mIsRunning = True
         mIsUpdatingActors = False
         mWindowW = 1024
@@ -124,16 +122,6 @@ Public Class Game
         End If
         Return tex
     End Function
-
-    'Game-specific
-    'Public Sub AddAsteroid(ByRef ast As Asteroid)
-
-    'End Sub
-    'Public Sub RemoveAsteroid(ByRef ast As Asteroid)
-
-    'End Sub
-    'Public mAsteroids As List(Of Asteroid)
-    'Public mShip As Ship
 
     Private Sub KeyState(sender As Object, keyState As System.Windows.Forms.KeyEventArgs) Handles Me.KeyDown
         'Keyイベントハンドラ
