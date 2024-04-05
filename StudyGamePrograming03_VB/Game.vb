@@ -2,17 +2,6 @@
 Imports System.Windows.Forms.VisualStyles.VisualStyleElement
 
 Public Class Game
-    'VBではLoop処理中のイベント処理はやりにくい。
-    'イベントハンドラでProcessInputを実行
-    'TimerでUpdateGame・GenerateOutputを実行
-    'Public Sub RunLoop()
-    '   While mIsRunning       
-    '       ProcessInput()
-    '       UpdateGame()    
-    '       GenerateOutput()
-    '   End While
-    'End Sub
-
     'Public
     'ゲームウィンドウの大きさ
     Public mWindowW As Integer
@@ -39,6 +28,12 @@ Public Class Game
     Private mIsUpdatingActors As Boolean
     Private mKeyInputs As New List(Of System.Windows.Forms.KeyEventArgs)    'キー入力の配列
 
+    'game specific
+    Public mShip As Ship
+    Public numAsteroids As Integer = 20
+    Public mAsteroid(numAsteroid) As Asteroid
+    Public mAsteroids As List(Of Asteroid)
+
     'コンストラクタ
     Public Sub Game_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         'mWindow = nullptr
@@ -59,6 +54,7 @@ Public Class Game
         Me.Location = New Point(50, 50)
         mWindow = New Bitmap(mWindowW, mWindowH)      'PictureBoxと同じ大きさの画像を作る
         mRenderer = Graphics.FromImage(mWindow)           '画像のGraphicsクラスを生成
+
 
         LoadData()
 
@@ -215,16 +211,13 @@ Public Class Game
 
     Private Sub LoadData()
         'プレイヤーの宇宙船を作成
-        Dim mShip As Ship = New Ship(Me)
-        'mShip.mPosition.X = 100.0
-        'mShip.mPosition.Y = 384.0
-        'mShip.mScale = 1.5
+        mShip = New Ship(Me)
 
         '小惑星を複数生成
-        'Dim numAsteroids As Integer = 20
-        'For i As Integer = 0 To numAsteroids - 1
-        'Dim mAsteroid As New Asteroid
-        'Next
+        For i As Integer = 0 To numAsteroids - 1
+            mAsteroid(i) = New Asteroid(Me)
+            mAsteroids.Add(mAsteroid(i))
+        Next
 
     End Sub
 
