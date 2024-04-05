@@ -1,7 +1,7 @@
 ﻿Public Class AnimSpriteComponent
-    Inherits SpriteComponent
-    Sub New(ByRef owner As Actor, ByVal drawOrder As Integer)
-        MyBase.New(owner, drawOrder)
+	Inherits SpriteComponent
+	Sub New(ByRef owner As Actor, ByVal drawOrder As Integer)
+		MyBase.New(owner, drawOrder)
 		mCurrFrame = 0.0
 		mAnimFPS = 12
 		mAnimNumBeg = 0
@@ -35,10 +35,7 @@
 		End If
 	End Sub
 	' アニメーションに使うテクスチャを設定する
-	Public Sub SetAnimTextures(ByRef textures As List(Of Image), loop_flag As Boolean)
-		' すべての範囲をアニメーションとする
-		Dim beg As Integer = 1
-		Dim last As Integer = textures.Count
+	Public Sub SetAnimTextures(ByRef textures As List(Of Image), ByVal beg As Integer, ByVal last As Integer, loop_flag As Boolean)
 		SetAnimNum(beg, last, loop_flag)
 		mAnimTextures = textures
 		' アクティブなテクスチャを最初のフレームに設定する
@@ -57,20 +54,20 @@
 	End Sub
 
 	' アニメーションをループさせるか
-	Dim mLoopFlag As Boolean
+	Public mLoopFlag As Boolean
 
 	' アニメーション中かどうか
-	Dim mIsAnimating As Boolean
+	Public mIsAnimating As Boolean
 
 	' アニメーションでのすべてのテクスチャ
-	Dim mAnimTextures As New List(Of Image)
+	Public mAnimTextures As New List(Of Image)
 
 	' 現在表示中のアニメーションテクスチャのための番号
-	Dim mAnimNumBeg As Integer
-	Dim mAnimNumLast As Integer
+	Public mAnimNumBeg As Integer
+	Public mAnimNumLast As Integer
 	' 現在表示中のフレーム
-	Dim mCurrFrame As Single
+	Public mCurrFrame As Single
 	' アニメーションのフレームレート
-	Dim mAnimFPS As Single
+	Public mAnimFPS As Single
 
 End Class
