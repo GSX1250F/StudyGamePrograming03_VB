@@ -31,8 +31,8 @@ Public Class Asteroid
 		Dim randAngle As Single = Math.PI * Random.Next(20, 70) / 180   '速度の方向角度　20度～70度
 		Dim PorN_X As Integer = 2 * Random.Next(0, 2) - 1   'X方向速度の正負
 		Dim PorN_Y As Integer = 2 * Random.Next(0, 2) - 1   'X方向速度の正負
-		mVelocity.X = PorN_X * Math.Cos(randAngle)
-		mVelocity.Y = PorN_Y * Math.Sin(randAngle)
+		mVelocity.X = PorN_X * randSpeed * Math.Cos(randAngle)
+		mVelocity.Y = PorN_Y * randSpeed * Math.Sin(randAngle)
 
 		'スプライトコンポーネント作成、テクスチャ設定
 		Dim sc As SpriteComponent = New SpriteComponent(Me, 10)

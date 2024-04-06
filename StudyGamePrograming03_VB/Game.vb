@@ -30,7 +30,7 @@ Public Class Game
 
     'game specific
     Public mShip As Ship
-    Public numAsteroids As Integer = 1
+    Public numAsteroids As Integer = 10
     Public mAsteroid(numAsteroids) As Asteroid
     Public mAsteroids As New List(Of Asteroid)
 
@@ -200,9 +200,9 @@ Public Class Game
         mShip = New Ship(Me)
 
         '小惑星を複数生成
-        'For i As Integer = 0 To numAsteroids - 1
-        'mAsteroid(i) = New Asteroid(Me)
-        'Next
+        For i As Integer = 0 To numAsteroids - 1
+            mAsteroid(i) = New Asteroid(Me)
+        Next
 
     End Sub
 
