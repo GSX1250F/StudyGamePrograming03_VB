@@ -21,7 +21,7 @@ Public Class SpriteComponent
         MyBase.Dispose(disposing)
     End Sub
 
-    Public Sub Draw(ByRef mRenderer)
+    Public Overridable Sub Draw(ByRef mRenderer)
         If mOwner.mState <> Actor.State.EPaused Then
             Dim w = CInt(mTexWidth * mOwner.mScale)
             Dim h = CInt(mTexHeight * mOwner.mScale)

@@ -204,6 +204,30 @@ Public Class Game
             mAsteroid(i) = New Asteroid(Me)
         Next
 
+        ' 背景用アクターを作る
+        Dim bgactors As New Actor(Me)
+        bgactors.mPosition.X = mWindowW / 2
+        bgactors.mPosition.Y = mWindowH / 2
+
+        ' 一番後ろの背景を作成
+        Dim bg As New BGSpriteComponent(bgactors, 10)
+        bg.mScreenSize.X = mWindowW
+        bg.mScreenSize.Y = mWindowH
+        Dim bgtexs = New List(Of Image) From {
+            GetTexture("../../../Assets/Farback01.png"),
+            GetTexture("../../../Assets/Farback02.png")}
+        bg.SetBGTextures(bgtexs)
+        bg.mScrollSpeed = -10.0
+        ' 手前の背景を作成
+        bg = New BGSpriteComponent(bgactors, 20)        '描画順序は一つ大きい値にする
+        bg.mScreenSize.X = mWindowW
+        bg.mScreenSize.Y = mWindowH
+        'bgtexs.Clear()
+        bgtexs.AddRange({GetTexture("../../../Assets/Stars.png"),
+                         GetTexture("../../../Assets/Stars.png")})
+        bg.SetBGTextures(bgtexs)
+        bg.mScrollSpeed = -50.0
+
     End Sub
 
     Private Sub UnloadData()

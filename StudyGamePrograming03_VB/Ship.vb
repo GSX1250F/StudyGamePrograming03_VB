@@ -8,12 +8,12 @@ Public Class Ship
 
         'アニメーションのスプライトコンポーネント作成、テクスチャ設定
         Dim asc As New AnimSpriteComponent(Me, 10)
-        Dim anims As New List(Of Image)(New Image() {
+        Dim anims = New List(Of Image) From {
             game.GetTexture("../../../Assets/Ship01.png"),
             game.GetTexture("../../../Assets/Ship02.png"),
             game.GetTexture("../../../Assets/Ship03.png"),
             game.GetTexture("../../../Assets/Ship04.png"),
-            game.GetTexture("../../../Assets/Ship05.png")})
+            game.GetTexture("../../../Assets/Ship05.png")}
         asc.SetAnimTextures(anims, 1, 1, True)
         mAnimComponent = asc
 
