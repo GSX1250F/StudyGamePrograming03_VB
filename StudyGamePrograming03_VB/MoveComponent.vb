@@ -13,6 +13,9 @@ Public Class MoveComponent
         mMoveResist = 0.0
         mRotResist = 0.0
     End Sub
+    Protected Overrides Sub Finalize()
+        MyBase.Finalize()
+    End Sub
 
     Public Overrides Sub Update(deltaTime As Single)
         MyBase.Update(deltaTime)

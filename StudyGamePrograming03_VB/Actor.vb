@@ -2,6 +2,7 @@
 Imports System.Numerics
 Imports System.Security.Policy
 Public Class Actor
+	Implements IDisposable      '明示的にクラスを開放するために必要
 	Public Enum State
 		EActive     '稼働中
 		EPaused     '休止中
@@ -19,6 +20,30 @@ Public Class Actor
 		mImoment = 0.0
 		mGame = game
 		mGame.AddActor(Me)
+	End Sub
+
+	Protected disposed = False     '開放処理が実施済みかのフラグ
+	Public Overloads Sub Dispose() Implements IDisposable.Dispose
+		Dispose(True)
+	End Sub
+	Protected Overridable Overloads Sub Dispose(ByVal disposing As Boolean)
+		If Not Me.disposed Then
+			If disposing Then
+				'*** アンマネージリソースの開放
+
+			End If
+			'*** マネージドリソースの開放
+			mGame.RemoveActor(Me)
+			While mComponents.Count <> 0
+				mComponents.Last.Dispose()
+			End While
+		End If
+		disposed = True
+	End Sub
+
+	Protected Overrides Sub Finalize()
+		MyBase.Finalize()
+		Dispose(False)
 	End Sub
 
 	'ゲームから呼び出される更新関数(オーバーライド不可)
@@ -67,6 +92,8 @@ Public Class Actor
 	Public mImoment As Single          '慣性モーメント
 	Public mComponents As New List(Of Component)
 	Public mGame As Game
+	Private disposedValue As Boolean
+
 	Public Function GetForward() As Vector2
 		Dim v = New Vector2(Math.Cos(mRotation), -Math.Sin(mRotation))       '向きの単位ベクトル
 		Return v
@@ -96,4 +123,3 @@ Public Class Actor
 		End If
 	End Sub
 End Class
-

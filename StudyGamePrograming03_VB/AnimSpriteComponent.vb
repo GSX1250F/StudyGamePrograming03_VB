@@ -34,6 +34,7 @@
 			SetTexture(mAnimTextures(Fix(mCurrFrame) + (mAnimNumBeg - 1)))
 		End If
 	End Sub
+
 	' アニメーションに使うテクスチャを設定する
 	Public Sub SetAnimTextures(ByRef textures As List(Of Image), ByVal beg As Integer, ByVal last As Integer, loop_flag As Boolean)
 		SetAnimNum(beg, last, loop_flag)

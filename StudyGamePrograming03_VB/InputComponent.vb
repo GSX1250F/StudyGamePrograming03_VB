@@ -1,7 +1,8 @@
 ﻿Public Class InputComponent
-    Inherits MoveComponent
-    Sub New(ByRef owner As Actor, ByVal updateOrder As Integer)
-        MyBase.New(owner, updateOrder)
+	Inherits MoveComponent
+
+	Sub New(ByRef owner As Actor, ByVal updateOrder As Integer)
+		MyBase.New(owner, updateOrder)
 		mForwardKey = 0
 		mBackwardKey = 0
 		mClockwiseKey = 0
@@ -29,8 +30,6 @@
 		End If
 		mMoveForce = forwardforce * mOwner.GetForward()
 		mRotForce = rotforce
-
-
 	End Sub
 
 
@@ -46,5 +45,5 @@
 	' 前進・回転方向の力の最大値
 	Public mMaxForwardForce As Single
 	Public mMaxRotForce As Single
-
+	Private disposedValue As Boolean
 End Class

@@ -1,19 +1,20 @@
 ﻿Public Class Laser
-    Inherits Actor
-    Sub New(ByRef game As Game)
-        MyBase.New(game)
-        mDeathTime = 2.0
-        'スプライトコンポーネント作成、テクスチャ設定
-        Dim sc As SpriteComponent = New SpriteComponent(Me, 10)
-        sc.SetTexture(game.GetTexture("../../../Assets/Laser.png"))
+	Inherits Actor
 
-        '初期位置,速度,角度はShipで設定
+	Sub New(ByRef game As Game)
+		MyBase.New(game)
+		mDeathTime = 2.0
+		'スプライトコンポーネント作成、テクスチャ設定
+		Dim sc As SpriteComponent = New SpriteComponent(Me, 10)
+		sc.SetTexture(game.GetTexture("../../../Assets/Laser.png"))
 
-        'CircleComponent作成
-        mCircle = New CircleComponent(Me, 10)
-    End Sub
+		'初期位置,速度,角度はShipで設定
 
-    Public Overrides Sub UpdateActor(deltaTime As Single)
+		'CircleComponent作成
+		mCircle = New CircleComponent(Me, 10)
+	End Sub
+
+	Public Overrides Sub UpdateActor(deltaTime As Single)
         MyBase.UpdateActor(deltaTime)
 		'位置はMoveComponentで更新される。
 		'画面外にでるか、DeathTimeが0になったら消去する。

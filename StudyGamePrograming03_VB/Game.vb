@@ -81,7 +81,7 @@ Public Class Game
         End If
         iter = mActors.IndexOf(actor)
         If iter >= 0 Then
-            mPendingActors.RemoveAt(iter)
+            mActors.RemoveAt(iter)
         End If
     End Sub
 
@@ -177,9 +177,7 @@ Public Class Game
         Next
         '死んだアクターを削除
         For Each actor In deadActors
-            '.NETでは明示的なクラスのデストラクタは無いらしい。
-            'ガベージコレクタが自動的に不要なリソースは解放してくれる
-            actor = Nothing
+            actor.Dispose()
         Next
     End Sub
 
@@ -204,7 +202,6 @@ Public Class Game
         '小惑星を複数生成
         'For i As Integer = 0 To numAsteroids - 1
         'mAsteroid(i) = New Asteroid(Me)
-        'mAsteroids.Add(mAsteroid(i))
         'Next
 
     End Sub
@@ -233,4 +230,16 @@ Public Class Game
         End If
     End Sub
 
+    'Game Specific
+    Public Sub AddAsteroid(ByRef ast As Asteroid)
+        mAsteroids.Add(ast)
+    End Sub
+    Public Sub RemoveAsteroid(ByRef ast As Asteroid)
+        Dim iter As Integer = mAsteroids.IndexOf(ast)       'Listの中になかったら-1が返される
+        If iter >= 0 Then
+            mAsteroids.RemoveAt(iter)
+        End If
+    End Sub
 End Class
+
+

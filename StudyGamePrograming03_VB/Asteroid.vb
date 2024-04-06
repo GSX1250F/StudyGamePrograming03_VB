@@ -44,7 +44,21 @@ Public Class Asteroid
 		'CircleComponent作成
 		mCircle = New CircleComponent(Me, 10)
 
+		mGame.AddAsteroid(Me)
+
 	End Sub
+
+	Protected Overrides Sub Dispose(ByVal disposing As Boolean)
+		If Not Me.disposed Then
+			If disposing Then
+				' Insert code to free managed resources.
+			End If
+			' Insert code to free unmanaged resources.
+			mGame.RemoveAsteroid(Me)
+		End If
+		MyBase.Dispose(disposing)
+	End Sub
+
 	Public Overrides Sub UpdateActor(detaTime As Single)
 		'画面外にでたら反対の位置に移動（ラッピング処理）
 		If (mPosition.X < 0.0 - 2 * mRadius) Or (mPosition.X > mGame.mWindowW + 2 * mRadius) Then

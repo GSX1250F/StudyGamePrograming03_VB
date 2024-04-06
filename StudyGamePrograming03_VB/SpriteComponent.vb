@@ -10,6 +10,16 @@ Public Class SpriteComponent
         mTexHeight = 0
         mOwner.mGame.AddSprite(Me)
     End Sub
+    Protected Overrides Sub Dispose(ByVal disposing As Boolean)
+        If Not Me.disposed Then
+            If disposing Then
+                ' Insert code to free managed resources.
+            End If
+            ' Insert code to free unmanaged resources.
+            mOwner.mGame.RemoveSprite(Me)
+        End If
+        MyBase.Dispose(disposing)
+    End Sub
 
     Public Sub Draw(ByRef mRenderer)
         If mOwner.mState <> Actor.State.EPaused Then

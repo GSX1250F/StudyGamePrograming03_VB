@@ -2,6 +2,7 @@
 
 Public Class CircleComponent
     Inherits Component
+
     Sub New(ByRef owner As Actor, ByVal updateOrder As Integer)
         MyBase.New(owner, updateOrder)
         '半径はActorの半径で初期化
