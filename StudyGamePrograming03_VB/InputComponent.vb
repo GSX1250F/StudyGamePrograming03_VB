@@ -20,15 +20,15 @@
 			ElseIf keyState.KeyValue = mBackwardKey Then
 				forwardforce -= mMaxForwardForce
 			End If
-			mMoveForce = forwardforce * mOwner.GetForward()
 
 			If keyState.KeyValue = mClockwiseKey Then
 				rotforce -= mMaxRotForce        '角度の+方向はCCW
 			ElseIf keyState.KeyValue = mCounterClockwiseKey Then
 				rotforce += mMaxRotForce        '角度の+方向はCCW
 			End If
-			mRotForce = rotforce
 		End If
+		mMoveForce = forwardforce * mOwner.GetForward()
+		mRotForce = rotforce
 
 
 	End Sub

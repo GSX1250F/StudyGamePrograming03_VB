@@ -42,13 +42,10 @@ Public Class Actor
 
 	'ゲームから呼び出されるProcess Input(オーバーライド不可)
 	Public Sub ProcessInput(ByVal keyState As System.Windows.Forms.KeyEventArgs)
-		If Not keyState Is Nothing Then
-			If mState = State.EActive Then
-				For Each comp In mComponents
-					comp.ProcessInput(keyState)
-				Next
-
-			End If
+		If mState = State.EActive Then
+			For Each comp In mComponents
+				comp.ProcessInput(keyState)
+			Next
 		End If
 		ActorInput(keyState)
 	End Sub
