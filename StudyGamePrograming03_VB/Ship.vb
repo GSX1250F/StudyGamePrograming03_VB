@@ -7,7 +7,7 @@ Public Class Ship
         Init()
 
         'アニメーションのスプライトコンポーネント作成、テクスチャ設定
-        Dim asc As New AnimSpriteComponent(Me, 10)
+        Dim asc As New AnimSpriteComponent(Me, 30)
         Dim anims = New List(Of Image) From {
             game.GetTexture("../../../Assets/Ship01.png"),
             game.GetTexture("../../../Assets/Ship02.png"),
@@ -33,7 +33,6 @@ Public Class Ship
     End Sub
 
     Public Overrides Sub UpdateActor(deltaTime As Single)
-        MyBase.UpdateActor(deltaTime)
         If crash = False Then
             '画面外にでたら反対の位置に移動（ラッピング処理）
             If mPosition.X < 0.0 - 1 * mRadius Or

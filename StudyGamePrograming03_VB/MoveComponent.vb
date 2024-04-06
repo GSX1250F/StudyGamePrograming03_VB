@@ -18,7 +18,6 @@ Public Class MoveComponent
     End Sub
 
     Public Overrides Sub Update(deltaTime As Single)
-        MyBase.Update(deltaTime)
         ' Actorの重心速度と回転速度を更新
         ' Actorの位置と角度はActorのUpdateで更新
         If mOwner.mMass <> 0 Then

@@ -10,7 +10,6 @@
 	End Sub
 
 	Public Overrides Sub ProcessInput(keyState As KeyEventArgs)
-		MyBase.ProcessInput(keyState)
 		Dim forwardforce As Single = 0.0
 		Dim rotforce As Single = 0.0
 		If Not keyState Is Nothing Then

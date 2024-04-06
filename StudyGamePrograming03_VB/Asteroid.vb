@@ -35,7 +35,7 @@ Public Class Asteroid
 		mVelocity.Y = PorN_Y * randSpeed * Math.Sin(randAngle)
 
 		'スプライトコンポーネント作成、テクスチャ設定
-		Dim sc As SpriteComponent = New SpriteComponent(Me, 10)
+		Dim sc As SpriteComponent = New SpriteComponent(Me, 40)
 		sc.SetTexture(game.GetTexture("../../../Assets/Asteroid.png"))
 
 		'MoveComponent作成　※力は働かないでただ動かすだけなら不要。

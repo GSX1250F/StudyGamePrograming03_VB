@@ -8,18 +8,22 @@ Public Class BGSpriteComponent
     End Sub
     Public Overrides Sub Update(deltaTime As Single)
         MyBase.Update(deltaTime)
-        For Each bg In mBGTextures
-            ' xのオフセット更新
-            bg.mOffset.X += mScrollSpeed * deltaTime
-            ' もし画面から完全に出たら、オフセットを最後の背景テクスチャの右にリセットする
-            If (bg.mOffset.X < -mScreenSize.X) Then
-                bg.mOffset.X = (mBGTextures.Count - 1) * mScreenSize.X - 1
-            End If
-        Next
+        If mBGTextures.Count > 0 Then
+            For i As Integer = 0 To mBGTextures.Count - 1
+                Dim bg As BGTexture
+                bg = mBGTextures(i)
+                ' xのオフセット更新
+                bg.mOffset.X += mScrollSpeed * deltaTime
+                ' もし画面から完全に出たら、オフセットを最後の背景テクスチャの右にリセットする
+                If (bg.mOffset.X < -mScreenSize.X) Then
+                    bg.mOffset.X = (mBGTextures.Count() - 1) * mScreenSize.X - 1
+                End If
+                mBGTextures(i) = bg
+            Next
+        End If
     End Sub
 
     Public Overrides Sub Draw(ByRef mRenderer As Object)
-        MyBase.Draw(mRenderer)
         ' 各背景テクスチャを描画します
         For Each bg In mBGTextures
             Dim w = CInt(mScreenSize.X)
@@ -28,8 +32,10 @@ Public Class BGSpriteComponent
             Dim y = CInt(mOwner.mPosition.Y - h / 2 + bg.mOffset.Y)
             Dim img As New Bitmap(w, h)
             img = bg.mTexture
-            mRenderer.DrawImage(img, x, y)
+            mRenderer.DrawImage(img, x, y, w, h)
         Next
+
+
     End Sub
 
     Public Sub SetBGTextures(ByRef textures As List(Of Image))

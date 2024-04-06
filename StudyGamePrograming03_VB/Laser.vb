@@ -5,7 +5,7 @@
 		MyBase.New(game)
 		mDeathTime = 2.0
 		'スプライトコンポーネント作成、テクスチャ設定
-		Dim sc As SpriteComponent = New SpriteComponent(Me, 10)
+		Dim sc As SpriteComponent = New SpriteComponent(Me, 50)
 		sc.SetTexture(game.GetTexture("../../../Assets/Laser.png"))
 
 		'初期位置,速度,角度はShipで設定
@@ -15,7 +15,6 @@
 	End Sub
 
 	Public Overrides Sub UpdateActor(deltaTime As Single)
-        MyBase.UpdateActor(deltaTime)
 		'位置はMoveComponentで更新される。
 		'画面外にでるか、DeathTimeが0になったら消去する。
 		mDeathTime -= deltaTime
