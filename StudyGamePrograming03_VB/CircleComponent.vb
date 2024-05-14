@@ -5,13 +5,13 @@ Public Class CircleComponent
 
     Sub New(ByRef owner As Actor, ByVal updateOrder As Integer)
         MyBase.New(owner, updateOrder)
-        '半径はActorの半径で初期化
-        mRadius = mOwner.mRadius        'Actorの半径= scale * radius
-        'Actorの慣性モーメントを設定。一様の円板とする。(I=1/2*mR^2)
-        mOwner.mImoment = mOwner.mScale * mOwner.mScale * mRadius * mRadius / 2
+
     End Sub
+    Public Function GetRadius() As Single
+        Return mOwner.mRadius
+    End Function
+
     Public Function GetCenter() As Vector2
-        '中心はActorの位置
         Return mOwner.mPosition
     End Function
 
@@ -20,13 +20,13 @@ Public Class CircleComponent
     Public Function Intersect(ByRef a As CircleComponent, ByRef b As CircleComponent) As Boolean
         ' ２つのCircleComponentの中心間距離を計算
         Dim diff As Vector2 = a.GetCenter() - b.GetCenter()
-        Dim dist As Single = diff.Length()
+        Dim distSq As Single = diff.Length() * diff.Length()
 
         ' ２つのCircleComponentの半径の和を計算 
-        Dim sumRadius As Single = a.mRadius + b.mRadius
+        Dim sumRadiusSq As Single = (a.GetRadius() + b.GetRadius()) * (a.GetRadius() + b.GetRadius())
 
         ' 中心間距離 <= 半径の和 のとき、衝突したと判定
-        If dist <= sumRadius Then
+        If distSq <= sumRadiusSq Then
             Return True
         Else
             Return False

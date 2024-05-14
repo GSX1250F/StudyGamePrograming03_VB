@@ -3,8 +3,6 @@
 Public Class Asteroid
 	Inherits Actor
 
-	Public mCircle As CircleComponent
-
 	Sub New(ByRef game As Game)
 		MyBase.New(game)
 
@@ -26,13 +24,13 @@ Public Class Asteroid
 
 		mRotation = 0   '初期回転は 0とする
 		mScale = 0.1 * Random.Next(5, 15)   '拡大率 0.5～1.5
-		mRotSpeed = 2 * Math.PI * Random.NextSingle() - Math.PI     '回転速度 -π～π
+		Dim rotSpeed = 2 * Math.PI * Random.NextSingle() - Math.PI     '回転速度 -π～π
 		Dim randSpeed As Integer = Random.Next(50, 200)     '速度 50～200
 		Dim randAngle As Single = Math.PI * Random.Next(20, 70) / 180   '速度の方向角度　20度～70度
 		Dim PorN_X As Integer = 2 * Random.Next(0, 2) - 1   'X方向速度の正負
 		Dim PorN_Y As Integer = 2 * Random.Next(0, 2) - 1   'X方向速度の正負
-		mVelocity.X = PorN_X * randSpeed * Math.Cos(randAngle)
-		mVelocity.Y = PorN_Y * randSpeed * Math.Sin(randAngle)
+		Dim velocityX = PorN_X * randSpeed * Math.Cos(randAngle)
+		Dim velocityY = PorN_Y * randSpeed * Math.Sin(randAngle)
 
 		'スプライトコンポーネント作成、テクスチャ設定
 		Dim sc As SpriteComponent = New SpriteComponent(Me, 40)
@@ -40,6 +38,9 @@ Public Class Asteroid
 
 		'MoveComponent作成　※力は働かないでただ動かすだけなら不要。
 		Dim mc As MoveComponent = New MoveComponent(Me, 10)
+		mc.mVelocity.X = velocityX
+		mc.mVelocity.Y = velocityY
+		mc.mRotSpeed = rotSpeed
 
 		'CircleComponent作成
 		mCircle = New CircleComponent(Me, 10)
@@ -69,5 +70,5 @@ Public Class Asteroid
 		End If
 	End Sub
 
-
+	Public mCircle As CircleComponent
 End Class

@@ -11,13 +11,9 @@ Public Class Actor
 	Sub New(ByRef game As Game)
 		mState = State.EActive
 		mPosition = New Vector2(0, 0)
-		mVelocity = New Vector2(0, 0)
 		mScale = 1.0
 		mRotation = 0.0
-		mRotSpeed = 0.0
-		mMass = 1.0
 		mRadius = 0.0
-		mImoment = 0.0
 		mGame = game
 		mGame.AddActor(Me)
 	End Sub
@@ -49,8 +45,6 @@ Public Class Actor
 	'ゲームから呼び出される更新関数(オーバーライド不可)
 	Public Sub Update(ByVal deltaTime As Single)
 		If mState = State.EActive Or mState = State.EPaused Then
-			mPosition += mVelocity * deltaTime
-			mRotation += mRotSpeed * deltaTime
 			UpdateComponents(deltaTime)
 			UpdateActor(deltaTime)
 		End If
@@ -78,18 +72,17 @@ Public Class Actor
 	Public Overridable Sub ActorInput(ByVal keyState As System.Windows.Forms.KeyEventArgs)
 	End Sub
 
-	'Getters/setters	とりあえず無し。すべてPublic変数とする
+	'Getters/setters	とりあえずほとんど無し。すべてPublic変数とする
+	Public Function GetRadius() As Single
+		Return mRadius * mScale
+	End Function
 
 	Public mState As State              ' アクターの状態
 	' 移動
 	Public mPosition As Vector2        '位置
-	Public mVelocity As Vector2        '速度x,y
 	Public mScale As Single            '拡大率
 	Public mRotation As Single         '回転
-	Public mRotSpeed As Single         '回転速度
-	Public mMass As Single             '質量
 	Public mRadius As Single           '半径（拡大率は無視）
-	Public mImoment As Single          '慣性モーメント
 	Public mComponents As New List(Of Component)
 	Public mGame As Game
 	Private disposedValue As Boolean
