@@ -36,7 +36,7 @@ Public Class Asteroid
 
 		'スプライトコンポーネント作成、テクスチャ設定
 		Dim sc As SpriteComponent = New SpriteComponent(Me, 40)
-		sc.SetTexture(game.GetTexture("../../../Assets/Asteroid.png"))
+		sc.SetTexture(game.GetTexture("\Assets\Asteroid.png"))
 
 		'MoveComponent作成　※力は働かないでただ動かすだけなら不要。
 		Dim mc As MoveComponent = New MoveComponent(Me, 10)

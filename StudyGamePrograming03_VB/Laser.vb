@@ -6,7 +6,7 @@
 		mDeathTime = 2.0
 		'スプライトコンポーネント作成、テクスチャ設定
 		Dim sc As SpriteComponent = New SpriteComponent(Me, 50)
-		sc.SetTexture(game.GetTexture("../../../Assets/Laser.png"))
+		sc.SetTexture(game.GetTexture("\Assets\Laser.png"))
 
 		'初期位置,速度,角度はShipで設定
 

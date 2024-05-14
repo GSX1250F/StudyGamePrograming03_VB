@@ -213,8 +213,8 @@ Public Class Game
         bg.mScreenSize.X = mWindowW
         bg.mScreenSize.Y = mWindowH
         Dim bgtexs = New List(Of Image) From {
-            GetTexture("../../../Assets/Farback01.png"),
-            GetTexture("../../../Assets/Farback02.png")}
+            GetTexture("\Assets\Farback01.png"),
+            GetTexture("\Assets\Farback02.png")}
         bg.SetBGTextures(bgtexs)
         bg.mScrollSpeed = -10.0
         ' 手前の背景を作成
@@ -222,8 +222,8 @@ Public Class Game
         bg.mScreenSize.X = mWindowW
         bg.mScreenSize.Y = mWindowH
         bgtexs.Clear()
-        bgtexs.AddRange({GetTexture("../../../Assets/Stars.png"),
-        GetTexture("../../../Assets/Stars.png")})
+        bgtexs.AddRange({GetTexture("\Assets\Stars.png"),
+        GetTexture("\Assets\Stars.png")})
         bg.SetBGTextures(bgtexs)
         bg.mScrollSpeed = -30.0
 
