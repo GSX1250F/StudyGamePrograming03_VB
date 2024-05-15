@@ -204,28 +204,29 @@ Public Class Game
             mAsteroid(i) = New Asteroid(Me)
         Next
 
+
         ' 背景用アクターを作る
-        Dim bgactor As New Actor(Me)
-        bgactor.mPosition.X = mWindowW / 2
-        bgactor.mPosition.Y = mWindowH / 2
+        'Dim bgactor As New Actor(Me)
+        'bgactor.mPosition.X = mWindowW / 2
+        'bgactor.mPosition.Y = mWindowH / 2
         ' 一番後ろの背景を作成
-        Dim bg As New BGSpriteComponent(bgactor, 10)
-        bg.mScreenSize.X = mWindowW
-        bg.mScreenSize.Y = mWindowH
-        Dim bgtexs = New List(Of Image) From {
-            GetTexture("\Assets\Farback01.png"),
-            GetTexture("\Assets\Farback02.png")}
-        bg.SetBGTextures(bgtexs)
-        bg.mScrollSpeed = -10.0
+        'Dim bg As New BGSpriteComponent(bgactor, 10)
+        'bg.mScreenSize.X = mWindowW
+        'bg.mScreenSize.Y = mWindowH
+        'Dim bgtexs = New List(Of Image) From {
+        ' GetTexture("\Assets\Farback01.png"),
+        ' GetTexture("\Assets\Farback02.png")}
+        'bg.SetBGTextures(bgtexs)
+        'bg.mScrollSpeed = -10.0
         ' 手前の背景を作成
-        bg = New BGSpriteComponent(bgactor, 20)        '描画順序は一つ大きい値にする
-        bg.mScreenSize.X = mWindowW
-        bg.mScreenSize.Y = mWindowH
-        bgtexs.Clear()
-        bgtexs.AddRange({GetTexture("\Assets\Stars.png"),
-        GetTexture("\Assets\Stars.png")})
-        bg.SetBGTextures(bgtexs)
-        bg.mScrollSpeed = -30.0
+        'bg = New BGSpriteComponent(bgactor, 20)        '描画順序は一つ大きい値にする
+        'bg.mScreenSize.X = mWindowW
+        'bg.mScreenSize.Y = mWindowH
+        'bgtexs.Clear()
+        'bgtexs.AddRange({GetTexture("\Assets\Stars.png"),
+        'GetTexture("\Assets\Stars.png")})
+        'bg.SetBGTextures(bgtexs)
+        'bg.mScrollSpeed = -30.0
 
     End Sub
 
