@@ -30,7 +30,8 @@ Public Class Game
 
     'game specific
     Public mShip As Ship
-    Public numAsteroids As Integer = 20
+    Public numAsteroids As Integer = 0
+    Public initNumAsteroids As Integer = 15
     Public mAsteroid(numAsteroids) As Asteroid
     Public mAsteroids As New List(Of Asteroid)
 
@@ -200,12 +201,12 @@ Public Class Game
         mShip = New Ship(Me)
 
         '小惑星を複数生成
-        For i As Integer = 0 To numAsteroids - 1
-            mAsteroid(i) = New Asteroid(Me)
+        For i As Integer = 0 To initNumAsteroids - 1
+            IncreaseAsteroid()
         Next
 
 
-        ' 背景用アクターを作る
+        ' 背景用アクターを作る.※VB.NETでは動作スピードが遅くなる。
         'Dim bgactor As New Actor(Me)
         'bgactor.mPosition.X = mWindowW / 2
         'bgactor.mPosition.Y = mWindowH / 2
@@ -255,6 +256,11 @@ Public Class Game
     End Sub
 
     'Game Specific
+    Public Sub IncreaseAsteroid()
+        Dim ast As New Asteroid(Me)
+        numAsteroids += 1
+    End Sub
+
     Public Sub AddAsteroid(ByRef ast As Asteroid)
         mAsteroids.Add(ast)
     End Sub
@@ -263,6 +269,7 @@ Public Class Game
         If iter >= 0 Then
             mAsteroids.RemoveAt(iter)
         End If
+        numAsteroids -= 1
     End Sub
 End Class
 

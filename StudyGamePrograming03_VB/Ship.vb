@@ -46,6 +46,12 @@ Public Class Ship
     Public Overrides Sub UpdateActor(deltaTime As Single)
 
         mLaserCooldown -= deltaTime     'レーザーを次に撃てるまでの時間
+        mAsteroidCooldown -= deltaTime
+
+        If mAsteroidCooldown < 0.0 And mGame.numAsteroids > 0 Then
+            mGame.IncreaseAsteroid()
+            mAsteroidCooldown = 5.0
+        End If
 
         If crash = False Then
             '小惑星と衝突していないとき
@@ -155,6 +161,7 @@ Public Class Ship
     Public crash As Boolean        '衝突検知
     Public mCrashCooldown As Single     '衝突演出時間
     Public mShipCooldown As Single  '衝突演出後、リセットされるまでスプライトを消す時間
+    Public mAsteroidCooldown As Single      '小惑星増殖までの待機時間
 
     Public mCircle As CircleComponent      '衝突チェックのためのアクセスポインタ。他のオブジェクトから参照するため。
     Public mAnimComponent As AnimSpriteComponent

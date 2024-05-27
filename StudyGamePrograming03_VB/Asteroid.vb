@@ -23,7 +23,7 @@ Public Class Asteroid
 		mPosition = randPos
 
 		mRotation = 0   '初期回転は 0とする
-		mScale = 0.1 * Random.Next(5, 15)   '拡大率 0.5～1.5
+		mScale = 0.1 * Random.Next(8, 20)   '拡大率 0.8～2.0
 		Dim rotSpeed = 2 * Math.PI * Random.NextSingle() - Math.PI     '回転速度 -π～π
 		Dim randSpeed As Integer = Random.Next(50, 200)     '速度 50～200
 		Dim randAngle As Single = Math.PI * Random.Next(20, 70) / 180   '速度の方向角度　20度～70度
