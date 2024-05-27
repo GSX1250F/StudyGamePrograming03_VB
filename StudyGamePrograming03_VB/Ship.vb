@@ -50,7 +50,12 @@ Public Class Ship
 
         If mAsteroidCooldown < 0.0 And mGame.numAsteroids > 0 Then
             mGame.IncreaseAsteroid()
-            mAsteroidCooldown = 5.0
+            mAsteroidCooldown = 50.0
+        End If
+        If mGame.numAsteroids = 0 Then
+            mGame.mClearPict.mState = State.EActive
+            mGame.mClearPict.mPosition.X = mGame.mWindowW / 2.0
+            mGame.mClearPict.mPosition.Y = mGame.mWindowH / 2.0
         End If
 
         If crash = False Then

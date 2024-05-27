@@ -31,9 +31,10 @@ Public Class Game
     'game specific
     Public mShip As Ship
     Public numAsteroids As Integer = 0
-    Public initNumAsteroids As Integer = 15
+    Public initNumAsteroids As Integer = 2
     Public mAsteroid(numAsteroids) As Asteroid
     Public mAsteroids As New List(Of Asteroid)
+    Public mClearPict As ClearPict
 
     'コンストラクタ
     Public Sub Game_Load(sender As Object, e As EventArgs) Handles MyBase.Load
@@ -205,6 +206,7 @@ Public Class Game
             IncreaseAsteroid()
         Next
 
+        mClearPict = New ClearPict(Me)
 
         ' 背景用アクターを作る.※VB.NETでは動作スピードが遅くなる。
         'Dim bgactor As New Actor(Me)
