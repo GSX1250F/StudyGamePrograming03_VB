@@ -51,7 +51,7 @@ Public Class Ship
         'ゲームクリアしていない間、一定時間ごとに小惑星を追加する。
         If mAsteroidCooldown < 0.0 And mGame.numAsteroids > 0 Then
             mGame.IncreaseAsteroid()
-            mAsteroidCooldown = 50.0
+            mAsteroidCooldown = 8.0
         End If
         If mGame.numAsteroids = 0 Then
             mGame.mClearPict.mState = State.EActive
