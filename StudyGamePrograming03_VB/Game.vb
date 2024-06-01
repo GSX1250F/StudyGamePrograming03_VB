@@ -31,7 +31,7 @@ Public Class Game
     'game specific
     Public mShip As Ship
     Public numAsteroids As Integer = 0
-    Public initNumAsteroids As Integer = 2
+    Public initNumAsteroids As Integer = 15
     Public mAsteroid(numAsteroids) As Asteroid
     Public mAsteroids As New List(Of Asteroid)
     Public mClearPict As ClearPict

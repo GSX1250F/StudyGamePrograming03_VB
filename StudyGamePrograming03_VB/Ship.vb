@@ -48,6 +48,7 @@ Public Class Ship
         mLaserCooldown -= deltaTime     'レーザーを次に撃てるまでの時間
         mAsteroidCooldown -= deltaTime
 
+        'ゲームクリアしていない間、一定時間ごとに小惑星を追加する。
         If mAsteroidCooldown < 0.0 And mGame.numAsteroids > 0 Then
             mGame.IncreaseAsteroid()
             mAsteroidCooldown = 50.0
