@@ -24,7 +24,7 @@ Partial Class Game
     Private Sub InitializeComponent()
         components = New ComponentModel.Container()
         PictureBox = New PictureBox()
-        Timer1 = New Timer(components)
+        RunLoop = New Timer(components)
         CType(PictureBox, ComponentModel.ISupportInitialize).BeginInit()
         SuspendLayout()
         ' 
@@ -33,23 +33,21 @@ Partial Class Game
         PictureBox.BackColor = SystemColors.ActiveCaptionText
         PictureBox.ImeMode = ImeMode.NoControl
         PictureBox.Location = New Point(0, 0)
-        PictureBox.Margin = New Padding(6, 6, 6, 6)
         PictureBox.Name = "PictureBox"
-        PictureBox.Size = New Size(1902, 1638)
+        PictureBox.Size = New Size(1024, 768)
         PictureBox.TabIndex = 1
         PictureBox.TabStop = False
         ' 
-        ' Timer1
+        ' RunLoop
         ' 
         ' 
         ' Game
         ' 
-        AutoScaleDimensions = New SizeF(13F, 32F)
+        AutoScaleDimensions = New SizeF(7F, 15F)
         AutoScaleMode = AutoScaleMode.Font
-        ClientSize = New Size(1904, 1643)
+        ClientSize = New Size(1025, 768)
         Controls.Add(PictureBox)
         DoubleBuffered = True
-        Margin = New Padding(6, 6, 6, 6)
         Name = "Game"
         Text = "Game"
         CType(PictureBox, ComponentModel.ISupportInitialize).EndInit()
@@ -57,5 +55,5 @@ Partial Class Game
     End Sub
 
     Friend WithEvents PictureBox As PictureBox
-    Friend WithEvents Timer1 As Timer
+    Friend WithEvents RunLoop As Timer
 End Class
