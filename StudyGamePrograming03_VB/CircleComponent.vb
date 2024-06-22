@@ -3,21 +3,20 @@
 Public Class CircleComponent
     Inherits Component
 
+    Public mRadius As Single
+
     Sub New(ByRef owner As Actor, ByVal updateOrder As Integer)
         MyBase.New(owner, updateOrder)
 
     End Sub
     Public Function GetRadius() As Single
-        Return mOwner.mRadius
+        Return mOwner.GetRadius()
     End Function
 
     Public Function GetCenter() As Vector2
-        Return mOwner.mPosition
+        Return mOwner.GetPosition()
     End Function
-
-    Public mRadius As Single
-
-    Public Function Intersect(ByRef a As CircleComponent, ByRef b As CircleComponent) As Boolean
+    Public Shared Function Intersect(ByRef a As CircleComponent, ByRef b As CircleComponent) As Boolean
         ' ２つのCircleComponentの中心間距離を計算
         Dim diff As Vector2 = a.GetCenter() - b.GetCenter()
         Dim distSq As Single = diff.Length() * diff.Length()
@@ -32,6 +31,5 @@ Public Class CircleComponent
             Return False
         End If
     End Function
-
 
 End Class

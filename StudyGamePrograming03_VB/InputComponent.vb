@@ -1,12 +1,14 @@
 ﻿Public Class InputComponent
 	Inherits MoveComponent
 
+	' 前進・回転方向の力の最大値
+	Private mMaxForwardForce As Single
+	Private mMaxRotForce As Single
+	Private disposedValue As Boolean
+
 	Sub New(ByRef owner As Actor, ByVal updateOrder As Integer)
 		MyBase.New(owner, updateOrder)
-		mForwardKey = 0
-		mBackwardKey = 0
-		mClockwiseKey = 0
-		mCounterClockwiseKey = 0
+
 	End Sub
 
 	Public Overrides Sub ProcessInput(keyState As KeyEventArgs)
@@ -15,34 +17,34 @@
 		If Not keyState Is Nothing Then
 			'古典物理学でMoveComponentのための計算
 			'MoveComponentには前進か回転方向の力の最大値だけを渡す
-			If keyState.KeyValue = mForwardKey Then
-				forwardforce += mMaxForwardForce
-			ElseIf keyState.KeyValue = mBackwardKey Then
-				forwardforce -= mMaxForwardForce
-			End If
-
-			If keyState.KeyValue = mClockwiseKey Then
-				rotforce -= mMaxRotForce        '角度の+方向はCCW
-			ElseIf keyState.KeyValue = mCounterClockwiseKey Then
-				rotforce += mMaxRotForce        '角度の+方向はCCW
-			End If
+			Select Case keyState.KeyValue
+				Case Keys.Up
+					forwardforce = mMaxForwardForce
+				Case Keys.Down
+					forwardforce = -mMaxForwardForce
+				Case Keys.Left
+					rotforce = mMaxRotForce
+				Case Keys.Right
+					rotforce = -mMaxRotForce
+			End Select
 		End If
-		mMoveForce = forwardforce * mOwner.GetForward()
-		mRotForce = rotforce
+		SetMoveForce(forwardforce * mOwner.GetForward())
+		SetRotForce(rotforce)
 	End Sub
 
+	Public Sub SetMaxForwardForce(ByVal power As Single)
+		mMaxForwardForce = power
+	End Sub
+	Public Sub SetMaxRotForce(ByVal power As Single)
+		mMaxRotForce = power
+	End Sub
+	Public Function GetMaxForwardForce() As Single
+		Return mMaxForwardForce
+	End Function
+	Public Function GetMaxRotForce() As Single
+		Return mMaxRotForce
+	End Function
 
 
-	' 前進・後退のためのキー
-	Public mForwardKey As Integer
-	Public mBackwardKey As Integer
 
-	' 回転運動のキー
-	Public mClockwiseKey As Integer
-	Public mCounterClockwiseKey As Integer
-
-	' 前進・回転方向の力の最大値
-	Public mMaxForwardForce As Single
-	Public mMaxRotForce As Single
-	Private disposedValue As Boolean
 End Class

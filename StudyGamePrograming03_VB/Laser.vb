@@ -1,31 +1,37 @@
-﻿Public Class Laser
+﻿Imports System.Numerics
+
+Public Class Laser
 	Inherits Actor
+
+	Private mCircle As CircleComponent
+	Private mDeathTime As Single
+	Private mLaserSpeed As Single
 
 	Sub New(ByRef game As Game)
 		MyBase.New(game)
-		mDeathTime = 1.0
-		mLaserSpeed = 900.0
 		'スプライトコンポーネント作成、テクスチャ設定
-		Dim sc As SpriteComponent = New SpriteComponent(Me, 50)
+		Dim sc As New SpriteComponent(Me, 50)
 		sc.SetTexture(game.GetTexture("\Assets\Laser.png"))
-
-		'初期位置,速度,角度はShipで設定
-
 	End Sub
 
 	Public Overrides Sub UpdateActor(deltaTime As Single)
 		'DeathTimeが0になったら消去する。
 		mDeathTime -= deltaTime
-		If mDeathTime <= 0.0 Then
-			mState = State.EDead
+		If (mDeathTime <= 0.0 Or
+			GetPosition().X < 0.0 Or
+			GetPosition().X > GetGame().mWindowWidth Or
+			GetPosition().Y < 0.0F Or
+			GetPosition().Y > GetGame().mWindowHeight) _
+			Then
+			SetState(State.EDead)
 		Else
 			'小惑星に当たったとき
-			For Each ast In mGame.mAsteroids
-				If mCircle.Intersect(mCircle, ast.mCircle) Then
+			For Each ast In GetGame().GetAsteroids()
+				If mCircle.Intersect(mCircle, ast.GetCircle) Then
 					'レーザーも消去するなら次を実行
-					mState = State.EDead
+					SetState(State.EDead)
 					'小惑星を消去
-					ast.mState = State.EDead
+					ast.SetState(State.EDead)
 					Exit For
 				End If
 			Next
@@ -34,16 +40,16 @@
 
 	Public Sub Shot()
 		'MoveComponent作成
-		Dim mc As MoveComponent = New MoveComponent(Me, 10)
-		mc.mVelocity.X = mLaserSpeed * Math.Cos(mRotation)
-		mc.mVelocity.Y = -mLaserSpeed * Math.Sin(mRotation)
+		Dim mc As New MoveComponent(Me, 10)
+		Dim v As Vector2
+		v.X = mLaserSpeed * Math.Cos(GetRotation())
+		v.Y = -mLaserSpeed * Math.Sin(GetRotation())
+		mc.SetVelocity(v)
 
 		'CircleComponent作成
 		mCircle = New CircleComponent(Me, 10)
 	End Sub
 
-	Public mCircle As CircleComponent
-	Public mDeathTime As Single
-	Public mLaserSpeed As Single
+
 
 End Class

@@ -2,6 +2,22 @@
 
 Public Class MoveComponent
     Inherits Component
+
+    '単純移動パラメータ
+    Private mVelocity As Vector2     '重心移動速度
+    Private mRotSpeed As Single      '回転速度
+
+    '古典物理パラメータ
+    Private mMass As Single      '質量
+    Private mMoveForce As Vector2        '重心にかかる力
+    Private mRotForce As Single          '回転方向の力F　 トルク=RotForce * Radius = Imoment * RotAccel
+    Private mTorque As Single        'トルク=回転方向の力 * 半径 = 慣性モーメント * 回転加速度
+    Private mMoveAccel As Vector2        '重心加速度
+    Private mRotAccel As Single      '回転加速度
+    Private mImoment As Single       '慣性モーメント
+    Private mMoveResist As Single        '重心速度抵抗率(%)
+    Private mRotResist As Single     '回転速度抵抗率(%)
+
     Sub New(ByRef owner As Actor, ByVal updateOrder As Integer)
         MyBase.New(owner, updateOrder)
         mVelocity.X = 0.0
@@ -25,10 +41,12 @@ Public Class MoveComponent
 
     Public Overrides Sub Update(deltaTime As Single)
         ' Actorの位置を更新 x=x0+vt
-        mOwner.mPosition.X += mVelocity.X * deltaTime
-        mOwner.mPosition.Y += mVelocity.Y * deltaTime
+        Dim v As New Vector2
+        v.X = mOwner.GetPosition().X + mVelocity.X * deltaTime
+        v.X = mOwner.GetPosition().Y + mVelocity.Y * deltaTime
+        mOwner.SetPosition(v)
         ' Actorの方向を更新 θ=θ0+ωt
-        mOwner.mRotation += mRotSpeed * deltaTime
+        mOwner.SetRotation(mOwner.GetRotation() + mRotSpeed * deltaTime)
 
         ' Actorの重心速度を更新
         If mMass <> 0 Then
@@ -59,29 +77,58 @@ Public Class MoveComponent
         mRotSpeed += mRotAccel * deltaTime     'ω = ωo + bt
     End Sub
 
-    '単純移動パラメータ
-    '重心移動速度
-    Public mVelocity As Vector2
-    '回転速度
-    Public mRotSpeed As Single
-
-    '古典物理パラメータ
-    Public mMass As Single
-    '重心にかかる力
-    Public mMoveForce As Vector2
-    '回転方向の力F　 トルク=RotForce * Radius = Imoment * RotAccel
-    Public mRotForce As Single
-    'トルク=回転方向の力 * 半径 = 慣性モーメント * 回転加速度
-    Public mTorque As Single
-    '重心加速度
-    Public mMoveAccel As Vector2
-    '回転加速度
-    Public mRotAccel As Single
-    '慣性モーメント
-    Public mImoment As Single
-    '重心速度抵抗率(%)
-    Public mMoveResist As Single
-    '回転速度抵抗率(%)
-    Public mRotResist As Single
-
+    Public Function GetVelocity() As Vector2
+        Return mVelocity
+    End Function
+    Public Sub SetVelocity(ByVal vel)
+        mVelocity = vel
+    End Sub
+    Public Function GetRotSpeed() As Single
+        Return mRotSpeed
+    End Function
+    Public Sub SetRotSpeed(ByVal rotspeed As Single)
+        mRotSpeed = rotspeed
+    End Sub
+    Public Function GetMoveForce() As Vector2
+        Return mMoveForce
+    End Function
+    Public Sub SetMoveForce(ByVal force As Vector2)
+        mMoveForce = force
+    End Sub
+    Public Function GetRotForce() As Single
+        Return mRotForce
+    End Function
+    Public Sub SetRotForce(ByVal force As Single)
+        mRotForce = force
+    End Sub
+    Public Function GetMoveResist() As Single
+        Return mMoveResist
+    End Function
+    Public Sub SetMoveResist(ByVal resist As Single)
+        mMoveResist = resist
+    End Sub
+    Public Function GetRotResist() As Single
+        Return mRotResist
+    End Function
+    Public Sub SetRotResist(ByVal resist As Single)
+        mRotResist = resist
+    End Sub
+    Public Function GetMass() As Single
+        Return mMass
+    End Function
+    Public Sub SetMass(ByVal mass As Single)
+        mMass = mass
+    End Sub
+    Public Function GetTorque() As Single
+        Return mTorque
+    End Function
+    Public Sub SetTorque(ByVal torque As Single)
+        mTorque = torque
+    End Sub
+    Public Function GetImoment() As Single
+        Return mImoment
+    End Function
+    Public Sub SetImoment(ByVal imoment As Single)
+        mImoment = imoment
+    End Sub
 End Class

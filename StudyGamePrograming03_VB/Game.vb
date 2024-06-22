@@ -20,7 +20,7 @@ Public Class Game
     Private mWindow As Bitmap       '描画用
     Private mRenderer As Graphics   'レンダラー
     Private Ticks As New System.Diagnostics.Stopwatch()     '時間管理
-    Private mTicksCount As Long     '時間管理
+    Private mTicksCount As Integer     '時間管理
     Private mIsRunning As Boolean   '実行中
     Private mUpdatingActors As Boolean      'アクター更新中
     Private mKeyDowns As New List(Of System.Windows.Forms.KeyEventArgs)    'キー入力管理
@@ -101,7 +101,7 @@ Public Class Game
     End Sub
     Private Sub UpdateGame()
         '前のフレームから16ms経つまで待つ
-        While Ticks.ElapsedMilliseconds >= mTicksCount + 16
+        While Ticks.ElapsedMilliseconds <= mTicksCount + 16
         End While
         'デルタタイムの計算
         Dim deltaTime As Single = (Ticks.ElapsedMilliseconds - mTicksCount) / 1000
@@ -128,7 +128,7 @@ Public Class Game
         '死んだアクターを一時配列に追加
         Dim deadActors As New List(Of Actor)
         For Each actor In mActors
-            If actor.mState = Actor.State.EDead Then
+            If actor.GetState() = Actor.State.EDead Then
                 deadActors.Add(actor)
             End If
         Next
@@ -215,12 +215,12 @@ Public Class Game
     End Sub
 
     Public Sub AddSprite(sprite As SpriteComponent)
-        Dim myDrawOrder As Integer = sprite.mDrawOrder
+        Dim myDrawOrder As Integer = sprite.GetDrawOrder()
         Dim cnt As Integer = mSprites.Count     '配列の要素数
         Dim iter As Integer
         If cnt > 0 Then
             For iter = 0 To mSprites.Count - 1
-                If myDrawOrder < mSprites(i).mDrawOrder Then
+                If myDrawOrder < mSprites(iter).GetDrawOrder() Then
                     Exit For
                 End If
             Next
@@ -241,6 +241,15 @@ Public Class Game
 
 
     'Game Specific
+    Public Function GetShip() As Ship
+        Return mShip
+    End Function
+    Public Function GetAsteroids() As List(Of Asteroid)
+        Return mAsteroids
+    End Function
+    Public Function GetClearPict() As ClearPict
+        Return mClearPict
+    End Function
     Public Sub AddAsteroid()
         Dim ast As New Asteroid(Me)
         mAsteroids.Add(ast)

@@ -2,6 +2,9 @@
 
     Implements IDisposable
 
+    Protected mOwner As Actor      '所有アクター
+    Protected mUpdateOrder As Integer      'コンポーネントの更新順序
+
     Sub New(ByRef owner As Actor, ByVal updateOrder As Integer)
         'updateOrderが小さいコンポーネントほど早く更新される
         mOwner = owner
@@ -40,7 +43,8 @@
 
     End Sub
 
-    Public mOwner As Actor      '所有アクター
-    Public mUpdateOrder As Integer      'コンポーネントの更新順序
+    Public Function GetUpdateOrder() As Integer
+        Return mUpdateOrder
+    End Function
 
 End Class

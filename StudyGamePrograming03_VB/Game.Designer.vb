@@ -40,6 +40,8 @@ Partial Class Game
         ' 
         ' RunLoop
         ' 
+        RunLoop.Enabled = True
+        RunLoop.Interval = 16
         ' 
         ' Game
         ' 

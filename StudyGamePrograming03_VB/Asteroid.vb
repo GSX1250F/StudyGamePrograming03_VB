@@ -3,49 +3,49 @@
 Public Class Asteroid
 	Inherits Actor
 
+	Private mCircle As CircleComponent
+	Private mAsteroidCooldown As Single
+
 	Sub New(ByRef game As Game)
 		MyBase.New(game)
 
 		'ランダムな位置と向きと大きさと初速で初期化
 		Dim randPos As Vector2
-		Dim Random As New Random()     ' Randomオブジェクトの作成 
-		randPos.X = mGame.mWindowW / 2.0
-		randPos.Y = mGame.mWindowH / 2.0
+		Dim random As New Random()     ' Randomオブジェクトの作成 
+		randPos.X = GetGame().mWindowWidth / 2.0
+		randPos.Y = GetGame().mWindowHeight / 2.0
 		'画面の中央1/4区画以外を初期位置とする。
-		While (randPos.X > mGame.mWindowW * 0.25) And
-			  (randPos.X < mGame.mWindowH * 0.75) And
-			  (randPos.Y > mGame.mWindowH * 0.25) And
-			  (randPos.Y < mGame.mWindowH * 0.75F)
+		While (randPos.X > GetGame().mWindowWidth * 0.25) And
+			  (randPos.X < GetGame().mWindowHeight * 0.75) And
+			  (randPos.Y > GetGame().mWindowHeight * 0.25) And
+			  (randPos.Y < GetGame().mWindowHeight * 0.75F)
 
-			randPos.X = Random.Next(0, mGame.mWindowW)
-			randPos.Y = Random.Next(0, mGame.mWindowH)
+			randPos.X = random.Next(0, GetGame().mWindowWidth)
+			randPos.Y = random.Next(0, GetGame().mWindowHeight)
 		End While
-		mPosition = randPos
-
-		mRotation = 0   '初期回転は 0とする
-		mScale = 0.1 * Random.Next(8, 20)   '拡大率 0.8～2.0
-		Dim rotSpeed = 2 * Math.PI * Random.NextSingle() - Math.PI     '回転速度 -π～π
-		Dim randSpeed As Integer = Random.Next(50, 200)     '速度 50～200
-		Dim randAngle As Single = Math.PI * Random.Next(20, 70) / 180   '速度の方向角度　20度～70度
-		Dim PorN_X As Integer = 2 * Random.Next(0, 2) - 1   'X方向速度の正負
-		Dim PorN_Y As Integer = 2 * Random.Next(0, 2) - 1   'X方向速度の正負
-		Dim velocityX = PorN_X * randSpeed * Math.Cos(randAngle)
-		Dim velocityY = PorN_Y * randSpeed * Math.Sin(randAngle)
+		SetPosition(randPos)
+		Dim randRot As Single = random.NextSingle() * Math.PI * 2
+		SetRotation(randRot)
+		SetScale(0.1 * Random.Next(8, 25))   '拡大率 0.8～2.5
+		Dim rotSpeed = 2 * Math.PI * random.NextSingle() - Math.PI     '回転速度 -π～π
+		Dim randSpeed As Integer = random.Next(50, 200)     '速度 50～200
+		Dim randAngle As Single = Math.PI * random.Next(20, 70) / 180   '速度の方向角度　20度～70度
+		Dim randVel As Vector2
+		randVel.X = Math.Cos(randRot) * randSpeed
+		randVel.Y = -Math.Sin(randRot) * randSpeed
 
 		'スプライトコンポーネント作成、テクスチャ設定
-		Dim sc As SpriteComponent = New SpriteComponent(Me, 40)
+		Dim sc As New SpriteComponent(Me, 40)
 		sc.SetTexture(game.GetTexture("\Assets\Asteroid.png"))
 
-		'MoveComponent作成　※力は働かないでただ動かすだけなら不要。
-		Dim mc As MoveComponent = New MoveComponent(Me, 10)
-		mc.mVelocity.X = velocityX
-		mc.mVelocity.Y = velocityY
-		mc.mRotSpeed = rotSpeed
+		'MoveComponent作成
+		Dim mc As New MoveComponent(Me, 10)
+		mc.SetVelocity(randVel)
+		mc.SetRotSpeed(rotSpeed)
 
 		'CircleComponent作成
 		mCircle = New CircleComponent(Me, 10)
 
-		mGame.AddAsteroid(Me)
 
 	End Sub
 
@@ -55,20 +55,25 @@ Public Class Asteroid
 				' Insert code to free managed resources.
 			End If
 			' Insert code to free unmanaged resources.
-			mGame.RemoveAsteroid(Me)
+			GetGame().RemoveAsteroid(Me)
 		End If
 		MyBase.Dispose(disposing)
 	End Sub
 
 	Public Overrides Sub UpdateActor(detaTime As Single)
 		'画面外にでたら反対の位置に移動（ラッピング処理）
-		If (mPosition.X < 0.0 - 2 * mRadius) Or (mPosition.X > mGame.mWindowW + 2 * mRadius) Then
-			mPosition.X = mGame.mWindowW - mPosition.X
+		If (GetPosition().X < 0.0 - 2 * GetRadius()) Or (GetPosition().X > GetGame().mWindowWidth + 2 * GetRadius()) Then
+			Dim v As Vector2
+			v.x = GetGame().mWindowWidth - GetPosition().X
+			SetPosition(v)
 		End If
-		If (mPosition.Y < 0.0 - 2 * mRadius) Or (mPosition.Y > mGame.mWindowH + 2 * mRadius) Then
-			mPosition.Y = mGame.mWindowH - mPosition.Y
+		If (GetPosition().Y < 0.0 - 2 * GetRadius()) Or (GetPosition().Y > GetGame().mWindowHeight + 2 * GetRadius()) Then
+			Dim v As Vector2
+			SetPosition(v)
 		End If
 	End Sub
 
-	Public mCircle As CircleComponent
+	Public Function GetCircle() As CircleComponent
+		Return mCircle
+	End Function
 End Class

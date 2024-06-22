@@ -1,5 +1,23 @@
 ﻿Public Class AnimSpriteComponent
 	Inherits SpriteComponent
+
+	' アニメーションをループさせるか
+	Public mLoopFlag As Boolean
+
+	' アニメーション中かどうか
+	Public mIsAnimating As Boolean
+
+	' アニメーションでのすべてのテクスチャ
+	Public mAnimTextures As New List(Of Image)
+
+	' 現在表示中のアニメーションテクスチャのための番号
+	Public mAnimNumBeg As Integer
+	Public mAnimNumLast As Integer
+	' 現在表示中のフレーム
+	Public mCurrFrame As Single
+	' アニメーションのフレームレート
+	Public mAnimFPS As Single
+
 	Sub New(ByRef owner As Actor, ByVal drawOrder As Integer)
 		MyBase.New(owner, drawOrder)
 		mCurrFrame = 0.0
@@ -54,21 +72,5 @@
 		mLoopFlag = loop_flag
 	End Sub
 
-	' アニメーションをループさせるか
-	Public mLoopFlag As Boolean
-
-	' アニメーション中かどうか
-	Public mIsAnimating As Boolean
-
-	' アニメーションでのすべてのテクスチャ
-	Public mAnimTextures As New List(Of Image)
-
-	' 現在表示中のアニメーションテクスチャのための番号
-	Public mAnimNumBeg As Integer
-	Public mAnimNumLast As Integer
-	' 現在表示中のフレーム
-	Public mCurrFrame As Single
-	' アニメーションのフレームレート
-	Public mAnimFPS As Single
 
 End Class

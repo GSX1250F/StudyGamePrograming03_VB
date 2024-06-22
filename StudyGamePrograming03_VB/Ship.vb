@@ -3,16 +3,29 @@ Imports System.Numerics
 
 Public Class Ship
     Inherits Actor
+
+    Private mLaserCooldown As Single
+    Private crashPos As Vector2     '衝突したときの位置
+    Private crashRot As Single      '衝突したときの向き
+    Private crash As Boolean        '衝突検知
+    Private mCrashCooldown As Single     '衝突演出時間
+    Private mShipCooldown As Single  '衝突演出後、リセットされるまでスプライトを消す時間
+    Private mAsteroidCooldown As Single      '小惑星増殖までの待機時間
+
+    Private mCircle As CircleComponent      '衝突チェックのためのアクセスポインタ。他のオブジェクトから参照するため。
+    Private mAnimComponent As AnimSpriteComponent
+    Private mInput As InputComponent      '衝突チェックのためのアクセスポインタ。他のオブジェクトから参照するため。
+
     Sub New(ByRef game As Game)
         MyBase.New(game)
         mLaserCooldown = 0.0
         mCrashCooldown = 0.0
         mShipCooldown = 0.0
+        mAsteroidCooldown = 3.0
         crashPos.X = 0.0
         crashPos.Y = 0.0
         crash = False
-
-        mScale = 0.8
+        SetScale(0.8)
 
         'アニメーションのスプライトコンポーネント作成、テクスチャ設定
         Dim asc As New AnimSpriteComponent(Me, 30)
@@ -27,15 +40,11 @@ Public Class Ship
 
         'InputComponent作成.MoveComponentの子
         mInput = New InputComponent(Me, 10)
-        mInput.mForwardKey = Keys.Up
-        mInput.mBackwardKey = Keys.Down
-        mInput.mClockwiseKey = Keys.Right
-        mInput.mCounterClockwiseKey = Keys.Left
-        mInput.mMaxForwardForce = 300.0
-        mInput.mMaxRotForce = 150.0
-        mInput.mMoveResist = 30.0
-        mInput.mRotResist = 30.0
-        mInput.mMass = 1.0
+        mInput.SetMaxForwardForce(300.0)
+        mInput.SetMaxRotForce(150.0)
+        mInput.SetMoveResist(30.0)
+        mInput.SetRotResist(15.0)
+        mInput.SetMass(1.0)
 
         'CircleComponent作成
         mCircle = New CircleComponent(Me, 10)
@@ -44,70 +53,74 @@ Public Class Ship
     End Sub
 
     Public Overrides Sub UpdateActor(deltaTime As Single)
-
         mLaserCooldown -= deltaTime     'レーザーを次に撃てるまでの時間
         mAsteroidCooldown -= deltaTime
 
-        'ゲームクリアしていない間、一定時間ごとに小惑星を追加する。
-        If mAsteroidCooldown < 0.0 And mGame.numAsteroids > 0 Then
-            mGame.IncreaseAsteroid()
-            mAsteroidCooldown = 8.0
+        '小惑星を一定時間ごとに増やす。小惑星の数が０になったらゲームクリア画面をアクティブにする。
+        Dim numAsteroids As Integer = GetGame().GetAsteroids().Count()
+        If (mAsteroidCooldown < 0.0 And numAsteroids > 0) Then
+            GetGame().AddAsteroid()
+            mAsteroidCooldown = 5.0
         End If
-        If mGame.numAsteroids = 0 Then
-            mGame.mClearPict.mState = State.EActive
-            mGame.mClearPict.mPosition.X = mGame.mWindowW / 2.0
-            mGame.mClearPict.mPosition.Y = mGame.mWindowH / 2.0
+        If (numAsteroids = 0) Then
+            GetGame().GetClearPict().SetState(State.EActive)
         End If
 
-        If crash = False Then
-            '小惑星と衝突していないとき
+        If (crash = False) Then
             '画面外にでたら反対の位置に移動（ラッピング処理）
-            If mPosition.X < 0.0 - 1 * mRadius Or
-               mPosition.X > mGame.mWindowW + 1 * mRadius Then
-                mPosition.X = mGame.mWindowW - mPosition.X
+            If (GetPosition().X < 0.0 - 1.0 * GetRadius() Or
+                GetPosition().X > GetGame().mWindowWidth + 1.0 * GetRadius()) _
+                Then
+                Dim v As Vector2
+                v.X = GetGame().mWindowWidth - GetPosition().X
+                v.Y = GetPosition().Y
+                SetPosition(v)
             End If
-            If mPosition.Y < 0.0 - 1 * mRadius Or
-               mPosition.Y > mGame.mWindowH + 1 * mRadius Then
-                mPosition.Y = mGame.mWindowH - mPosition.Y
+
+            If (GetPosition().Y < 0.0 - 1.0 * GetRadius() Or
+                GetPosition().Y > GetGame().mWindowHeight + 1.0 * GetRadius()) _
+                Then
+                Dim v As Vector2
+                v.X = GetPosition().X
+                v.Y = GetGame().mWindowHeight - GetPosition().Y
+                SetPosition(v)
             End If
 
             '小惑星と衝突したかを判定
-            For Each ast In mGame.mAsteroids
-                If (mCircle.Intersect(mCircle, ast.mCircle)) Then
-                    '小惑星と衝突したとき
-                    crashPos = mPosition
-                    crashRot = mRotation
-                    crash = True
-                    mCrashCooldown = 2.0
-                    mShipCooldown = 2.0
-                    'ゲーム自体を終了する場合
-                    'mGame.SetRunning(False)
+            'For Each ast In GetGame().GetAsteroids()
+            '    If Intersect(mCircle, ast.GetCircle()) And ast.GetState() = State.EActive Then
+            '        '小惑星と衝突
+            '        crashPos = GetPosition()
+            '        crashRot = GetRotation()
+            '        crash = True
+            '        mCrashCooldown = 2.0
+            '        mShipCooldown = 2.0
 
-                    crash = True
-                    Exit For
-                End If
-            Next
-
+            '        'ゲーム自体を終了する場合
+            '        'GetGame()->SetRunning(false);
+            '        Exit For
+            '    End If
+            'Next
         Else
             '小惑星と衝突したとき
-            If mState = State.EPaused Then
+            If (GetState() = State.EPaused) Then
                 '状態がEPausedのとき、リスポーンするまでの時間を計算
                 mShipCooldown -= deltaTime
                 'リスポーンするまでの時間になったら、初期位置・角度にリスポーン
-                If mShipCooldown <= 0.0 Then
+                If (mShipCooldown <= 0.0) Then
                     Init()
-                    mState = State.EActive
-                    mShipCooldown = 0.0
+                    SetState(State.EActive)
+                    mShipCooldown = 0.0F
                     crash = False
                 End If
             Else
                 '衝突演出中
-                mPosition = crashPos        ' MoveComponentが更新されても衝突したときの位置に置きなおし
-                crashRot -= 3.0 * 2 * Math.PI * deltaTime
-                mRotation = crashRot        ' MoveComponentが更新されても衝突してからの回転角度に置きなおし
+                SetPosition(crashPos)       'MoveComponentが更新されても衝突したときの位置に置きなおし
+                crashRot -= 3.0 * 2.0 * Math.PI * deltaTime
+                SetRotation(crashRot)       'MoveComponentが更新されても衝突してからの回転角度に置きなおし
                 mCrashCooldown -= deltaTime
-                If mCrashCooldown <= 0.0 Then
-                    mState = State.EPaused
+                If (mCrashCooldown <= 0.0F) Then
+                    SetState(State.EPaused)
                     mCrashCooldown = 0.0
                 End If
             End If
@@ -132,10 +145,12 @@ Public Class Ship
 
                 If keyState.KeyCode = Keys.Space And mLaserCooldown <= 0.0 Then
                     ' レーザーオブジェクトを作成、位置と回転角を宇宙船とあわせる。
-                    Dim laser As Laser = New Laser(mGame)
-                    laser.mPosition.X = mPosition.X + mRadius * Math.Cos(mRotation)
-                    laser.mPosition.Y = mPosition.Y - mRadius * Math.Sin(mRotation)
-                    laser.mRotation = mRotation
+                    Dim laser As New Laser(GetGame())
+                    Dim v As Vector2
+                    v.X = GetPosition().X + 35.0 * GetScale() * Math.Cos(GetRotation())
+                    v.Y = GetPosition().Y - 35.0 * GetScale() * Math.Sin(GetRotation())
+                    laser.SetPosition(v)
+                    laser.SetRotation(GetRotation())
                     laser.Shot()
                     ' レーザー冷却期間リセット
                     mLaserCooldown = 0.5
@@ -151,26 +166,18 @@ Public Class Ship
     End Sub
 
     Public Sub Init()
-        mPosition.X = mGame.mWindowW / 2
-        mPosition.Y = mGame.mWindowH / 2
-
-        mRotation = 0.0
-
-        mInput.mVelocity.X = 0.0
-        mInput.mVelocity.Y = 0.0
-        mInput.mRotSpeed = 0.0
+        Dim v As Vector2
+        v.X = GetGame().mWindowWidth / 2
+        v.Y = GetGame().mWindowHeight / 2
+        SetPosition(v)
+        Dim random As New Random()
+        Dim rot As Single = 2.0 * random.NextSingle() * Math.PI
+        SetRotation(rot)
+        v.X = 0
+        v.Y = 0
+        mInput.SetVelocity(v)
+        mInput.SetRotSpeed(0.0)
     End Sub
 
-    Public mLaserCooldown As Single
-    Public crashPos As Vector2     '衝突したときの位置
-    Public crashRot As Single      '衝突したときの向き
-    Public crash As Boolean        '衝突検知
-    Public mCrashCooldown As Single     '衝突演出時間
-    Public mShipCooldown As Single  '衝突演出後、リセットされるまでスプライトを消す時間
-    Public mAsteroidCooldown As Single      '小惑星増殖までの待機時間
-
-    Public mCircle As CircleComponent      '衝突チェックのためのアクセスポインタ。他のオブジェクトから参照するため。
-    Public mAnimComponent As AnimSpriteComponent
-    Public mInput As InputComponent      '衝突チェックのためのアクセスポインタ。他のオブジェクトから参照するため。
 
 End Class
