@@ -20,10 +20,10 @@ Public Class Laser
 		'DeathTimeが0になったら消去する。
 		mDeathTime -= deltaTime
 		If (mDeathTime <= 0.0 Or
-			GetPosition().X < 0.0 Or
-			GetPosition().X > GetGame().mWindowWidth Or
-			GetPosition().Y < 0.0 Or
-			GetPosition().Y > GetGame().mWindowHeight) _
+			GetPosition().X < 0.0 - 3 * GetRadius() Or
+			GetPosition().X > GetGame().mWindowWidth + 3 * GetRadius() Or
+			GetPosition().Y < 0.0 - 3 * GetRadius() Or
+			GetPosition().Y > GetGame().mWindowHeight) + 3 * GetRadius() _
 			Then
 			SetState(State.EDead)
 		Else

@@ -87,20 +87,20 @@ Public Class Ship
             End If
 
             '小惑星と衝突したかを判定
-            'For Each ast In GetGame().GetAsteroids()
-            '    If Intersect(mCircle, ast.GetCircle()) And ast.GetState() = State.EActive Then
-            '        '小惑星と衝突
-            '        crashPos = GetPosition()
-            '        crashRot = GetRotation()
-            '        crash = True
-            '        mCrashCooldown = 2.0
-            '        mShipCooldown = 2.0
+            For Each ast In GetGame().GetAsteroids()
+                If Intersect(mCircle, ast.GetCircle()) And ast.GetState() = State.EActive Then
+                    '小惑星と衝突
+                    crashPos = GetPosition()
+                    crashRot = GetRotation()
+                    crash = True
+                    mCrashCooldown = 2.0
+                    mShipCooldown = 2.0
 
-            '        'ゲーム自体を終了する場合
-            '        'GetGame()->SetRunning(false);
-            '        Exit For
-            '    End If
-            'Next
+                    'ゲーム自体を終了する場合
+                    'GetGame()->SetRunning(false);
+                    Exit For
+                End If
+            Next
         Else
             '小惑星と衝突したとき
             If (GetState() = State.EPaused) Then

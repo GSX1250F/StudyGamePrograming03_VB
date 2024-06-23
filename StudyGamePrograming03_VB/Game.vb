@@ -42,7 +42,7 @@ Public Class Game
         Dim success = Initialize()
         If success = True Then
             Ticks.Start()         'ストップウォッチ開始
-            RunLoop.Interval = 16
+            RunLoop.Interval = 5
             RunLoop.Enabled = True      'タイマー開始
         Else
             Shutdown()
@@ -147,19 +147,6 @@ Public Class Game
             sprite.Draw(mRenderer)
         Next
 
-        'test
-        Dim brush As New SolidBrush(Color.FromArgb(255, 255, 255, 255))     'Brushオブジェクトの作成
-        Dim ball As Rectangle
-        With ball
-            .X = CInt(mWindowWidth / 2 - 15 / 2)
-            .Y = CInt(mWindowHeight / 2 - 15 / 2)
-            .Width = 15
-            .Height = 15
-        End With
-        mRenderer.FillEllipse(brush, ball)
-
-        brush.Dispose()
-
         PictureBox.Image = mWindow
     End Sub
     Private Sub Shutdown()
@@ -173,11 +160,11 @@ Public Class Game
         'プレイヤーの宇宙船を作成
         mShip = New Ship(Me)
 
-        ''小惑星を複数生成
-        'Dim initialNumAsteroids = 15        '初期値
-        'For i As Integer = 0 To initialNumAsteroids - 1
-        '    AddAsteroid()
-        'Next
+        '小惑星を複数生成
+        Dim initialNumAsteroids = 15        '初期値
+        For i As Integer = 0 To initialNumAsteroids - 1
+            AddAsteroid()
+        Next
 
         '背景を作成
         Dim bg As New BackGround(Me)

@@ -16,9 +16,9 @@ Public Class Asteroid
 		randPos.Y = GetGame().mWindowHeight / 2.0
 		'画面の中央1/4区画以外を初期位置とする。
 		While (randPos.X > GetGame().mWindowWidth * 0.25) And
-			  (randPos.X < GetGame().mWindowHeight * 0.75) And
+			  (randPos.X < GetGame().mWindowWidth * 0.75) And
 			  (randPos.Y > GetGame().mWindowHeight * 0.25) And
-			  (randPos.Y < GetGame().mWindowHeight * 0.75F)
+			  (randPos.Y < GetGame().mWindowHeight * 0.75)
 
 			randPos.X = random.Next(0, GetGame().mWindowWidth)
 			randPos.Y = random.Next(0, GetGame().mWindowHeight)
@@ -69,6 +69,7 @@ Public Class Asteroid
 		End If
 		If (GetPosition().Y < 0.0 - 2 * GetRadius()) Or (GetPosition().Y > GetGame().mWindowHeight + 2 * GetRadius()) Then
 			Dim v As Vector2
+			v.Y = GetGame().mWindowHeight - GetPosition().Y
 			SetPosition(v)
 		End If
 	End Sub
