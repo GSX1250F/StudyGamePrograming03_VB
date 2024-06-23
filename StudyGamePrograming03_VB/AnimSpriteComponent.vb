@@ -27,27 +27,27 @@
 	End Sub
 	' フレームごとにアニメーションを更新する(componentからオーバーライド)
 	Public Overrides Sub Update(deltaTime As Single)
-		If mAnimTextures.Count > 0 Then
-			' フレームレートとデルタタイムに基づいてカレントフレームを更新する
+		If (mAnimTextures.Count() > 0) Then
+			'フレームレートとデルタタイムに基づいて
+			'カレントフレームを更新する
 			mCurrFrame += mAnimFPS * deltaTime
-			If mCurrFrame >= mAnimNumLast - (mAnimNumBeg) Then
-				mIsAnimating = False
-			Else
-				mIsAnimating = True
-			End If
 
-			' ループさせないアニメーションは止める
-			If mLoopFlag = False Then
-				If mCurrFrame >= mAnimNumLast - (mAnimNumBeg - 1) Then
-					mCurrFrame = mAnimNumLast - (mAnimNumBeg)
-					mIsAnimating = False
+			'ループさせないアニメーションが終わったら止める。
+			If (mLoopFlag = False) Then
+				If (mCurrFrame >= mAnimNumLast - (mAnimNumBeg - 1)) Then
+					mIsAnimating = False    ' アニメーションが止まった
+					mCurrFrame = (mAnimNumLast - mAnimNumBeg) + 0.99    '次のUpdate時に同じくifが成立するようにしておく。
+				Else mIsAnimating = True    ' アニメーション中
+					'if (mLoopFlag == false)std:cout << static_cast < Int() > (mCurrFrame) << "\n";
 				End If
 			Else
+				mIsAnimating = True     ' ループアニメはアニメーション中とする。
 				' 必要に応じてカレントフレームを巻き戻す
-				While mCurrFrame >= mAnimNumLast - (mAnimNumBeg - 1)
+				Do While (mCurrFrame >= mAnimNumLast - (mAnimNumBeg - 1))
 					mCurrFrame -= (mAnimNumLast - (mAnimNumBeg - 1))
-				End While
+				Loop
 			End If
+
 			' 現時点でのテクスチャを設定する
 			SetTexture(mAnimTextures(Fix(mCurrFrame) + (mAnimNumBeg - 1)))
 		End If

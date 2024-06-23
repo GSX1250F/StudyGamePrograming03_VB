@@ -63,7 +63,7 @@ Public Class Ship
             mAsteroidCooldown = 5.0
         End If
         If (numAsteroids = 0) Then
-            'GetGame().GetClearPict().SetState(State.EActive)
+            GetGame().GetClearPict().SetState(State.EActive)
         End If
 
         If (crash = False) Then
@@ -152,14 +152,14 @@ Public Class Ship
                 laser.SetRotation(GetRotation())
                 laser.Shot()
                 ' レーザー冷却期間リセット
-                mLaserCooldown = 0.5
+                mLaserCooldown = 0.7
             End If
             If mAnimComponent.mIsAnimating = False Then
-                    ' アニメーション中が終わっていたら元のループに戻る。
-                    mAnimComponent.SetAnimNum(1, 1, True)
-                End If
-
+                ' アニメーション中が終わっていたら元のループに戻る。
+                mAnimComponent.SetAnimNum(1, 1, True)
             End If
+
+        End If
 
     End Sub
 
@@ -168,9 +168,9 @@ Public Class Ship
         v.X = GetGame().mWindowWidth / 2
         v.Y = GetGame().mWindowHeight / 2
         SetPosition(v)
-        'Dim random As New Random()
-        'Dim rot As Single = 2.0 * random.NextSingle() * Math.PI
-        Dim rot As Single = 0.0
+        Dim random As New Random()
+        Dim rot As Single = 2.0 * random.NextSingle() * Math.PI
+        'Dim rot As Single = 0.0
         SetRotation(rot)
         v.X = 0
         v.Y = 0

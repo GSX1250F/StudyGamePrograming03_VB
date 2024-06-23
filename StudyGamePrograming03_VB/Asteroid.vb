@@ -62,16 +62,24 @@ Public Class Asteroid
 
 	Public Overrides Sub UpdateActor(detaTime As Single)
 		'画面外にでたら反対の位置に移動（ラッピング処理）
-		If (GetPosition().X < 0.0 - 2 * GetRadius()) Or (GetPosition().X > GetGame().mWindowWidth + 2 * GetRadius()) Then
+		If (GetPosition().X < 0.0 - 1.0 * GetRadius() Or
+			   GetPosition().X > GetGame().mWindowWidth + 1.0 * GetRadius()) _
+			   Then
 			Dim v As Vector2
-			v.x = GetGame().mWindowWidth - GetPosition().X
+			v.X = GetGame().mWindowWidth - GetPosition().X
+			v.Y = GetPosition().Y
 			SetPosition(v)
 		End If
-		If (GetPosition().Y < 0.0 - 2 * GetRadius()) Or (GetPosition().Y > GetGame().mWindowHeight + 2 * GetRadius()) Then
+
+		If (GetPosition().Y < 0.0 - 1.0 * GetRadius() Or
+			GetPosition().Y > GetGame().mWindowHeight + 1.0 * GetRadius()) _
+			Then
 			Dim v As Vector2
+			v.X = GetPosition().X
 			v.Y = GetGame().mWindowHeight - GetPosition().Y
 			SetPosition(v)
 		End If
+
 	End Sub
 
 	Public Function GetCircle() As CircleComponent

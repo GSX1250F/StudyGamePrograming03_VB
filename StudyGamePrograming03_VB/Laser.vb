@@ -23,7 +23,7 @@ Public Class Laser
 			GetPosition().X < 0.0 - 3 * GetRadius() Or
 			GetPosition().X > GetGame().mWindowWidth + 3 * GetRadius() Or
 			GetPosition().Y < 0.0 - 3 * GetRadius() Or
-			GetPosition().Y > GetGame().mWindowHeight) + 3 * GetRadius() _
+			GetPosition().Y > GetGame().mWindowHeight + 3 * GetRadius()) _
 			Then
 			SetState(State.EDead)
 		Else
