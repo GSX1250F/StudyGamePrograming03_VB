@@ -19,7 +19,7 @@ Public Class BGSpriteComponent
         '背景の位置を更新する。
         mBGSpritePos += mScrollSpeed * deltaTime
         'ラッピング処理
-        If (mBGSpritePos.X < -GetTexWidth() * mOwner.GetScale() * 0.5F) Then
+        If (mBGSpritePos.X < -GetTexWidth() * mOwner.GetScale() * 0.5) Then
             mBGSpritePos.X += GetTexWidth() * 2.0 * mOwner.GetScale()
         ElseIf (mBGSpritePos.X > GetTexWidth() * mOwner.GetScale() * 1.5) Then
             mBGSpritePos.X -= GetTexWidth() * mOwner.GetScale() * 2.0
@@ -36,11 +36,10 @@ Public Class BGSpriteComponent
         ' SpriteComponentのDrawをOverride。背景の位置で描画する。
         Dim w = CInt(GetTexWidth() * mOwner.GetScale())
         Dim h = CInt(GetTexHeight() * mOwner.GetScale())
-        Dim x = CInt(mOwner.GetPosition().X - w / 2)
-        Dim y = CInt(mOwner.GetPosition().Y - h / 2)
-        Dim img = GetTexture()
+        Dim x = CInt(mBGSpritePos.X - w / 2)
+        Dim y = CInt(mBGSpritePos.Y - h / 2)
 
-        mRenderer.DrawImage(img, x, y, w, h)
+        mRenderer.DrawImage(GetTexture(), x, y, w, h)
     End Sub
 
     Public Sub SetBGSpritePos(ByVal pos As Vector2)

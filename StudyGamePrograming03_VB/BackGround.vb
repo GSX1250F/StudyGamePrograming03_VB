@@ -14,8 +14,8 @@ Public Class BackGround
 
 	Public Overrides Sub UpdateActor(ByVal deltaTime As Single)
 		' 各BGSpriteComponentを更新
-		For i As Integer = 0 To mBGsprites.Count - 1
-			mBGsprites(i).Update(deltaTime)
+		For Each sprite In mBGsprites
+			sprite.Update(deltaTime)
 		Next
 	End Sub
 
@@ -60,6 +60,7 @@ Public Class BackGround
 		bgsc.SetTexture(GetGame().GetTexture("Assets/Stars.png"))
 		v.X = GetGame().mWindowWidth * 0.5 + bgsc.GetTexWidth()
 		v.Y = GetGame().mWindowHeight * 0.5
+		bgsc.SetBGSpritePos(v)
 		v.X = -20.0
 		v.Y = 0.0
 		bgsc.SetScrollSpeed(v)

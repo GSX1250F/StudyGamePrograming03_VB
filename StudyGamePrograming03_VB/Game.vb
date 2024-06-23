@@ -179,10 +179,10 @@ Public Class Game
         '    AddAsteroid()
         'Next
 
-        ''背景を作成
-        'Dim bg As New BackGround(Me)
+        '背景を作成
+        Dim bg As New BackGround(Me)
 
-        'mClearPict = New ClearPict(Me)
+        mClearPict = New ClearPict(Me)
 
     End Sub
     Private Sub UnloadData()
