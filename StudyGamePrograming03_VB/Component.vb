@@ -39,7 +39,7 @@
     End Sub
 
     ' 各コンポーネント入力処理（オーバーライド可能）
-    Public Overridable Sub ProcessInput(ByVal keyState As System.Windows.Forms.KeyEventArgs)
+    Public Overridable Sub ProcessInput(ByVal keyState As Integer())
 
     End Sub
 

@@ -11,23 +11,21 @@
 
 	End Sub
 
-	Public Overrides Sub ProcessInput(keyState As KeyEventArgs)
+	Public Overrides Sub ProcessInput(ByVal keyState As Integer())
 		Dim forwardforce As Single = 0.0
 		Dim rotforce As Single = 0.0
-		If Not keyState Is Nothing Then
-			'古典物理学でMoveComponentのための計算
-			'MoveComponentには前進か回転方向の力の最大値だけを渡す
-			Select Case keyState.KeyValue
-				Case Keys.Up
-					forwardforce = mMaxForwardForce
-				Case Keys.Down
-					forwardforce = -mMaxForwardForce
-				Case Keys.Left
-					rotforce = mMaxRotForce
-				Case Keys.Right
-					rotforce = -mMaxRotForce
-			End Select
-		End If
+		'古典物理学でMoveComponentのための計算
+		'MoveComponentには前進か回転方向の力の最大値だけを渡す
+		'Select Case keyState.KeyValue
+		'	Case Keys.Up
+		'		forwardforce = mMaxForwardForce
+		'	Case Keys.Down
+		'		forwardforce = -mMaxForwardForce
+		'	Case Keys.Left
+		'		rotforce = mMaxRotForce
+		'	Case Keys.Right
+		'		rotforce = -mMaxRotForce
+		'End Select
 		SetMoveForce(forwardforce * mOwner.GetForward())
 		SetRotForce(rotforce)
 	End Sub

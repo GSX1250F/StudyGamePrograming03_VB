@@ -1,7 +1,13 @@
 ﻿Imports System.Numerics
+Imports System.Runtime.InteropServices
 Imports System.Windows.Forms.VisualStyles.VisualStyleElement
 
+
 Public Class Game
+    <DllImport("user32.dll", ExactSpelling:=True)>
+    Private Shared Function GetKeyboardState(ByVal keyStates() As Integer) As Boolean
+    End Function
+
     '変数群
     'Public
     Public mWindowWidth As Integer      'PictureBoxの横幅
@@ -24,7 +30,8 @@ Public Class Game
     Private mIsRunning As Boolean   '実行中
     Private mUpdatingActors As Boolean      'アクター更新中
     Private mKeyDowns As New List(Of System.Windows.Forms.KeyEventArgs)    'キー入力管理
-    Private Declare Function GetAsyncKeyState Lib "user32.dll" (ByVal vKey As Integer) As Integer
+    Private mKeyState(255) As Integer
+
 
     'game specific
     Private mShip As Ship
@@ -40,26 +47,14 @@ Public Class Game
         mWindowWidth = 1024
         mWindowHeight = 768
 
-
-    End Sub
-
-    Public Sub Game_Shown(sender As Object, e As EventArgs) Handles MyBase.Shown
         Dim success = Initialize()
-        'If success = True Then
-        '    Ticks.Start()         'ストップウォッチ開始
-        '    RunLoop.Interval = 5
-        '    RunLoop.Enabled = True      'タイマー開始
-        'Else
-        '    Shutdown()
-        'End If
         If success = True Then
-            Do While mIsRunning = True
-                ProcessInput()
-                UpdateGame()
-                GenerateOutput()
-            Loop
+            Ticks.Start()         'ストップウォッチ開始
+            RunLoop.Interval = 5
+            RunLoop.Enabled = True      'タイマー開始
+        Else
+            Shutdown()
         End If
-        Shutdown()
     End Sub
 
     Public Function Initialize() As Boolean
@@ -78,39 +73,25 @@ Public Class Game
 
         Return True
     End Function
-    'Private Sub RunLoop_Tick(sender As Object, e As EventArgs) Handles RunLoop.Tick
-    '    If mIsRunning Then
-    '        ProcessInput()
-    '        UpdateGame()
-    '        GenerateOutput()
-    '    Else
-    '        Shutdown()
-    '    End If
-    'End Sub
-    'Private Sub KeyDowns(sender As Object, keyState As System.Windows.Forms.KeyEventArgs) Handles Me.KeyDown
-    '    'キーコードを配列に入れる。
-    '    mKeyDowns.Add(keyState)
-    'End Sub
-    Private Sub ProcessInput()
-        'If mKeyDowns.Count = 0 Then
-        '    mKeyDowns.Add(Nothing)
-        'End If
-        '' mKeyDownsに要素があれば繰り返す
-        'For i As Integer = 0 To mKeyDowns.Count - 1
-        '    If Not mKeyDowns(i) Is Nothing Then
-        '        'ESCキーでゲーム終了
-        '        If mKeyDowns(i).KeyCode = Keys.Escape Then
-        '            mIsRunning = False
-        '        End If
-        '    End If
+    Private Sub RunLoop_Tick(sender As Object, e As EventArgs) Handles RunLoop.Tick
+        If mIsRunning Then
+            ProcessInput()
+            UpdateGame()
+            GenerateOutput()
+        Else
+            Shutdown()
+        End If
+    End Sub
 
-        '    mUpdatingActors = True
-        '    For Each actor In mActors
-        '        actor.ProcessInput(mKeyDowns(i))
-        '    Next
-        'Next
-        'mUpdatingActors = False
-        'mKeyDowns.Clear()
+    Private Sub ProcessInput()
+        GetKeyboardState(mKeyState)
+
+
+        mUpdatingActors = True
+        For Each actor In mActors
+            actor.ProcessInput(mKeyState)
+        Next
+        mUpdatingActors = False
 
     End Sub
     Private Sub UpdateGame()
