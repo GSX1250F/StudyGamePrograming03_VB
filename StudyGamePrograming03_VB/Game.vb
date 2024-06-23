@@ -49,7 +49,7 @@ Public Class Game
         Dim success = Initialize()
         If success = True Then
             Ticks.Start()         'ストップウォッチ開始
-            RunLoop.Interval = 5
+            RunLoop.Interval = 16
             RunLoop.Enabled = True      'タイマー開始
         Else
             Shutdown()
