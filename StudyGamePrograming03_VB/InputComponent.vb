@@ -26,6 +26,11 @@
 		'	Case Keys.Right
 		'		rotforce = -mMaxRotForce
 		'End Select
+		If keyState(37) = 1 Then
+			rotforce = mMaxRotForce
+		End If
+
+
 		SetMoveForce(forwardforce * mOwner.GetForward())
 		SetRotForce(rotforce)
 	End Sub
