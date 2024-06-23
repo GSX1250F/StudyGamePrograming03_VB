@@ -5,7 +5,7 @@ Imports System.Windows.Forms.VisualStyles.VisualStyleElement
 
 Public Class Game
     <DllImport("user32.dll", ExactSpelling:=True)>
-    Private Shared Function GetKeyboardState(ByVal keyStates() As Integer) As Boolean
+    Private Shared Function GetKeyboardState(ByVal keyStates() As Byte) As Boolean
     End Function
 
     '変数群
@@ -29,8 +29,7 @@ Public Class Game
     Private mTicksCount As Integer     '時間管理
     Private mIsRunning As Boolean   '実行中
     Private mUpdatingActors As Boolean      'アクター更新中
-    Private mKeyDowns As New List(Of System.Windows.Forms.KeyEventArgs)    'キー入力管理
-    Private mKeyState(255) As Integer
+    Private mKeyState(255) As Byte      'キーボード入力検知
 
 
     'game specific
@@ -86,6 +85,9 @@ Public Class Game
     Private Sub ProcessInput()
         GetKeyboardState(mKeyState)
 
+        If CBool(mKeyState(Keys.Escape) And &H80) Then
+            mIsRunning = False
+        End If
 
         mUpdatingActors = True
         For Each actor In mActors

@@ -127,39 +127,39 @@ Public Class Ship
         End If
     End Sub
 
-    Public Overrides Sub ActorInput(ByVal keyState As Integer())
+    Public Overrides Sub ActorInput(ByVal keyState As Byte())
         MyBase.ActorInput(keyState)
 
         If crash = False Then
-            'If keyState(Keys.Up) < 0 Then
-            '    mAnimComponent.SetAnimNum(2, 2, False)
-            'ElseIf keyState.KeyCode = Keys.Right Then
-            '    mAnimComponent.SetAnimNum(3, 3, False)
-            'ElseIf keyState.KeyCode = Keys.Up Then
-            '    mAnimComponent.SetAnimNum(4, 4, False)
-            'ElseIf keyState.KeyCode = Keys.Down Then
-            '    mAnimComponent.SetAnimNum(5, 5, False)
-            'End If
-
-
-            'If keyState.KeyCode = Keys.Space And mLaserCooldown <= 0.0 Then
-            '    ' レーザーオブジェクトを作成、位置と回転角を宇宙船とあわせる。
-            '    Dim laser As New Laser(GetGame())
-            '    Dim v As Vector2
-            '    v.X = GetPosition().X + 35.0 * GetScale() * Math.Cos(GetRotation())
-            '    v.Y = GetPosition().Y - 35.0 * GetScale() * Math.Sin(GetRotation())
-            '    laser.SetPosition(v)
-            '    laser.SetRotation(GetRotation())
-            '    laser.Shot()
-            '    ' レーザー冷却期間リセット
-            '    mLaserCooldown = 0.5
-            'End If
-            If mAnimComponent.mIsAnimating = False Then
-                ' アニメーション中が終わっていたら元のループに戻る。
-                mAnimComponent.SetAnimNum(1, 1, True)
+            If CBool(keyState(Keys.Left) And &H80) Then
+                mAnimComponent.SetAnimNum(2, 2, False)
+            ElseIf CBool(keyState(Keys.Right) And &H80) Then
+                mAnimComponent.SetAnimNum(3, 3, False)
+            ElseIf CBool(keyState(Keys.Up) And &H80) Then
+                mAnimComponent.SetAnimNum(4, 4, False)
+            ElseIf CBool(keyState(Keys.Down) And &H80) Then
+                mAnimComponent.SetAnimNum(5, 5, False)
             End If
 
-        End If
+
+            If CBool(keyState(Keys.Space) And &H80) And mLaserCooldown <= 0.0 Then
+                ' レーザーオブジェクトを作成、位置と回転角を宇宙船とあわせる。
+                Dim laser As New Laser(GetGame())
+                Dim v As Vector2
+                v.X = GetPosition().X + 35.0 * GetScale() * Math.Cos(GetRotation())
+                v.Y = GetPosition().Y - 35.0 * GetScale() * Math.Sin(GetRotation())
+                laser.SetPosition(v)
+                laser.SetRotation(GetRotation())
+                laser.Shot()
+                ' レーザー冷却期間リセット
+                mLaserCooldown = 0.5
+            End If
+            If mAnimComponent.mIsAnimating = False Then
+                    ' アニメーション中が終わっていたら元のループに戻る。
+                    mAnimComponent.SetAnimNum(1, 1, True)
+                End If
+
+            End If
 
     End Sub
 
