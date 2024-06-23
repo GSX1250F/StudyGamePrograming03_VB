@@ -43,7 +43,7 @@ Public Class MoveComponent
         ' Actorの位置を更新 x=x0+vt
         Dim v As New Vector2
         v.X = mOwner.GetPosition().X + mVelocity.X * deltaTime
-        v.X = mOwner.GetPosition().Y + mVelocity.Y * deltaTime
+        v.Y = mOwner.GetPosition().Y + mVelocity.Y * deltaTime
         mOwner.SetPosition(v)
         ' Actorの方向を更新 θ=θ0+ωt
         mOwner.SetRotation(mOwner.GetRotation() + mRotSpeed * deltaTime)

@@ -16,7 +16,10 @@ Public Class CircleComponent
     Public Function GetCenter() As Vector2
         Return mOwner.GetPosition()
     End Function
-    Public Shared Function Intersect(ByRef a As CircleComponent, ByRef b As CircleComponent) As Boolean
+
+End Class
+Public Module CircleModule
+    Public Function Intersect(ByRef a As CircleComponent, ByRef b As CircleComponent) As Boolean
         ' ２つのCircleComponentの中心間距離を計算
         Dim diff As Vector2 = a.GetCenter() - b.GetCenter()
         Dim distSq As Single = diff.Length() * diff.Length()
@@ -31,5 +34,4 @@ Public Class CircleComponent
             Return False
         End If
     End Function
-
-End Class
+End Module

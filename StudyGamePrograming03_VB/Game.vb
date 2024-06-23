@@ -101,7 +101,7 @@ Public Class Game
     End Sub
     Private Sub UpdateGame()
         '前のフレームから16ms経つまで待つ
-        While Ticks.ElapsedMilliseconds <= mTicksCount + 16
+        While Ticks.ElapsedMilliseconds < mTicksCount + 16
         End While
         'デルタタイムの計算
         Dim deltaTime As Single = (Ticks.ElapsedMilliseconds - mTicksCount) / 1000
@@ -147,6 +147,19 @@ Public Class Game
             sprite.Draw(mRenderer)
         Next
 
+        'test
+        Dim brush As New SolidBrush(Color.FromArgb(255, 255, 255, 255))     'Brushオブジェクトの作成
+        Dim ball As Rectangle
+        With ball
+            .X = CInt(mWindowWidth / 2 - 15 / 2)
+            .Y = CInt(mWindowHeight / 2 - 15 / 2)
+            .Width = 15
+            .Height = 15
+        End With
+        mRenderer.FillEllipse(brush, ball)
+
+        brush.Dispose()
+
         PictureBox.Image = mWindow
     End Sub
     Private Sub Shutdown()
@@ -160,16 +173,16 @@ Public Class Game
         'プレイヤーの宇宙船を作成
         mShip = New Ship(Me)
 
-        '小惑星を複数生成
-        Dim initialNumAsteroids = 15        '初期値
-        For i As Integer = 0 To initialNumAsteroids - 1
-            AddAsteroid()
-        Next
+        ''小惑星を複数生成
+        'Dim initialNumAsteroids = 15        '初期値
+        'For i As Integer = 0 To initialNumAsteroids - 1
+        '    AddAsteroid()
+        'Next
 
-        '背景を作成
-        Dim bg As New BackGround(Me)
+        ''背景を作成
+        'Dim bg As New BackGround(Me)
 
-        mClearPict = New ClearPict(Me)
+        'mClearPict = New ClearPict(Me)
 
     End Sub
     Private Sub UnloadData()

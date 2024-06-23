@@ -31,34 +31,27 @@ Public Class SpriteComponent
         If (mTexture IsNot Nothing) And (mOwner.GetState() <> Actor.State.EPaused) Then
             Dim w = CInt(mTexWidth * mOwner.GetScale())
             Dim h = CInt(mTexHeight * mOwner.GetScale())
-            'Dim x = CInt(mOwner.mPosition.X - w / 2)
-            'Dim y = CInt(mOwner.mPosition.Y - h / 2)
-            Dim img As New Bitmap(w, h)
-            img = mTexture
+            Dim x = CInt(mOwner.GetPosition().X - w / 2)
+            Dim y = CInt(mOwner.GetPosition().Y - h / 2)
 
-            '新しい座標位置を計算する
-            Dim x(3) As Single
-            Dim y(3) As Single
-            Dim x2(3) As Single
-            Dim y2(3) As Single
-            x(0) = mOwner.GetPosition().X - w / 2
-            y(0) = mOwner.GetPosition().Y - h / 2
-            x(1) = mOwner.GetPosition().X + w / 2
-            y(1) = mOwner.GetPosition().Y - h / 2
-            x(2) = mOwner.GetPosition().X - w / 2
-            y(2) = mOwner.GetPosition().Y + h / 2
-            For i = 0 To 2
-                x2(i) = (x(i) - mOwner.GetPosition().X) * Math.Cos(mOwner.GetRotation()) + (y(i) - mOwner.GetPosition().Y) * Math.Sin(mOwner.GetRotation()) + mOwner.GetPosition().X
-                y2(i) = -(x(i) - mOwner.GetPosition().X) * Math.Sin(mOwner.GetRotation()) + (y(i) - mOwner.GetPosition().Y) * Math.Cos(mOwner.GetRotation()) + mOwner.GetPosition().Y
-            Next
+            '画像を回転して表示
+            Dim a As Single = mOwner.GetPosition().X
+            Dim b As Single = mOwner.GetPosition().Y
+            Dim t As Single = mOwner.GetRotation()
 
-            'Point配列を作成
-            Dim destinationPoints() As Point = {
-                New Point(CInt(x2(0)), CInt(y2(0))),
-                New Point(CInt(x2(1)), CInt(y2(1))),
-                New Point(CInt(x2(2)), CInt(y2(2)))}
 
-            mRenderer.DrawImage(img, destinationPoints)
+            Dim x1 As Integer = CInt(x * Math.Cos(t) + y * Math.Sin(t) - a * Math.Cos(t) - b * Math.Sin(t) + a)
+            Dim y1 As Integer = CInt(-x * Math.Sin(t) + y * Math.Cos(t) + a * Math.Sin(t) - b * Math.Cos(t) + b)
+            Dim x2 As Integer = CInt((x + w) * Math.Cos(t) + y * Math.Sin(t) - a * Math.Cos(t) - b * Math.Sin(t) + a)
+            Dim y2 As Integer = CInt(-(x + w) * Math.Sin(t) + y * Math.Cos(t) + a * Math.Sin(t) - b * Math.Cos(t) + b)
+            Dim x3 As Integer = CInt(x * Math.Cos(t) + (y + h) * Math.Sin(t) - a * Math.Cos(t) - b * Math.Sin(t) + a)
+            Dim y3 As Integer = CInt(-x * Math.Sin(t) + (y + h) * Math.Cos(t) + a * Math.Sin(t) - b * Math.Cos(t) + b)
+            'PointF配列を作成
+            Dim destinationPoints() As PointF = {New PointF(x1, y1),
+                    New PointF(x2, y2),
+                    New PointF(x3, y3)}
+
+            mRenderer.DrawImage(mTexture, destinationPoints)
         End If
 
     End Sub

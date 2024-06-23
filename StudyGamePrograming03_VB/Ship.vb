@@ -63,7 +63,7 @@ Public Class Ship
             mAsteroidCooldown = 5.0
         End If
         If (numAsteroids = 0) Then
-            GetGame().GetClearPict().SetState(State.EActive)
+            'GetGame().GetClearPict().SetState(State.EActive)
         End If
 
         If (crash = False) Then
@@ -170,8 +170,9 @@ Public Class Ship
         v.X = GetGame().mWindowWidth / 2
         v.Y = GetGame().mWindowHeight / 2
         SetPosition(v)
-        Dim random As New Random()
-        Dim rot As Single = 2.0 * random.NextSingle() * Math.PI
+        'Dim random As New Random()
+        'Dim rot As Single = 2.0 * random.NextSingle() * Math.PI
+        Dim rot As Single = 0.0
         SetRotation(rot)
         v.X = 0
         v.Y = 0

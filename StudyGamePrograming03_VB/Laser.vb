@@ -10,6 +10,8 @@ Public Class Laser
 	Sub New(ByRef game As Game)
 		MyBase.New(game)
 		'スプライトコンポーネント作成、テクスチャ設定
+		mDeathTime = 2.0
+		mLaserSpeed = 900.0
 		Dim sc As New SpriteComponent(Me, 50)
 		sc.SetTexture(game.GetTexture("\Assets\Laser.png"))
 	End Sub
@@ -20,14 +22,14 @@ Public Class Laser
 		If (mDeathTime <= 0.0 Or
 			GetPosition().X < 0.0 Or
 			GetPosition().X > GetGame().mWindowWidth Or
-			GetPosition().Y < 0.0F Or
+			GetPosition().Y < 0.0 Or
 			GetPosition().Y > GetGame().mWindowHeight) _
 			Then
 			SetState(State.EDead)
 		Else
 			'小惑星に当たったとき
 			For Each ast In GetGame().GetAsteroids()
-				If mCircle.Intersect(mCircle, ast.GetCircle) Then
+				If Intersect(mCircle, ast.GetCircle) Then
 					'レーザーも消去するなら次を実行
 					SetState(State.EDead)
 					'小惑星を消去
