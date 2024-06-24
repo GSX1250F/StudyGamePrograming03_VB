@@ -48,9 +48,7 @@ Public Class Game
 
         Dim success = Initialize()
         If success = True Then
-            Ticks.Start()         'ストップウォッチ開始
-            RunLoop.Interval = 16
-            RunLoop.Enabled = True      'タイマー開始
+
         Else
             Shutdown()
         End If
@@ -65,10 +63,12 @@ Public Class Game
         'レンダラー作成
         mWindow = New Bitmap(mWindowWidth, mWindowHeight)
         mRenderer = Graphics.FromImage(mWindow)
+        Ticks.Start()         'ストップウォッチ開始
+        RunLoop.Interval = 16
+        RunLoop.Enabled = True      'タイマー開始
+        mTicksCount = Ticks.ElapsedMilliseconds
 
         LoadData()
-
-        mTicksCount = Ticks.ElapsedMilliseconds
 
         Return True
     End Function
