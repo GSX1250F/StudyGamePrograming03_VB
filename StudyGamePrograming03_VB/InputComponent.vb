@@ -11,18 +11,18 @@
 
 	End Sub
 
-	Public Overrides Sub ProcessInput(ByVal keyState As Byte())
+	Public Overrides Sub ProcessInput(ByVal keyState As Boolean())
 		Dim forwardforce As Single = 0.0
 		Dim rotforce As Single = 0.0
 		'古典物理学でMoveComponentのための計算
 		'MoveComponentには前進か回転方向の力の最大値だけを渡す
-		If CBool(keyState(Keys.Up) And &H80) Then
+		If keyState(Keys.Up) = True Then
 			forwardforce = mMaxForwardForce
-		ElseIf CBool(keyState(Keys.Down) And &H80) Then
+		ElseIf keyState(Keys.Down) = True Then
 			forwardforce = -mMaxForwardForce
-		ElseIf CBool(keyState(Keys.Left) And &H80) Then
+		ElseIf keyState(Keys.Left) = True Then
 			rotforce = mMaxRotForce
-		ElseIf CBool(keyState(Keys.right) And &H80) Then
+		ElseIf keyState(Keys.Right) = True Then
 			rotforce = -mMaxRotForce
 		End If
 

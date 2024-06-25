@@ -127,22 +127,22 @@ Public Class Ship
         End If
     End Sub
 
-    Public Overrides Sub ActorInput(ByVal keyState As Byte())
+    Public Overrides Sub ActorInput(ByVal keyState As Boolean())
         MyBase.ActorInput(keyState)
 
         If crash = False Then
-            If CBool(keyState(Keys.Left) And &H80) Then
+            If keyState(Keys.Left) = True Then
                 mAnimComponent.SetAnimNum(2, 2, False)
-            ElseIf CBool(keyState(Keys.Right) And &H80) Then
+            ElseIf keyState(Keys.Right) = True Then
                 mAnimComponent.SetAnimNum(3, 3, False)
-            ElseIf CBool(keyState(Keys.Up) And &H80) Then
+            ElseIf keyState(Keys.Up) = True Then
                 mAnimComponent.SetAnimNum(4, 4, False)
-            ElseIf CBool(keyState(Keys.Down) And &H80) Then
+            ElseIf keyState(Keys.Down) = True Then
                 mAnimComponent.SetAnimNum(5, 5, False)
             End If
 
 
-            If CBool(keyState(Keys.Space) And &H80) And mLaserCooldown <= 0.0 Then
+            If (keyState(Keys.Space) = True) And (mLaserCooldown <= 0.0) Then
                 ' レーザーオブジェクトを作成、位置と回転角を宇宙船とあわせる。
                 Dim laser As New Laser(GetGame())
                 Dim v As Vector2

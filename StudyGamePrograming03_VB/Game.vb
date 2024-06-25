@@ -29,8 +29,8 @@ Public Class Game
     Private mTicksCount As Integer     '時間管理
     Private mIsRunning As Boolean   '実行中
     Private mUpdatingActors As Boolean      'アクター更新中
-    Private mKeyState(255) As Byte      'キーボード入力検知
-
+    Private mKeyBoardByte(255) As Byte      'キーボード入力検知
+    Private mKeyState(255) As Boolean      'キーボード状態
 
     'game specific
     Private mShip As Ship
@@ -83,9 +83,13 @@ Public Class Game
     End Sub
 
     Private Sub ProcessInput()
-        GetKeyboardState(mKeyState)
+        GetKeyboardState(mKeyBoardByte)
+        For i As Integer = 0 To mKeyBoardByte.Count - 1
+            'キー入力状態を、ON=True, OFF=Falseに変換
+            mKeyState(i) = CBool(mKeyBoardByte(i) And &H80)
+        Next
 
-        If CBool(mKeyState(Keys.Escape) And &H80) Then
+        If mKeyState(Keys.Escape) = True Then
             mIsRunning = False
         End If
 
