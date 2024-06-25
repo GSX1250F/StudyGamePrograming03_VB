@@ -48,7 +48,8 @@ Public Class Game
 
         Dim success = Initialize()
         If success = True Then
-
+            mIsRunning = True
+            LoadData()
         Else
             Shutdown()
         End If
@@ -67,8 +68,6 @@ Public Class Game
         RunLoop.Interval = 16
         RunLoop.Enabled = True      'タイマー開始
         mTicksCount = Ticks.ElapsedMilliseconds
-
-        LoadData()
 
         Return True
     End Function
