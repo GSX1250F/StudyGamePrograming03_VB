@@ -22,7 +22,7 @@ Public Class Actor
 
 	Sub New(ByRef game As Game)
 		mState = State.EActive
-		mPosition = New Vector2(0, 0)
+		mPosition = Vector2.Zero
 		mScale = 1.0
 		mRotation = 0.0
 		mRadius = 0.0
