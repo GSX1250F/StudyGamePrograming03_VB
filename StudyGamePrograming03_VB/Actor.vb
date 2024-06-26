@@ -82,7 +82,7 @@ Public Class Actor
 	Public Overridable Sub ActorInput(ByVal keyState As Boolean())
 	End Sub
 
-	'Getters/setters	とりあえずほとんど無し。すべてPublic変数とする
+	'Getters/setters
 	Public Function GetPosition() As Vector2
 		Return mPosition
 	End Function
