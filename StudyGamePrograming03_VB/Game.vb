@@ -26,8 +26,8 @@ Public Class Game
     Private mWindow As Bitmap       '描画用
     Private mRenderer As Graphics   'レンダラー
     Private Ticks As New System.Diagnostics.Stopwatch()     '時間管理
-    Private mTicksCount As Integer     '時間管理
-    Private mIsRunning As Boolean   '実行中
+    Private mTicksCount As Integer     'ゲーム開始時からの経過時間
+    Private mIsRunning As Boolean   'ゲーム実行中
     Private mUpdatingActors As Boolean      'アクター更新中
     Private mKeyBoardByte(255) As Byte      'キーボード入力検知
     Private mKeyState(255) As Boolean      'キーボード状態
@@ -43,8 +43,6 @@ Public Class Game
         mRenderer = Nothing
         mIsRunning = True
         mUpdatingActors = False
-        mWindowWidth = 1024
-        mWindowHeight = 768
 
         Dim success = Initialize()
         If success = True Then
@@ -57,16 +55,20 @@ Public Class Game
 
     Public Function Initialize() As Boolean
         'ウィンドウ初期化
+        mWindowWidth = 1024
+        mWindowHeight = 768
         Me.SetDesktopBounds(100, 100, mWindowWidth + 26, mWindowHeight + 49)
         Me.DoubleBuffered = True
-
+        'PictureBox初期化
         PictureBox.SetBounds(5, 5, mWindowWidth, mWindowHeight)
         'レンダラー作成
         mWindow = New Bitmap(mWindowWidth, mWindowHeight)
         mRenderer = Graphics.FromImage(mWindow)
-        Ticks.Start()         'ストップウォッチ開始
+        'ストップウォッチ開始
+        Ticks.Start()
+        'タイマー開始
         RunLoop.Interval = 16
-        RunLoop.Enabled = True      'タイマー開始
+        RunLoop.Enabled = True
         mTicksCount = Ticks.ElapsedMilliseconds
 
         Return True
