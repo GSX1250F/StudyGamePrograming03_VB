@@ -18,7 +18,6 @@ Public Class Actor
 	Private mRadius As Single           '半径（拡大率は無視）
 	Private mComponents As New List(Of Component)
 	Private mGame As Game
-	Private disposedValue As Boolean
 
 	Sub New(ByRef game As Game)
 		mState = State.EActive

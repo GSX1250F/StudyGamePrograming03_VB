@@ -4,7 +4,6 @@
 	' 前進・回転方向の力の最大値
 	Private mMaxForwardForce As Single
 	Private mMaxRotForce As Single
-	Private disposedValue As Boolean
 
 	Sub New(ByRef owner As Actor, ByVal updateOrder As Integer)
 		MyBase.New(owner, updateOrder)
