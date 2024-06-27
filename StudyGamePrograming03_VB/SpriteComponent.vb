@@ -19,9 +19,9 @@ Public Class SpriteComponent
     Protected Overrides Sub Dispose(ByVal disposing As Boolean)
         If Not Me.disposed Then
             If disposing Then
-                ' Insert code to free managed resources.
+                '*** アンマネージリソースの開放
             End If
-            ' Insert code to free unmanaged resources.
+            '*** マネージドリソースの開放
             mOwner.GetGame().RemoveSprite(Me)
         End If
         MyBase.Dispose(disposing)
@@ -38,7 +38,6 @@ Public Class SpriteComponent
             Dim a As Single = mOwner.GetPosition().X
             Dim b As Single = mOwner.GetPosition().Y
             Dim t As Single = mOwner.GetRotation()
-
 
             Dim x1 As Integer = CInt(x * Math.Cos(t) + y * Math.Sin(t) - a * Math.Cos(t) - b * Math.Sin(t) + a)
             Dim y1 As Integer = CInt(-x * Math.Sin(t) + y * Math.Cos(t) + a * Math.Sin(t) - b * Math.Cos(t) + b)
