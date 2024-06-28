@@ -29,26 +29,22 @@ Public Class SpriteComponent
 
     Public Overridable Sub Draw(ByRef mRenderer As Object)
         If (mTexture IsNot Nothing) And (mOwner.GetState() <> Actor.State.EPaused) Then
-            Dim w = CInt(mTexWidth * mOwner.GetScale())
-            Dim h = CInt(mTexHeight * mOwner.GetScale())
-            Dim x = CInt(mOwner.GetPosition().X - w / 2)
-            Dim y = CInt(mOwner.GetPosition().Y - h / 2)
+            Dim w As Single = mTexWidth * mOwner.GetScale()
+            Dim h As Single = mTexHeight * mOwner.GetScale()
+            Dim x0 As Single = mOwner.GetPosition().X
+            Dim y0 As Single = mOwner.GetPosition().Y
 
             '画像を回転して表示
-            Dim a As Single = mOwner.GetPosition().X
-            Dim b As Single = mOwner.GetPosition().Y
-            Dim t As Single = mOwner.GetRotation()
+            Dim angle As Single = mOwner.GetRotation()
 
-            Dim x1 As Integer = CInt(x * Math.Cos(t) + y * Math.Sin(t) - a * Math.Cos(t) - b * Math.Sin(t) + a)
-            Dim y1 As Integer = CInt(-x * Math.Sin(t) + y * Math.Cos(t) + a * Math.Sin(t) - b * Math.Cos(t) + b)
-            Dim x2 As Integer = CInt((x + w) * Math.Cos(t) + y * Math.Sin(t) - a * Math.Cos(t) - b * Math.Sin(t) + a)
-            Dim y2 As Integer = CInt(-(x + w) * Math.Sin(t) + y * Math.Cos(t) + a * Math.Sin(t) - b * Math.Cos(t) + b)
-            Dim x3 As Integer = CInt(x * Math.Cos(t) + (y + h) * Math.Sin(t) - a * Math.Cos(t) - b * Math.Sin(t) + a)
-            Dim y3 As Integer = CInt(-x * Math.Sin(t) + (y + h) * Math.Cos(t) + a * Math.Sin(t) - b * Math.Cos(t) + b)
+            Dim x1 As Integer = CInt((-w / 2) * Math.Cos(angle) + (-h / 2) * Math.Sin(angle) + x0)
+            Dim y1 As Integer = CInt(-(-w / 2) * Math.Sin(angle) + (-h / 2) * Math.Cos(angle) + y0)
+            Dim x2 As Integer = CInt(w / 2 * Math.Cos(angle) + (-h / 2) * Math.Sin(angle) + x0)
+            Dim y2 As Integer = CInt(-w / 2 * Math.Sin(angle) + (-h / 2) * Math.Cos(angle) + y0)
+            Dim x3 As Integer = CInt((-w / 2) * Math.Cos(angle) + h / 2 * Math.Sin(angle) + x0)
+            Dim y3 As Integer = CInt(-(-w / 2) * Math.Sin(angle) + h / 2 * Math.Cos(angle) + y0)
             'PointF配列を作成
-            Dim destinationPoints() As PointF = {New PointF(x1, y1),
-                    New PointF(x2, y2),
-                    New PointF(x3, y3)}
+            Dim destinationPoints() As PointF = {New PointF(x1, y1), New PointF(x2, y2), New PointF(x3, y3)}
 
             mRenderer.DrawImage(mTexture, destinationPoints)
         End If
