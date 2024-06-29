@@ -13,7 +13,7 @@ Public Class Ship
     Private mAsteroidCooldown As Single      '小惑星増殖までの待機時間
 
     Private mCircle As CircleComponent      '衝突チェックのためのアクセスポインタ。他のオブジェクトから参照するため。
-    Private mAnimComponent As AnimSpriteComponent
+    Private mASC As AnimSpriteComponent
     Private mInput As InputComponent      '衝突チェックのためのアクセスポインタ。他のオブジェクトから参照するため。
 
     Sub New(ByRef game As Game)
@@ -28,15 +28,15 @@ Public Class Ship
         SetScale(0.8)
 
         'アニメーションのスプライトコンポーネント作成、テクスチャ設定
-        Dim asc As New AnimSpriteComponent(Me, 30)
+        mASC = New AnimSpriteComponent(Me, 30)
         Dim anims = New List(Of Image) From {
             game.GetTexture("\Assets\Ship01.png"),
             game.GetTexture("\Assets\Ship02.png"),
             game.GetTexture("\Assets\Ship03.png"),
             game.GetTexture("\Assets\Ship04.png"),
             game.GetTexture("\Assets\Ship05.png")}
-        asc.SetAnimTextures(anims, 1, 1, True)
-        mAnimComponent = asc
+        mASC.SetAnimTextures(anims, 1, 1, True)
+
 
         'InputComponent作成.MoveComponentの子
         mInput = New InputComponent(Me, 10)
@@ -132,13 +132,13 @@ Public Class Ship
 
         If crash = False Then
             If keyState(Keys.Left) = True Then
-                mAnimComponent.SetAnimNum(2, 2, False)
+                mASC.SetAnimNum(2, 2, False)
             ElseIf keyState(Keys.Right) = True Then
-                mAnimComponent.SetAnimNum(3, 3, False)
+                mASC.SetAnimNum(3, 3, False)
             ElseIf keyState(Keys.Up) = True Then
-                mAnimComponent.SetAnimNum(4, 4, False)
+                mASC.SetAnimNum(4, 4, False)
             ElseIf keyState(Keys.Down) = True Then
-                mAnimComponent.SetAnimNum(5, 5, False)
+                mASC.SetAnimNum(5, 5, False)
             End If
 
 
@@ -154,9 +154,9 @@ Public Class Ship
                 ' レーザー冷却期間リセット
                 mLaserCooldown = 0.7
             End If
-            If mAnimComponent.mIsAnimating = False Then
+            If mASC.mIsAnimating = False Then
                 ' アニメーション中が終わっていたら元のループに戻る。
-                mAnimComponent.SetAnimNum(1, 1, True)
+                mASC.SetAnimNum(1, 1, True)
             End If
 
         End If

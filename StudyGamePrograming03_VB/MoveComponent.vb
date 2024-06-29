@@ -4,7 +4,7 @@ Public Class MoveComponent
     Inherits Component
 
     '単純移動パラメータ
-    Private mVelocity As Vector2     '重心移動速度
+    Private mVelocity As Vector2     '並進移動速度
     Private mRotSpeed As Single      '回転速度
 
     '古典物理パラメータ
@@ -34,9 +34,6 @@ Public Class MoveComponent
         mImoment = 0.0
         mMoveResist = 0.0
         mRotResist = 0.0
-    End Sub
-    Protected Overrides Sub Finalize()
-        MyBase.Finalize()
     End Sub
 
     Public Overrides Sub Update(deltaTime As Single)

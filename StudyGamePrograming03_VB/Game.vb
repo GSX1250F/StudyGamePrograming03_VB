@@ -159,8 +159,7 @@ Public Class Game
         Me.Close()
     End Sub
     Private Sub LoadData()
-        'プレイヤーの宇宙船を作成
-        mShip = New Ship(Me)
+        mShip = New Ship(Me)    'プレイヤーの宇宙船を作成
 
         '小惑星を複数生成
         Dim initialNumAsteroids = 15        '初期値
