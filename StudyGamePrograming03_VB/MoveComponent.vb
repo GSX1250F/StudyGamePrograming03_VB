@@ -20,14 +20,11 @@ Public Class MoveComponent
 
     Sub New(ByRef owner As Actor, ByVal updateOrder As Integer)
         MyBase.New(owner, updateOrder)
-        mVelocity.X = 0.0
-        mVelocity.Y = 0.0
+        mVelocity = Vector2.Zero
         mRotSpeed = 0.0
         mMass = 1.0
-        mMoveForce.X = 0.0
-        mMoveForce.Y = 0.0
-        mMoveAccel.X = 0.0
-        mMoveAccel.Y = 0.0
+        mMoveForce = Vector2.Zero
+        mMoveAccel = Vector2.Zero
         mRotForce = 0.0
         mRotAccel = 0.0
         mTorque = 0.0
@@ -37,13 +34,8 @@ Public Class MoveComponent
     End Sub
 
     Public Overrides Sub Update(deltaTime As Single)
-        ' Actorの位置を更新 x=x0+vt
-        Dim v As New Vector2
-        v.X = mOwner.GetPosition().X + mVelocity.X * deltaTime
-        v.Y = mOwner.GetPosition().Y + mVelocity.Y * deltaTime
-        mOwner.SetPosition(v)
-        ' Actorの方向を更新 θ=θ0+ωt
-        mOwner.SetRotation(mOwner.GetRotation() + mRotSpeed * deltaTime)
+        mOwner.SetPosition(mOwner.GetPosition() + mVelocity * deltaTime)    ' Actorの位置を更新
+        mOwner.SetRotation(mOwner.GetRotation() + mRotSpeed * deltaTime)    ' Actorの方向を更新
 
         ' Actorの重心速度を更新
         If mMass <> 0 Then
@@ -52,8 +44,7 @@ Public Class MoveComponent
             Dim movedecel As Vector2 = mVelocity * mMoveResist * 0.01 * (1 / mMass)
             mMoveAccel -= movedecel
         Else
-            mMoveAccel.X = 0.0
-            mMoveAccel.Y = 0.0
+            mMoveAccel = Vector2.Zero
         End If
 
         ' 方向を更新

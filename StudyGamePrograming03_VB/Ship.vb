@@ -40,11 +40,17 @@ Public Class Ship
 
         'InputComponent作成.MoveComponentの子
         mInput = New InputComponent(Me, 10)
-        mInput.SetMaxForwardForce(300.0)
-        mInput.SetMaxRotForce(150.0)
-        mInput.SetMoveResist(30.0)
-        mInput.SetRotResist(15.0)
-        mInput.SetMass(1.0)
+        mInput.SetMaxForwardVelocity(200.0)
+        mInput.SetMaxRotSpeed(5.0)
+        'mInput.SetMaxForwardForce(300.0)
+        'mInput.SetMaxRotForce(150.0)
+        'mInput.SetMoveResist(30.0)
+        'mInput.SetRotResist(15.0)
+        'mInput.SetMass(1.0)
+        mInput.SetForwardKey(Keys.Up)
+        mInput.SetBackwardKey(Keys.Down)
+        mInput.SetCrockwardKey(Keys.Right)
+        mInput.SetCounterCrockwardKey(Keys.Left)
 
         'CircleComponent作成
         mCircle = New CircleComponent(Me, 10)
@@ -52,7 +58,7 @@ Public Class Ship
         Init()
     End Sub
 
-    Public Overrides Sub UpdateActor(deltaTime As Single)
+    Public Overrides Sub UpdateActor(ByVal deltaTime As Single)
         mLaserCooldown -= deltaTime     'レーザーを次に撃てるまでの時間
         mAsteroidCooldown -= deltaTime
 
@@ -145,10 +151,7 @@ Public Class Ship
             If (keyState(Keys.Space) = True) And (mLaserCooldown <= 0.0) Then
                 ' レーザーオブジェクトを作成、位置と回転角を宇宙船とあわせる。
                 Dim laser As New Laser(GetGame())
-                Dim v As Vector2
-                v.X = GetPosition().X + 35.0 * GetScale() * Math.Cos(GetRotation())
-                v.Y = GetPosition().Y - 35.0 * GetScale() * Math.Sin(GetRotation())
-                laser.SetPosition(v)
+                laser.SetPosition(GetPosition() + GetRadius() * GetForward())
                 laser.SetRotation(GetRotation())
                 laser.Shot()
                 ' レーザー冷却期間リセット
@@ -172,9 +175,7 @@ Public Class Ship
         Dim rot As Single = 2.0 * random.NextSingle() * Math.PI
         'Dim rot As Single = 0.0
         SetRotation(rot)
-        v.X = 0
-        v.Y = 0
-        mInput.SetVelocity(v)
+        mInput.SetVelocity(Vector2.Zero)
         mInput.SetRotSpeed(0.0)
     End Sub
 

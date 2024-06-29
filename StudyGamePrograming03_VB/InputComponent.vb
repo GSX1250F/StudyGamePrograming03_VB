@@ -4,43 +4,76 @@
 	' 前進・回転方向の力の最大値
 	Private mMaxForwardForce As Single
 	Private mMaxRotForce As Single
+	Private mMaxForwardVelocity As Single
+	Private mMaxRotSpeed As Single
+	Private mFwdKey As Integer
+	Private mBwdKey As Integer
+	Private mCwdKey As Integer
+	Private mCCwdKey As Integer
 
 	Sub New(ByRef owner As Actor, ByVal updateOrder As Integer)
 		MyBase.New(owner, updateOrder)
-
+		mMaxForwardVelocity = 0.0
+		mMaxRotSpeed = 0.0
+		mMaxForwardForce = 0.0
+		mMaxRotForce = 0.0
+		mFwdKey = Nothing
+		mBwdKey = Nothing
+		mCwdKey = Nothing
+		mCCwdKey = Nothing
 	End Sub
 
 	Public Overrides Sub ProcessInput(ByVal keyState As Boolean())
-		Dim forwardforce As Single = 0.0
-		Dim rotforce As Single = 0.0
+		Dim fwd As Single = 0.0
+		Dim rot As Single = 0.0
 		'古典物理学でMoveComponentのための計算
 		'MoveComponentには前進か回転方向の力の最大値だけを渡す
-		If keyState(Keys.Up) = True Then
-			forwardforce = mMaxForwardForce
-		ElseIf keyState(Keys.Down) = True Then
-			forwardforce = -mMaxForwardForce
-		ElseIf keyState(Keys.Left) = True Then
-			rotforce = mMaxRotForce
-		ElseIf keyState(Keys.Right) = True Then
-			rotforce = -mMaxRotForce
+		If keyState(mFwdKey) = True Then
+			fwd = mMaxForwardVelocity
+			'fwd = mMaxForwardForce
+		ElseIf keyState(mBwdKey) = True Then
+			fwd = -mMaxForwardVelocity
+			'fwd = -mMaxForwardForce
+		ElseIf keyState(mCCwdKey) = True Then
+			rot = mMaxRotSpeed
+			'rot = mMaxRotForce
+		ElseIf keyState(mCwdKey) = True Then
+			rot = -mMaxRotSpeed
+			'rot = -mMaxRotForce
 		End If
 
-		SetMoveForce(forwardforce * mOwner.GetForward())
-		SetRotForce(rotforce)
+		SetVelocity(fwd * mOwner.GetForward())
+		SetRotSpeed(rot)
+		'SetMoveForce(fwd * mOwner.GetForward())
+		'SetRotForce(rot)
 	End Sub
 
-	Public Sub SetMaxForwardForce(ByVal power As Single)
-		mMaxForwardForce = power
+	Public Sub SetForwardKey(ByVal key As Integer)
+		mFwdKey = key
 	End Sub
-	Public Sub SetMaxRotForce(ByVal power As Single)
-		mMaxRotForce = power
+	Public Sub SetBackwardKey(ByVal key As Integer)
+		mBwdKey = key
 	End Sub
-	Public Function GetMaxForwardForce() As Single
-		Return mMaxForwardForce
-	End Function
-	Public Function GetMaxRotForce() As Single
-		Return mMaxRotForce
-	End Function
+	Public Sub SetCrockwardKey(ByVal key As Integer)
+		mCwdKey = key
+	End Sub
+	Public Sub SetCounterCrockwardKey(ByVal key As Integer)
+		mCCwdKey = key
+	End Sub
+	Public Sub SetMaxForwardVelocity(ByVal value As Single)
+		mMaxForwardVelocity = value
+	End Sub
+	Public Sub SetMaxRotSpeed(ByVal value As Single)
+		mMaxRotSpeed = value
+	End Sub
+
+	Public Sub SetMaxForwardForce(ByVal value As Single)
+		mMaxForwardForce = value
+	End Sub
+	Public Sub SetMaxRotForce(ByVal value As Single)
+		mMaxRotForce = value
+	End Sub
+
 
 
 

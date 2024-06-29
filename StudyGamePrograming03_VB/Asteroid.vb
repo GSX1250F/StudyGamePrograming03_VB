@@ -14,7 +14,7 @@ Public Class Asteroid
 		Dim random As New Random()     ' Randomオブジェクトの作成 
 		randPos.X = GetGame().mWindowWidth / 2.0
 		randPos.Y = GetGame().mWindowHeight / 2.0
-		'画面の中央1/4区画以外を初期位置とする。
+		'画面の中央1/2区画以外を初期位置とする。
 		While (randPos.X > GetGame().mWindowWidth * 0.25) And
 			  (randPos.X < GetGame().mWindowWidth * 0.75) And
 			  (randPos.Y > GetGame().mWindowHeight * 0.25) And
@@ -60,7 +60,7 @@ Public Class Asteroid
 		MyBase.Dispose(disposing)
 	End Sub
 
-	Public Overrides Sub UpdateActor(detaTime As Single)
+	Public Overrides Sub UpdateActor(ByVal detaTime As Single)
 		'画面外にでたら反対の位置に移動（ラッピング処理）
 		If (GetPosition().X < 0.0 - 1.0 * GetRadius() Or
 			   GetPosition().X > GetGame().mWindowWidth + 1.0 * GetRadius()) _
