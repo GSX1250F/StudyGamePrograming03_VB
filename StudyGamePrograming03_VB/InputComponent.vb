@@ -26,29 +26,31 @@
 	Public Overrides Sub ProcessInput(ByVal keyState As Boolean())
 		Dim fwd As Double = 0.0
 		Dim rot As Double = 0.0
-		'古典物理学でMoveComponentのための計算
-		'MoveComponentには前進か回転方向の力の最大値だけを渡す
+
 		If keyState(mFwdKey) = True Then
-			fwd = mMaxForwardVelocity
-			'fwd = mMaxForwardForce
+			'fwd = mMaxForwardVelocity       '単純移動の場合
+			fwd = mMaxForwardForce      'ニュートン力学を使う場合
 		End If
 		If keyState(mBwdKey) = True Then
-			fwd = -mMaxForwardVelocity
-			'fwd = -mMaxForwardForce
+			'fwd = -mMaxForwardVelocity       '単純移動の場合
+			fwd = -mMaxForwardForce      'ニュートン力学を使う場合
 		End If
 		If keyState(mCCwdKey) = True Then
-			rot = mMaxRotSpeed
-			'rot = mMaxRotForce
+			'rot = mMaxRotSpeed       '単純移動の場合
+			rot = mMaxRotForce      'ニュートン力学を使う場合
 		End If
 		If keyState(mCwdKey) = True Then
-			rot = -mMaxRotSpeed
-			'rot = -mMaxRotForce
+			'rot = -mMaxRotSpeed       '単純移動の場合
+			rot = -mMaxRotForce      'ニュートン力学を使う場合
 		End If
 
-		SetVelocity(fwd * mOwner.GetForward())
-		SetRotSpeed(rot)
-		'SetMoveForce(fwd * mOwner.GetForward())
-		'SetRotForce(rot)
+		'単純移動の場合
+		'SetVelocity(fwd * mOwner.GetForward())
+		'SetRotSpeed(rot)
+
+		'ニュートン力学を使う場合
+		SetMoveForce(fwd * mOwner.GetForward())
+		SetRotForce(rot)
 	End Sub
 
 	Public Sub SetForwardKey(ByVal key As Integer)

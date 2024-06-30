@@ -14,15 +14,6 @@ Public Class Game
     Public mWindowHeight As Integer     'PictureBoxの縦幅
 
     'Private
-    'テクスチャの配列
-    Private mTextures As New Dictionary(Of String, Image)
-    'すべてのアクター
-    Private mActors As New List(Of Actor)
-    'すべての待ちアクター
-    Private mPendingActors As New List(Of Actor)
-    'すべての描画されるスプライトコンポーネント
-    Private mSprites As New List(Of SpriteComponent)
-
     Private mWindow As Bitmap       '描画用
     Private mRenderer As Graphics   'レンダラー
     Private Ticks As New System.Diagnostics.Stopwatch()     '時間管理
@@ -31,11 +22,14 @@ Public Class Game
     Private mUpdatingActors As Boolean      'アクター更新中
     Private mKeyBoardByte(255) As Byte      'キーボード入力検知
     Private mKeyState(255) As Boolean      'キーボード状態
+    Private mTextures As New Dictionary(Of String, Image)   'テクスチャの配列
+    Private mActors As New List(Of Actor)   'すべてのアクター
+    Private mPendingActors As New List(Of Actor)    'すべての待ちアクター
+    Private mSprites As New List(Of SpriteComponent)    'すべての描画されるスプライトコンポーネント
 
     'game specific
     Private mShip As Ship
     Private mAsteroids As New List(Of Asteroid)
-    Private mClearPict As ClearPict
 
     'コンストラクタ
     Public Sub Game_Load(sender As Object, e As EventArgs) Handles MyBase.Load
@@ -167,10 +161,12 @@ Public Class Game
             AddAsteroid()
         Next
 
+        Dim astCtrl As New AsteroidControl(Me)
+
         '背景を作成
         Dim bg As New BackGround(Me)
 
-        mClearPict = New ClearPict(Me)
+        Dim clrPict As New ClearPict(Me)
 
     End Sub
     Private Sub UnloadData()
@@ -247,9 +243,6 @@ Public Class Game
     End Function
     Public Function GetAsteroids() As List(Of Asteroid)
         Return mAsteroids
-    End Function
-    Public Function GetClearPict() As ClearPict
-        Return mClearPict
     End Function
     Public Sub AddAsteroid()
         Dim ast As New Asteroid(Me)

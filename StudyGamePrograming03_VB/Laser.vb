@@ -10,10 +10,13 @@ Public Class Laser
 	Sub New(ByRef game As Game)
 		MyBase.New(game)
 		'スプライトコンポーネント作成、テクスチャ設定
-		mDeathTime = 1.5
+		mDeathTime = 1.0
 		mLaserSpeed = 900.0
 		Dim sc As New SpriteComponent(Me, 50)
 		sc.SetTexture(game.GetTexture("\Assets\Laser.png"))
+
+		'CircleComponent作成
+		mCircle = New CircleComponent(Me, 10)
 	End Sub
 
 	Public Overrides Sub UpdateActor(ByVal deltaTime As Double)
@@ -29,7 +32,7 @@ Public Class Laser
 		Else
 			'小惑星に当たったとき
 			For Each ast In GetGame().GetAsteroids()
-				If Intersect(mCircle, ast.GetCircle) Then
+				If Intersect(mCircle, ast.GetCircle()) Then
 					'レーザーも消去するなら次を実行
 					SetState(State.EDead)
 					'小惑星を消去
@@ -45,8 +48,7 @@ Public Class Laser
 		Dim mc As New MoveComponent(Me, 10)
 		mc.SetVelocity(mLaserSpeed * GetForward())
 
-		'CircleComponent作成
-		mCircle = New CircleComponent(Me, 10)
+
 	End Sub
 
 

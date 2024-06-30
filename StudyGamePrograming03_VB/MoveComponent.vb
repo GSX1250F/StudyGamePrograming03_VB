@@ -7,7 +7,7 @@ Public Class MoveComponent
     Private mVelocity As Vector2     '並進移動速度
     Private mRotSpeed As Double      '回転速度
 
-    '古典物理パラメータ
+    'ニュートン力学パラメータ
     Private mMass As Double      '質量
     Private mMoveForce As Vector2        '重心にかかる力
     Private mRotForce As Double          '回転方向の力F　 トルク=RotForce * Radius = Imoment * RotAccel

@@ -14,7 +14,7 @@ Public Class Asteroid
 		Dim randPos As Vector2
 		randPos.X = GetGame().mWindowWidth / 2.0
 		randPos.Y = GetGame().mWindowHeight / 2.0
-		'画面の中央1/2区画以外になるまで繰り返し処理
+		'画面の中央3/5区画以外になるまで繰り返し処理
 		While (randPos.X > GetGame().mWindowWidth * 0.2) And
 			  (randPos.X < GetGame().mWindowWidth * 0.8) And
 			  (randPos.Y > GetGame().mWindowHeight * 0.2) And
