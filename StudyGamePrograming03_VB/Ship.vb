@@ -178,6 +178,4 @@ Public Class Ship
         mInput.SetVelocity(Vector2.Zero)
         mInput.SetRotSpeed(0.0)
     End Sub
-
-
 End Class
