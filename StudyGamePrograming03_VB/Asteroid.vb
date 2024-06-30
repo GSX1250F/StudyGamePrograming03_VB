@@ -1,4 +1,5 @@
 ﻿Imports System.Numerics
+Imports System.Security.Cryptography
 
 Public Class Asteroid
 	Inherits Actor
@@ -11,28 +12,19 @@ Public Class Asteroid
 
 		'ランダムな位置と向きと大きさと初速で初期化
 		Dim randPos As Vector2
-		Dim random As New Random()     ' Randomオブジェクトの作成 
 		randPos.X = GetGame().mWindowWidth / 2.0
 		randPos.Y = GetGame().mWindowHeight / 2.0
-		'画面の中央1/2区画以外を初期位置とする。
-		While (randPos.X > GetGame().mWindowWidth * 0.25) And
-			  (randPos.X < GetGame().mWindowWidth * 0.75) And
-			  (randPos.Y > GetGame().mWindowHeight * 0.25) And
-			  (randPos.Y < GetGame().mWindowHeight * 0.75)
-
-			randPos.X = random.Next(0, GetGame().mWindowWidth)
-			randPos.Y = random.Next(0, GetGame().mWindowHeight)
+		'画面の中央1/2区画以外になるまで繰り返し処理
+		While (randPos.X > GetGame().mWindowWidth * 0.2) And
+			  (randPos.X < GetGame().mWindowWidth * 0.8) And
+			  (randPos.Y > GetGame().mWindowHeight * 0.2) And
+			  (randPos.Y < GetGame().mWindowHeight * 0.8)
+			randPos.X = RandomNumberGenerator.GetInt32(0, GetGame().mWindowWidth)
+			randPos.Y = RandomNumberGenerator.GetInt32(0, GetGame().mWindowHeight)
 		End While
 		SetPosition(randPos)
-		Dim randRot As Double = random.NextDouble() * Math.PI * 2
-		SetRotation(randRot)
-		SetScale(0.1 * random.Next(8, 25))   '拡大率 0.8～2.5
-		Dim rotSpeed = 2 * Math.PI * random.NextDouble() - Math.PI     '回転速度 -π～π
-		Dim randSpeed As Integer = random.Next(50, 200)     '速度 50～200
-		Dim randAngle As Double = Math.PI * random.Next(20, 70) / 180   '速度の方向角度　20度～70度
-		Dim randVel As Vector2
-		randVel.X = Math.Cos(randRot) * randSpeed
-		randVel.Y = -Math.Sin(randRot) * randSpeed
+		SetRotation(RandomNumberGenerator.GetInt32(0, 1000) * 0.001 * Math.PI * 2)
+		SetScale(0.1 * RandomNumberGenerator.GetInt32(8, 25))   '拡大率 0.8～2.5
 
 		'スプライトコンポーネント作成、テクスチャ設定
 		Dim sc As New SpriteComponent(Me, 40)
@@ -40,8 +32,8 @@ Public Class Asteroid
 
 		'MoveComponent作成
 		Dim mc As New MoveComponent(Me, 10)
-		mc.SetVelocity(randVel)
-		mc.SetRotSpeed(rotSpeed)
+		mc.SetVelocity(GetForward() * RandomNumberGenerator.GetInt32(50, 200))
+		mc.SetRotSpeed((RandomNumberGenerator.GetInt32(0, 2) * 2 - 1) * (RandomNumberGenerator.GetInt32(0, 1000) * 0.001 * Math.PI / 2))
 
 		'CircleComponent作成
 		mCircle = New CircleComponent(Me, 10)
