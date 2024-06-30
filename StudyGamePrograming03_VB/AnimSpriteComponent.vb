@@ -14,9 +14,9 @@
 	Public mAnimNumBeg As Integer
 	Public mAnimNumLast As Integer
 	' 現在表示中のフレーム
-	Public mCurrFrame As Single
+	Public mCurrFrame As Double
 	' アニメーションのフレームレート
-	Public mAnimFPS As Single
+	Public mAnimFPS As Double
 
 	Sub New(ByRef owner As Actor, ByVal drawOrder As Integer)
 		MyBase.New(owner, drawOrder)
@@ -26,7 +26,7 @@
 		mAnimNumLast = 0
 	End Sub
 	' フレームごとにアニメーションを更新する(componentからオーバーライド)
-	Public Overrides Sub Update(deltaTime As Single)
+	Public Overrides Sub Update(deltaTime As Double)
 		If (mAnimTextures.Count() > 0) Then
 			'フレームレートとデルタタイムに基づいて
 			'カレントフレームを更新する

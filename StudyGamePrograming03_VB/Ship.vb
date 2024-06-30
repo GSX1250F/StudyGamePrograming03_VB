@@ -4,13 +4,13 @@ Imports System.Numerics
 Public Class Ship
     Inherits Actor
 
-    Private mLaserCooldown As Single
+    Private mLaserCooldown As Double
     Private crashPos As Vector2     '衝突したときの位置
-    Private crashRot As Single      '衝突したときの向き
+    Private crashRot As Double      '衝突したときの向き
     Private crash As Boolean        '衝突検知
-    Private mCrashCooldown As Single     '衝突演出時間
-    Private mShipCooldown As Single  '衝突演出後、リセットされるまでスプライトを消す時間
-    Private mAsteroidCooldown As Single      '小惑星増殖までの待機時間
+    Private mCrashCooldown As Double     '衝突演出時間
+    Private mShipCooldown As Double  '衝突演出後、リセットされるまでスプライトを消す時間
+    Private mAsteroidCooldown As Double      '小惑星増殖までの待機時間
 
     Private mCircle As CircleComponent      '衝突チェックのためのアクセスポインタ。他のオブジェクトから参照するため。
     Private mASC As AnimSpriteComponent
@@ -58,7 +58,7 @@ Public Class Ship
         Init()
     End Sub
 
-    Public Overrides Sub UpdateActor(ByVal deltaTime As Single)
+    Public Overrides Sub UpdateActor(ByVal deltaTime As Double)
         mLaserCooldown -= deltaTime     'レーザーを次に撃てるまでの時間
         mAsteroidCooldown -= deltaTime
 
@@ -172,8 +172,8 @@ Public Class Ship
         v.Y = GetGame().mWindowHeight / 2
         SetPosition(v)
         Dim random As New Random()
-        Dim rot As Single = 2.0 * random.NextSingle() * Math.PI
-        'Dim rot As Single = 0.0
+        Dim rot As Double = 2.0 * random.NextDouble() * Math.PI
+        'Dim rot As Double = 0.0
         SetRotation(rot)
         mInput.SetVelocity(Vector2.Zero)
         mInput.SetRotSpeed(0.0)

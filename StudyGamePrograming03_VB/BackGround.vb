@@ -12,7 +12,7 @@ Public Class BackGround
 
 	End Sub
 
-	Public Overrides Sub UpdateActor(ByVal deltaTime As Single)
+	Public Overrides Sub UpdateActor(ByVal deltaTime As Double)
 		' 各BGSpriteComponentを更新
 		For Each sprite In mBGsprites
 			sprite.Update(deltaTime)

@@ -29,13 +29,13 @@ Public Class SpriteComponent
 
     Public Overridable Sub Draw(ByRef mRenderer As Object)
         If (mTexture IsNot Nothing) And (mOwner.GetState() <> Actor.State.EPaused) Then
-            Dim w As Single = mTexWidth * mOwner.GetScale()
-            Dim h As Single = mTexHeight * mOwner.GetScale()
-            Dim x0 As Single = mOwner.GetPosition().X
-            Dim y0 As Single = mOwner.GetPosition().Y
+            Dim w As Double = mTexWidth * mOwner.GetScale()
+            Dim h As Double = mTexHeight * mOwner.GetScale()
+            Dim x0 As Double = mOwner.GetPosition().X
+            Dim y0 As Double = mOwner.GetPosition().Y
 
             '画像を回転して表示
-            Dim angle As Single = mOwner.GetRotation()
+            Dim angle As Double = mOwner.GetRotation()
 
             Dim x1 As Integer = CInt((-w / 2) * Math.Cos(angle) + (-h / 2) * Math.Sin(angle) + x0)
             Dim y1 As Integer = CInt(-(-w / 2) * Math.Sin(angle) + (-h / 2) * Math.Cos(angle) + y0)

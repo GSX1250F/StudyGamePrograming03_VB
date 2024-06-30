@@ -5,18 +5,18 @@ Public Class MoveComponent
 
     '単純移動パラメータ
     Private mVelocity As Vector2     '並進移動速度
-    Private mRotSpeed As Single      '回転速度
+    Private mRotSpeed As Double      '回転速度
 
     '古典物理パラメータ
-    Private mMass As Single      '質量
+    Private mMass As Double      '質量
     Private mMoveForce As Vector2        '重心にかかる力
-    Private mRotForce As Single          '回転方向の力F　 トルク=RotForce * Radius = Imoment * RotAccel
-    Private mTorque As Single        'トルク=回転方向の力 * 半径 = 慣性モーメント * 回転加速度
+    Private mRotForce As Double          '回転方向の力F　 トルク=RotForce * Radius = Imoment * RotAccel
+    Private mTorque As Double        'トルク=回転方向の力 * 半径 = 慣性モーメント * 回転加速度
     Private mMoveAccel As Vector2        '重心加速度
-    Private mRotAccel As Single      '回転加速度
-    Private mImoment As Single       '慣性モーメント
-    Private mMoveResist As Single        '重心速度抵抗率(%)
-    Private mRotResist As Single     '回転速度抵抗率(%)
+    Private mRotAccel As Double      '回転加速度
+    Private mImoment As Double       '慣性モーメント
+    Private mMoveResist As Double        '重心速度抵抗率(%)
+    Private mRotResist As Double     '回転速度抵抗率(%)
 
     Sub New(ByRef owner As Actor, ByVal updateOrder As Integer)
         MyBase.New(owner, updateOrder)
@@ -33,7 +33,7 @@ Public Class MoveComponent
         mRotResist = 0.0
     End Sub
 
-    Public Overrides Sub Update(deltaTime As Single)
+    Public Overrides Sub Update(deltaTime As Double)
         mOwner.SetPosition(mOwner.GetPosition() + mVelocity * deltaTime)    ' Actorの位置を更新
         mOwner.SetRotation(mOwner.GetRotation() + mRotSpeed * deltaTime)    ' Actorの方向を更新
 
@@ -56,7 +56,7 @@ Public Class MoveComponent
             '回転加速度の計算　回転加速度 = トルク / 慣性モーメント
             mRotAccel = mTorque / mImoment    '回転加速度の計算 Fr=Ia  a=Fr/I
             '抵抗力 = 速さ*抵抗係数    減速 = -速さ*抵抗係数*半径/慣性モーメント
-            Dim rotDecel As Single = mRotSpeed * mOwner.GetRadius() * mRotResist / mImoment
+            Dim rotDecel As Double = mRotSpeed * mOwner.GetRadius() * mRotResist / mImoment
             mRotAccel -= rotDecel
         Else
             mRotAccel = 0
@@ -71,10 +71,10 @@ Public Class MoveComponent
     Public Sub SetVelocity(ByVal vel)
         mVelocity = vel
     End Sub
-    Public Function GetRotSpeed() As Single
+    Public Function GetRotSpeed() As Double
         Return mRotSpeed
     End Function
-    Public Sub SetRotSpeed(ByVal rotspeed As Single)
+    Public Sub SetRotSpeed(ByVal rotspeed As Double)
         mRotSpeed = rotspeed
     End Sub
     Public Function GetMoveForce() As Vector2
@@ -83,40 +83,40 @@ Public Class MoveComponent
     Public Sub SetMoveForce(ByVal force As Vector2)
         mMoveForce = force
     End Sub
-    Public Function GetRotForce() As Single
+    Public Function GetRotForce() As Double
         Return mRotForce
     End Function
-    Public Sub SetRotForce(ByVal force As Single)
+    Public Sub SetRotForce(ByVal force As Double)
         mRotForce = force
     End Sub
-    Public Function GetMoveResist() As Single
+    Public Function GetMoveResist() As Double
         Return mMoveResist
     End Function
-    Public Sub SetMoveResist(ByVal resist As Single)
+    Public Sub SetMoveResist(ByVal resist As Double)
         mMoveResist = resist
     End Sub
-    Public Function GetRotResist() As Single
+    Public Function GetRotResist() As Double
         Return mRotResist
     End Function
-    Public Sub SetRotResist(ByVal resist As Single)
+    Public Sub SetRotResist(ByVal resist As Double)
         mRotResist = resist
     End Sub
-    Public Function GetMass() As Single
+    Public Function GetMass() As Double
         Return mMass
     End Function
-    Public Sub SetMass(ByVal mass As Single)
+    Public Sub SetMass(ByVal mass As Double)
         mMass = mass
     End Sub
-    Public Function GetTorque() As Single
+    Public Function GetTorque() As Double
         Return mTorque
     End Function
-    Public Sub SetTorque(ByVal torque As Single)
+    Public Sub SetTorque(ByVal torque As Double)
         mTorque = torque
     End Sub
-    Public Function GetImoment() As Single
+    Public Function GetImoment() As Double
         Return mImoment
     End Function
-    Public Sub SetImoment(ByVal imoment As Single)
+    Public Sub SetImoment(ByVal imoment As Double)
         mImoment = imoment
     End Sub
 End Class

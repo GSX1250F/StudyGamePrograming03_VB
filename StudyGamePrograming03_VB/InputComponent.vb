@@ -2,10 +2,10 @@
 	Inherits MoveComponent
 
 	' 前進・回転方向の力の最大値
-	Private mMaxForwardForce As Single
-	Private mMaxRotForce As Single
-	Private mMaxForwardVelocity As Single
-	Private mMaxRotSpeed As Single
+	Private mMaxForwardForce As Double
+	Private mMaxRotForce As Double
+	Private mMaxForwardVelocity As Double
+	Private mMaxRotSpeed As Double
 	Private mFwdKey As Integer
 	Private mBwdKey As Integer
 	Private mCwdKey As Integer
@@ -24,20 +24,23 @@
 	End Sub
 
 	Public Overrides Sub ProcessInput(ByVal keyState As Boolean())
-		Dim fwd As Single = 0.0
-		Dim rot As Single = 0.0
+		Dim fwd As Double = 0.0
+		Dim rot As Double = 0.0
 		'古典物理学でMoveComponentのための計算
 		'MoveComponentには前進か回転方向の力の最大値だけを渡す
 		If keyState(mFwdKey) = True Then
 			fwd = mMaxForwardVelocity
 			'fwd = mMaxForwardForce
-		ElseIf keyState(mBwdKey) = True Then
+		End If
+		If keyState(mBwdKey) = True Then
 			fwd = -mMaxForwardVelocity
 			'fwd = -mMaxForwardForce
-		ElseIf keyState(mCCwdKey) = True Then
+		End If
+		If keyState(mCCwdKey) = True Then
 			rot = mMaxRotSpeed
 			'rot = mMaxRotForce
-		ElseIf keyState(mCwdKey) = True Then
+		End If
+		If keyState(mCwdKey) = True Then
 			rot = -mMaxRotSpeed
 			'rot = -mMaxRotForce
 		End If
@@ -60,17 +63,17 @@
 	Public Sub SetCounterCrockwardKey(ByVal key As Integer)
 		mCCwdKey = key
 	End Sub
-	Public Sub SetMaxForwardVelocity(ByVal value As Single)
+	Public Sub SetMaxForwardVelocity(ByVal value As Double)
 		mMaxForwardVelocity = value
 	End Sub
-	Public Sub SetMaxRotSpeed(ByVal value As Single)
+	Public Sub SetMaxRotSpeed(ByVal value As Double)
 		mMaxRotSpeed = value
 	End Sub
 
-	Public Sub SetMaxForwardForce(ByVal value As Single)
+	Public Sub SetMaxForwardForce(ByVal value As Double)
 		mMaxForwardForce = value
 	End Sub
-	Public Sub SetMaxRotForce(ByVal value As Single)
+	Public Sub SetMaxRotForce(ByVal value As Double)
 		mMaxRotForce = value
 	End Sub
 

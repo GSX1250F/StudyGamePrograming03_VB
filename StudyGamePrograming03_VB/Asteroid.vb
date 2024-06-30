@@ -4,7 +4,7 @@ Public Class Asteroid
 	Inherits Actor
 
 	Private mCircle As CircleComponent
-	Private mAsteroidCooldown As Single
+	Private mAsteroidCooldown As Double
 
 	Sub New(ByRef game As Game)
 		MyBase.New(game)
@@ -24,12 +24,12 @@ Public Class Asteroid
 			randPos.Y = random.Next(0, GetGame().mWindowHeight)
 		End While
 		SetPosition(randPos)
-		Dim randRot As Single = random.NextSingle() * Math.PI * 2
+		Dim randRot As Double = random.NextDouble() * Math.PI * 2
 		SetRotation(randRot)
-		SetScale(0.1 * Random.Next(8, 25))   '拡大率 0.8～2.5
-		Dim rotSpeed = 2 * Math.PI * random.NextSingle() - Math.PI     '回転速度 -π～π
+		SetScale(0.1 * random.Next(8, 25))   '拡大率 0.8～2.5
+		Dim rotSpeed = 2 * Math.PI * random.NextDouble() - Math.PI     '回転速度 -π～π
 		Dim randSpeed As Integer = random.Next(50, 200)     '速度 50～200
-		Dim randAngle As Single = Math.PI * random.Next(20, 70) / 180   '速度の方向角度　20度～70度
+		Dim randAngle As Double = Math.PI * random.Next(20, 70) / 180   '速度の方向角度　20度～70度
 		Dim randVel As Vector2
 		randVel.X = Math.Cos(randRot) * randSpeed
 		randVel.Y = -Math.Sin(randRot) * randSpeed
@@ -60,7 +60,7 @@ Public Class Asteroid
 		MyBase.Dispose(disposing)
 	End Sub
 
-	Public Overrides Sub UpdateActor(ByVal detaTime As Single)
+	Public Overrides Sub UpdateActor(ByVal detaTime As Double)
 		'画面外にでたら反対の位置に移動（ラッピング処理）
 		If (GetPosition().X < 0.0 - 1.0 * GetRadius() Or
 			   GetPosition().X > GetGame().mWindowWidth + 1.0 * GetRadius()) _

@@ -106,7 +106,7 @@ Public Class Game
         While Ticks.ElapsedMilliseconds < mTicksCount + 16
         End While
         'デルタタイムの計算
-        Dim deltaTime As Single = (Ticks.ElapsedMilliseconds - mTicksCount) / 1000
+        Dim deltaTime As Double = (Ticks.ElapsedMilliseconds - mTicksCount) / 1000
 
         'デルタタイムを最大値で制限する
         If deltaTime > 0.05 Then

@@ -15,7 +15,7 @@ Public Class BGSpriteComponent
 
     End Sub
 
-    Public Overrides Sub Update(ByVal deltaTime As Single)
+    Public Overrides Sub Update(ByVal deltaTime As Double)
         '背景の位置を更新する。
         mBGSpritePos += mScrollSpeed * deltaTime
         'ラッピング処理

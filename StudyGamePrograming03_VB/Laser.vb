@@ -4,8 +4,8 @@ Public Class Laser
 	Inherits Actor
 
 	Private mCircle As CircleComponent
-	Private mDeathTime As Single
-	Private mLaserSpeed As Single
+	Private mDeathTime As Double
+	Private mLaserSpeed As Double
 
 	Sub New(ByRef game As Game)
 		MyBase.New(game)
@@ -16,7 +16,7 @@ Public Class Laser
 		sc.SetTexture(game.GetTexture("\Assets\Laser.png"))
 	End Sub
 
-	Public Overrides Sub UpdateActor(ByVal deltaTime As Single)
+	Public Overrides Sub UpdateActor(ByVal deltaTime As Double)
 		'DeathTimeが0になったら消去する。
 		mDeathTime -= deltaTime
 		If mDeathTime <= 0.0 Then

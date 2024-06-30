@@ -34,7 +34,7 @@
 
 
     ' 各コンポーネント更新（オーバーライド可能）
-    Public Overridable Sub Update(deltaTime As Single)
+    Public Overridable Sub Update(deltaTime As Double)
 
     End Sub
 

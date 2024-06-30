@@ -13,9 +13,9 @@ Public Class Actor
 	Private mState As State              ' アクターの状態
 	' 移動
 	Private mPosition As Vector2        '位置
-	Private mScale As Single            '拡大率
-	Private mRotation As Single         '回転
-	Private mRadius As Single           '半径（拡大率は無視）
+	Private mScale As Double            '拡大率
+	Private mRotation As Double         '回転
+	Private mRadius As Double           '半径（拡大率は無視）
 	Private mComponents As New List(Of Component)
 	Private mGame As Game
 
@@ -54,7 +54,7 @@ Public Class Actor
 	End Sub
 
 	'ゲームから呼び出される更新関数(オーバーライド不可)
-	Public Sub Update(ByVal deltaTime As Single)
+	Public Sub Update(ByVal deltaTime As Double)
 		If mState = State.EActive Or mState = State.EPaused Then
 			For Each comp In mComponents
 				comp.Update(deltaTime)
@@ -64,7 +64,7 @@ Public Class Actor
 	End Sub
 
 	'アクター独自の更新処理(オーバーライド可能)
-	Public Overridable Sub UpdateActor(ByVal deltaTime As Single)
+	Public Overridable Sub UpdateActor(ByVal deltaTime As Double)
 	End Sub
 
 	'ゲームから呼び出されるProcess Input(オーバーライド不可)
@@ -88,22 +88,22 @@ Public Class Actor
 	Public Sub SetPosition(ByRef pos As Vector2)
 		mPosition = pos
 	End Sub
-	Public Function GetScale() As Single
+	Public Function GetScale() As Double
 		Return mScale
 	End Function
-	Public Sub SetScale(ByRef scale As Single)
+	Public Sub SetScale(ByRef scale As Double)
 		mScale = scale
 	End Sub
-	Public Function GetRotation() As Single
+	Public Function GetRotation() As Double
 		Return mRotation
 	End Function
-	Public Sub SetRotation(ByRef rotation As Single)
+	Public Sub SetRotation(ByRef rotation As Double)
 		mRotation = rotation
 	End Sub
-	Public Function GetRadius() As Single
+	Public Function GetRadius() As Double
 		Return mRadius * mScale
 	End Function
-	Public Sub SetRadius(ByRef radius As Single)
+	Public Sub SetRadius(ByRef radius As Double)
 		mRadius = radius
 	End Sub
 
