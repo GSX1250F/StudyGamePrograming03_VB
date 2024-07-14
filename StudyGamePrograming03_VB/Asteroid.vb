@@ -39,7 +39,7 @@ Public Class Asteroid
 		mCircle = New CircleComponent(Me, 10)
 
 		mSDC = New SoundComponent(Me, 30)
-		mSDC.SetAliasName(game.GetSoundPlayer().GetAliasName("Assets\destroy.wav"))
+		mSDC.SetAliasName(game.GetSoundPlayer().GetAliasName("Assets\destroy.mp3"))
 
 	End Sub
 

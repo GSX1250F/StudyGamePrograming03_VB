@@ -44,12 +44,12 @@ Public Class Ship
 
         mSDC = New SoundComponent(Me, 30)
         '前進、後進、右回転、左回転それぞれに音声を設定
-        mSDC.SetAliasName(game.GetSoundPlayer().GetAliasName("Assets\thruster.wav"))
-        mSDC.SetAliasName(game.GetSoundPlayer().GetAliasName("Assets\thruster.wav"))
-        mSDC.SetAliasName(game.GetSoundPlayer().GetAliasName("Assets\thruster.wav"))
-        mSDC.SetAliasName(game.GetSoundPlayer().GetAliasName("Assets\thruster.wav"))
-        mSDC.SetAliasName(game.GetSoundPlayer().GetAliasName("Assets\beam.wav"))
-        mSDC.SetAliasName(game.GetSoundPlayer().GetAliasName("Assets\explosion.wav"))
+        mSDC.SetAliasName(game.GetSoundPlayer().GetAliasName("Assets\thruster.mp3"))
+        mSDC.SetAliasName(game.GetSoundPlayer().GetAliasName("Assets\thruster.mp3"))
+        mSDC.SetAliasName(game.GetSoundPlayer().GetAliasName("Assets\thruster.mp3"))
+        mSDC.SetAliasName(game.GetSoundPlayer().GetAliasName("Assets\thruster.mp3"))
+        mSDC.SetAliasName(game.GetSoundPlayer().GetAliasName("Assets\beam.mp3"))
+        mSDC.SetAliasName(game.GetSoundPlayer().GetAliasName("Assets\explosion.mp3"))
 
         Init()
     End Sub
