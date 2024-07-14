@@ -4,8 +4,8 @@
     Private mPlayable As Boolean
     Private mAliasNames As New List(Of String)
 
-    Sub New(ByRef owner As Actor, ByVal drawOrder As Integer)
-        MyBase.New(owner, drawOrder)
+    Sub New(ByRef owner As Actor, ByVal updateOrder As Integer)
+        MyBase.New(owner, updateOrder)
         mPlayable = True
         mOwner.GetGame().GetSoundPlayer().AddSndCmpnt(Me)
     End Sub
@@ -15,7 +15,7 @@
                 '*** アンマネージリソースの開放
             End If
             '*** マネージドリソースの開放
-            mOwner.GetGame().GetSoundPlayer().AddSndCmpnt(Me)
+            mOwner.GetGame().GetSoundPlayer().RemoveSndCmpnt(Me)
         End If
         MyBase.Dispose(disposing)
     End Sub
