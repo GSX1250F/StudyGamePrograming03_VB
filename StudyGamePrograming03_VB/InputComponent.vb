@@ -59,16 +59,16 @@ Public Class InputComponent
 	Public Sub SetBackwardKey(ByVal key As Integer)
 		mBwdKey = key
 	End Sub
-	Public Function GetCrockwiseKey() As Integer
+	Public Function GetClockwiseKey() As Integer
 		Return mCwsKey
 	End Function
-	Public Sub SetCrockwiseKey(ByVal key As Integer)
+	Public Sub SetClockwiseKey(ByVal key As Integer)
 		mCwsKey = key
 	End Sub
-	Public Function GetCounterCrockwiseKey() As Integer
+	Public Function GetCounterClockwiseKey() As Integer
 		Return mCCwsKey
 	End Function
-	Public Sub SetCounterCrockwiseKey(ByVal key As Integer)
+	Public Sub SetCounterClockwiseKey(ByVal key As Integer)
 		mCCwsKey = key
 	End Sub
 	Public Sub SetMaxForwardVelocity(ByVal value As Double)

@@ -37,8 +37,8 @@ Public Class Ship
         mIC.SetMass(1.0)
         mIC.SetForwardKey(Keys.Up)
         mIC.SetBackwardKey(Keys.Down)
-        mIC.SetCrockwiseKey(Keys.Right)
-        mIC.SetCounterCrockwiseKey(Keys.Left)
+        mIC.SetClockwiseKey(Keys.Right)
+        mIC.SetCounterClockwiseKey(Keys.Left)
 
         mCircle = New CircleComponent(Me, 10)
 
@@ -114,10 +114,10 @@ Public Class Ship
     Public Overrides Sub ActorInput(ByVal keyState As Boolean())
         MyBase.ActorInput(keyState)
         If mCrash = False Then
-            If keyState(mIC.GetCounterCrockwiseKey()) = True Then
+            If keyState(mIC.GetCounterClockwiseKey()) = True Then
                 mSSC.SetTextureFromId(1)
                 mSDC.SetControl(0, "play")
-            ElseIf keyState(mIC.GetCrockwiseKey()) = True Then
+            ElseIf keyState(mIC.GetClockwiseKey()) = True Then
                 mSSC.SetTextureFromId(2)
                 mSDC.SetControl(1, "play")
             ElseIf keyState(mIC.GetForwardKey()) = True Then
