@@ -5,7 +5,7 @@ Public Class Asteroid
 
 	Private mCircle As CircleComponent
 	Private mAsteroidCooldown As Double
-	Private mAliasNames As New List(Of String)
+	Private mSoundFile As String
 
 	Sub New(ByRef game As Game)
 		MyBase.New(game)
@@ -38,7 +38,8 @@ Public Class Asteroid
 		'CircleComponent作成
 		mCircle = New CircleComponent(Me, 10)
 
-		mAliasNames.Add(game.GetSoundPlayer().AddSoundControl("Assets\destroy.mp3"))
+		mSoundFile = "Assets\destroy.mp3"
+		game.GetSoundPlayer().AddSound(mSoundFile)
 
 	End Sub
 
@@ -48,7 +49,8 @@ Public Class Asteroid
 				'*** アンマネージリソースの開放
 			End If
 			'*** マネージドリソースの開放
-			GetGame().GetSoundPlayer().SetControl(mAliasNames(0), "replay" & "delete")
+			GetGame().GetSoundPlayer().SetSoundControl(mSoundFile, "replay")
+			GetGame().GetSoundPlayer().SetSoundControl(mSoundFile, "delete")
 			GetGame().RemoveAsteroid(Me)
 		End If
 		MyBase.Dispose(disposing)
