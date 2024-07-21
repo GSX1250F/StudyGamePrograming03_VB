@@ -1,19 +1,25 @@
-﻿Public Class SoundPlayer
-    Implements IDisposable      '明示的にクラスを開放するために必要
+﻿Imports System.Windows.Forms.VisualStyles.VisualStyleElement
+Imports Windows.Win32
 
+Public Class SoundPlayer
+    Implements IDisposable      '明示的にクラスを開放するために必要
+    Private disposedValue As Boolean
 #If Win64 Then
     Private Declare PtrSafe Function mciSendString Lib "winmm.dll" Alias "mciSendStringA" (ByVal lpstrCommand As String, ByVal lpstrReturnString As String,     ByVal uReturnLength As Long, ByVal hwndCallback As Long) As Long
 #Else
     Private Declare Function mciSendString Lib "winmm" Alias "mciSendStringA" (ByVal lpstrCommand As String, ByVal lpstrReturnString As String, ByVal uReturnLength As Long, ByVal hwndCallback As Long) As Long
 #End If
 
+    Structure SoundControl
+        Dim AliasName As String
+        Dim Control As String
+    End Structure
+    Private mSoundControls As New List(Of SoundControl)     'AliasControlを集めた配列。
 
-    Private mAliasNames As New List(Of String)
-    Private mControls As New List(Of String)     '"play","replay","resume","stop","pause","delete"
-    Private mSndCmpnts As New List(Of SoundComponent)    'サウンドコンポーネントの配列
 
-    Private disposedValue As Boolean
+    Private mGame As Game
     Sub New(ByRef game As Game)
+        mGame = game
     End Sub
     Protected disposed = False     '開放処理が実施済みかのフラグ
     Public Overloads Sub Dispose() Implements IDisposable.Dispose
@@ -32,151 +38,131 @@
         MyBase.Finalize()
         Dispose(False)
     End Sub
-    Public Sub Play()
-        'Controlに応じてAliasNameにMCIコントロールを行う。
-        Dim i As Integer
-        If mControls.Count > 0 Then
-            For i = 0 To mControls.Count - 1
-                If Strings.Left(mControls(i), 4) = "play" Then
-                    ControlPlay(i)
-                ElseIf Strings.Left(mControls(i), 6) = "replay" Then
-                    ControlReplay(i)
-                ElseIf Strings.Left(mControls(i), 4) = "stop" Then
-                    ControlStop(i)
-                ElseIf Strings.Left(mControls(i), 5) = "pause" Then
-                    ControlPause(i)
+    Public Function Initialize() As Boolean
+        Return True
+    End Function
+    Public Sub Shutdown()
+        Me.Dispose()
+    End Sub
+    Public Sub UnloadData()
+    End Sub
+
+    Public Function AddAliasControl(ByVal filename As String) As String
+        'ファイル名の音声ファイルを空いているAliasNameで開き、mAliasControlsに加える。そのAliasNameを返す。
+        Dim id As Integer = mSoundControls.Count
+        Dim scl As New SoundControl
+        scl.AliasName = "AliasName" & id
+        scl.Control = ""
+        'ファイルオープン
+        Dim cmd As String = "open """ & filename & """ alias " & scl.AliasName
+        If mciSendString(cmd, Nothing, 0, 0) <> 0 Then
+            Return Nothing
+        Else
+            mSoundControls.Add(scl)
+            Return scl.AliasName
+        End If
+    End Function
+    Public Sub SetControl(ByVal aliasname As String, ByVal control As String)
+        'aliasnameをmAliasControlsから検索し、そのControlにcontrolを追記する。
+        If mSoundControls.Count > 0 Then
+            For i As Integer = 0 To mSoundControls.Count - 1
+                If mSoundControls(i).AliasName = aliasname Then
+                    Dim scl As New SoundControl
+                    scl.AliasName = aliasname
+                    scl.Control = mSoundControls(i).Control & control
+                    mSoundControls(i) = scl
+                    Exit For
                 End If
             Next
-            'controlがdeleteの処理
+        End If
+    End Sub
+
+    Public Sub Play()
+        Dim i As Integer
+        Dim scl As New SoundControl
+        If mSoundControls.Count > 0 Then
+            For i = 0 To mSoundControls.Count - 1
+                If Strings.Left(mSoundControls(i).Control, 4) = "play" Then
+                    ControlPlay(mSoundControls(i))
+                ElseIf Strings.Left(mSoundControls(i).Control, 6) = "replay" Then
+                    ControlReplay(mSoundControls(i))
+                ElseIf Strings.Left(mSoundControls(i).Control, 4) = "stop" Then
+                    ControlStop(mSoundControls(i))
+                ElseIf Strings.Left(mSoundControls(i).Control, 5) = "pause" Then
+                    ControlPause(mSoundControls(i))
+                End If
+            Next
             Dim flag As Boolean = False
             i = 0
             Do While flag = False
-                If Strings.Left(mControls(i), 6) = "delete" Then
-                    Dim status As String = ControlGetStatus(i)
+                If Strings.Left(mSoundControls(i).Control, 6) = "delete" Then
+                    Dim status As String = ControlGetStatus(mSoundControls(i))
                     If Strings.Left(status, 7) = "playing" Then
                         '何もしない
                     Else
-                        ControlClose(mAliasNames(i))
-                        mAliasNames.RemoveAt(i)
-                        mControls.RemoveAt(i)
+                        ControlClose(mSoundControls(i).AliasName)
+                        mSoundControls.RemoveAt(i)
                         i -= 1
                     End If
                 End If
                 i += 1
-                If i >= mControls.Count - 1 Then
+                If i >= mSoundControls.Count - 1 Then
                     flag = True
                 End If
             Loop
         End If
     End Sub
-
-    Public Sub AddSndCmpnt(ByRef sndC As SoundComponent)
-        mSndCmpnts.Add(sndC)
-    End Sub
-    Public Sub RemoveSndCmpnt(ByRef sndC As SoundComponent)
-        Dim iter As Integer = mSndCmpnts.IndexOf(sndC)
-        '見つからなかったら-1が返される。
-        If iter >= 0 Then
-            mSndCmpnts.RemoveAt(iter)
-        End If
-    End Sub
-
-    Public Function GetAliasName(ByVal fileName As String) As String
-        '音声ファイルを開き、mControlsとmAliasNamesリストに登録し、AliasNameを返す
-        Dim cmd As String
-        Dim i As Integer = mAliasNames.Count
-        'ファイルオープン
-        cmd = "open " & fileName & " alias mAliasName" & i
-        If mciSendString(cmd, Nothing, 0, 0) <> 0 Then
-            Return Nothing
-        Else
-            mAliasNames.Add("mAliasName" & i)
-            mControls.Add("")
-            Return mAliasNames(i)
-        End If
-
-    End Function
-
-    Public Sub SetSoundControl(ByVal aliasName As String, ByVal control As String)
-        'aliasNameと同じmAliasnamesのIDについて、mControlsにcontrolを追加する。
-        If mAliasNames.Count > 0 Then
-            Dim i As Integer = mAliasNames.IndexOf(aliasName)
-            If i >= 0 Then
-                mControls(i) = mControls(i) & control
-            End If
-        End If
-    End Sub
-    Public Function ControlGetStatus(ByVal i As Integer) As String
-        Dim cmd As String = "status " & mAliasNames(i) & " mode"
+    Public Function ControlGetStatus(ByRef scl As SoundControl) As String
+        Dim cmd As String = "status " & scl.AliasName & " mode"
         Dim status As String = "          "
         mciSendString(cmd, status, status.Length(), 0)      '状態取得
         Return status
     End Function
-
-
-    Public Sub ControlPlay(ByVal i As Integer)
-        'pauseなら再開、playingなら何もしない、それ以外は頭から再生
+    Public Sub ControlPlay(ByRef scl As SoundControl)
         Dim cmd As String
-        Dim status As String = ControlGetStatus(i)
+        Dim status As String = ControlGetStatus(scl)
         If Strings.Left(status, 7) = "playing" Then
             '何もしない
         ElseIf Strings.Left(status, 5) = "pause" Then
-            cmd = "resume " & mAliasNames(i)
+            cmd = "resume " & scl.AliasName
             mciSendString(cmd, Nothing, 0, 0)
         Else
-            cmd = "play " & mAliasNames(i) & " from 0"
+            cmd = "play " & scl.AliasName & " from 0"
             mciSendString(cmd, Nothing, 0, 0)
         End If
-        'Controlの左からコマンドを削除
-        Dim control As String = mControls(i).Remove(0, 4)
-        mControls(i) = control
+        Dim control As String = scl.Control.Remove(0, 4)
+        scl.Control = control
     End Sub
-    Public Sub ControlReplay(ByVal i As Integer)
-        'まず再生停止して、頭から再生
-        Dim cmd As String = "stop " & mAliasNames(i)
+    Public Sub ControlReplay(ByRef scl As SoundControl)
+        Dim cmd As String = "stop " + scl.AliasName
         mciSendString(cmd, Nothing, 0, 0)
-        cmd = "play " & mAliasNames(i) & " from 0"
+        cmd = "play " & scl.AliasName & " from 0"
         mciSendString(cmd, Nothing, 0, 0)
-        'Controlの左からコマンドを削除
-        Dim control As String = mControls(i).Remove(0, 6)
-        mControls(i) = control
+        Dim control As String = scl.Control.Remove(0, 6)
+        scl.Control = control
     End Sub
-    Public Sub ControlPause(ByVal i As Integer)
-        '一時停止
-        Dim cmd As String = "pause " & mAliasNames(i)
+    Public Sub ControlPause(ByRef scl As SoundControl)
+        Dim cmd As String = "pause " & scl.AliasName
         mciSendString(cmd, Nothing, 0, 0)
-        'Controlの左からコマンドを削除
-        Dim control As String = mControls(i).Remove(0, 5)
-        mControls(i) = control
+        Dim control As String = scl.Control.Remove(0, 5)
+        scl.Control = control
     End Sub
-    Public Sub ControlStop(ByVal i As Integer)
-        '停止
-        Dim cmd As String = "stop " & mAliasNames(i)
+    Public Sub ControlStop(ByRef scl As SoundControl)
+        Dim cmd As String = "stop " & scl.AliasName
         mciSendString(cmd, Nothing, 0, 0)
-        'Controlの左からコマンドを削除
-        Dim control As String = mControls(i).Remove(0, 4)
-        mControls(i) = control
+        Dim control As String = scl.Control.Remove(0, 4)
+        scl.Control = control
     End Sub
-    Public Sub ControlResume(ByVal i As Integer)
-        '再開
-        Dim cmd As String = "resume " & mAliasNames(i)
+    Public Sub ControlResume(ByRef scl As SoundControl)
+        Dim cmd As String = "resume " & scl.AliasName
         mciSendString(cmd, Nothing, 0, 0)
-        'Controlの左からコマンドを削除
-        Dim control As String = mControls(i).Remove(0, 6)
-        mControls(i) = control
+        Dim control As String = scl.Control.Remove(0, 6)
+        scl.Control = control
     End Sub
     Public Sub ControlClose(ByVal aliasname As String)
-        'エイリアスを閉じる
         Dim cmd As String = "close " & aliasname
         mciSendString(cmd, Nothing, 0, 0)
     End Sub
-    Public Sub UnloadData()
-        Do While mAliasNames.Count > 0
-            Dim cmd As String = "close " & mAliasNames(0)
-            mAliasNames.RemoveAt(0)
-        Loop
-    End Sub
-    Public Sub Shutdown()
-        Me.Dispose()
-    End Sub
+
+
 End Class

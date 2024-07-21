@@ -13,7 +13,7 @@ Public Class Ship
     Private mCircle As CircleComponent
     Private mSSC As SomeSpriteComponent
     Private mIC As InputComponent
-    Private mSDC As SoundComponent
+    Private mAliasNames As New List(Of String)
 
 
     Sub New(ByRef game As Game)
@@ -42,14 +42,13 @@ Public Class Ship
 
         mCircle = New CircleComponent(Me, 10)
 
-        mSDC = New SoundComponent(Me, 30)
         '前進、後進、右回転、左回転それぞれに音声を設定
-        mSDC.SetAliasName(game.GetSoundPlayer().GetAliasName("Assets/thruster.mp3"))
-        mSDC.SetAliasName(game.GetSoundPlayer().GetAliasName("Assets/thruster.mp3"))
-        mSDC.SetAliasName(game.GetSoundPlayer().GetAliasName("Assets/thruster.mp3"))
-        mSDC.SetAliasName(game.GetSoundPlayer().GetAliasName("Assets/thruster.mp3"))
-        mSDC.SetAliasName(game.GetSoundPlayer().GetAliasName("Assets/beam.mp3"))
-        mSDC.SetAliasName(game.GetSoundPlayer().GetAliasName("Assets/explosion.mp3"))
+        mAliasNames.Add(game.GetSoundPlayer().AddAliasControl("Assets/thruster.mp3"))
+        mAliasNames.Add(game.GetSoundPlayer().AddAliasControl("Assets/thruster.mp3"))
+        mAliasNames.Add(game.GetSoundPlayer().AddAliasControl("Assets/thruster.mp3"))
+        mAliasNames.Add(game.GetSoundPlayer().AddAliasControl("Assets/thruster.mp3"))
+        mAliasNames.Add(game.GetSoundPlayer().AddAliasControl("Assets/beam.mp3"))
+        mAliasNames.Add(game.GetSoundPlayer().AddAliasControl("Assets/explosion.mp3"))
 
         Init()
     End Sub
@@ -87,7 +86,7 @@ Public Class Ship
                     mCrash = True
                     mCrashCooldown = 4.0
                     mCrashingTime = 2.0
-                    mSDC.SetControl(5, "play")
+                    GetGame().GetSoundPlayer().SetControl(mAliasNames(5), "play")
                     Exit For
                 End If
             Next
@@ -116,16 +115,16 @@ Public Class Ship
         If mCrash = False Then
             If keyState(mIC.GetCounterClockwiseKey()) = True Then
                 mSSC.SetTextureFromId(1)
-                mSDC.SetControl(0, "play")
+                GetGame().GetSoundPlayer().SetControl(mAliasNames(0), "play")
             ElseIf keyState(mIC.GetClockwiseKey()) = True Then
                 mSSC.SetTextureFromId(2)
-                mSDC.SetControl(1, "play")
+                GetGame().GetSoundPlayer().SetControl(mAliasNames(1), "play")
             ElseIf keyState(mIC.GetForwardKey()) = True Then
                 mSSC.SetTextureFromId(3)
-                mSDC.SetControl(2, "play")
+                GetGame().GetSoundPlayer().SetControl(mAliasNames(2), "play")
             ElseIf keyState(mIC.GetBackwardKey()) = True Then
                 mSSC.SetTextureFromId(4)
-                mSDC.SetControl(3, "play")
+                GetGame().GetSoundPlayer().SetControl(mAliasNames(3), "play")
             Else
                 mSSC.SetTextureFromId(0)
             End If
@@ -138,7 +137,7 @@ Public Class Ship
                 laser.Shot()
                 ' レーザー冷却期間リセット
                 mLaserCooldown = 0.7
-                mSDC.SetControl(4, "replay")
+                GetGame().GetSoundPlayer().SetControl(4, "replay")
             End If
         End If
     End Sub
