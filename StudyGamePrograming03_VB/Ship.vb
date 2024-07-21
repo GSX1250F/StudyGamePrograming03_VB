@@ -43,12 +43,12 @@ Public Class Ship
         mCircle = New CircleComponent(Me, 10)
 
         '前進、後進、右回転、左回転それぞれに音声を設定
-        mAliasNames.Add(game.GetSoundPlayer().AddAliasControl("Assets/thruster.mp3"))
-        mAliasNames.Add(game.GetSoundPlayer().AddAliasControl("Assets/thruster.mp3"))
-        mAliasNames.Add(game.GetSoundPlayer().AddAliasControl("Assets/thruster.mp3"))
-        mAliasNames.Add(game.GetSoundPlayer().AddAliasControl("Assets/thruster.mp3"))
-        mAliasNames.Add(game.GetSoundPlayer().AddAliasControl("Assets/beam.mp3"))
-        mAliasNames.Add(game.GetSoundPlayer().AddAliasControl("Assets/explosion.mp3"))
+        mAliasNames.Add(game.GetSoundPlayer().AddSoundControl("Assets/thruster.mp3"))
+        mAliasNames.Add(game.GetSoundPlayer().AddSoundControl("Assets/thruster.mp3"))
+        mAliasNames.Add(game.GetSoundPlayer().AddSoundControl("Assets/thruster.mp3"))
+        mAliasNames.Add(game.GetSoundPlayer().AddSoundControl("Assets/thruster.mp3"))
+        mAliasNames.Add(game.GetSoundPlayer().AddSoundControl("Assets/beam.mp3"))
+        mAliasNames.Add(game.GetSoundPlayer().AddSoundControl("Assets/explosion.mp3"))
 
         Init()
     End Sub
@@ -137,7 +137,7 @@ Public Class Ship
                 laser.Shot()
                 ' レーザー冷却期間リセット
                 mLaserCooldown = 0.7
-                GetGame().GetSoundPlayer().SetControl(4, "replay")
+                GetGame().GetSoundPlayer().SetControl(mAliasNames(4), "replay")
             End If
         End If
     End Sub

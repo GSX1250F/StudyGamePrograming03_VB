@@ -4,7 +4,6 @@
 	Private mCircle As CircleComponent
 	Private mDeathTime As Double
 	Private mLaserSpeed As Double
-	Private mSDC As SoundComponent
 
 	Sub New(ByRef game As Game)
 		MyBase.New(game)

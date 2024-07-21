@@ -16,10 +16,7 @@ Public Class SoundPlayer
     End Structure
     Private mSoundControls As New List(Of SoundControl)     'AliasControlを集めた配列。
 
-
-    Private mGame As Game
     Sub New(ByRef game As Game)
-        mGame = game
     End Sub
     Protected disposed = False     '開放処理が実施済みかのフラグ
     Public Overloads Sub Dispose() Implements IDisposable.Dispose
@@ -38,16 +35,16 @@ Public Class SoundPlayer
         MyBase.Finalize()
         Dispose(False)
     End Sub
-    Public Function Initialize() As Boolean
-        Return True
-    End Function
     Public Sub Shutdown()
         Me.Dispose()
     End Sub
     Public Sub UnloadData()
+        Do While mSoundControls.Count > 0
+            Dim cmd As String = "close " & mSoundControls(0).AliasName
+            mSoundControls.RemoveAt(0)
+        Loop
     End Sub
-
-    Public Function AddAliasControl(ByVal filename As String) As String
+    Public Function AddSoundControl(ByVal filename As String) As String
         'ファイル名の音声ファイルを空いているAliasNameで開き、mAliasControlsに加える。そのAliasNameを返す。
         Dim id As Integer = mSoundControls.Count
         Dim scl As New SoundControl

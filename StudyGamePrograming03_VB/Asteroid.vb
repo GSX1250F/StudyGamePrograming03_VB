@@ -38,7 +38,7 @@ Public Class Asteroid
 		'CircleComponent作成
 		mCircle = New CircleComponent(Me, 10)
 
-		mAliasNames.Add(game.GetSoundPlayer().AddAliasControl("Assets\destroy.mp3"))
+		mAliasNames.Add(game.GetSoundPlayer().AddSoundControl("Assets\destroy.mp3"))
 
 	End Sub
 
