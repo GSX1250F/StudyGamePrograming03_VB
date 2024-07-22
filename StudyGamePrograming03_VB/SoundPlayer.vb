@@ -16,9 +16,9 @@ Public Class SoundPlayer
         Dim Control As String
     End Structure
 
-    Private mSounds As New Dictionary(Of String, String)    'ファイル名とエイリアスの連想配列。
+    Private mSounds As New List(Of String)    'エイリアスの配列。
     Private mSoundControls As New List(Of SoundControl)     'SoundControlをまとめた配列。
-    Private mDeleteAliasNames As New List(Of String)           '削除待ちエイリアスの配列
+    Private mDeleteSounds As New List(Of String)           '削除待ちエイリアスの配列
 
     Sub New(ByRef game As Game)
     End Sub
@@ -43,24 +43,33 @@ Public Class SoundPlayer
         Me.Dispose()
     End Sub
     Public Sub UnloadData()
-        For Each value In mSounds.Values
-            Dim cmd As String = "close " & value
+        For Each aliasname In mSounds
+            Dim cmd As String = "close " & aliasname
         Next
     End Sub
-    Public Sub AddSound(ByVal filename As String)
-        'ファイル名の音声ファイルを空いているAliasNameで開き、mSoundsに加える。
-        Dim id As Integer = mSounds.Count
-        Dim aliasname As String = "AliasName" & id
-        'ファイルオープン
-        Dim cmd As String = "open """ & filename & """ alias " & aliasname
-        If mciSendString(cmd, Nothing, 0, 0) = 0 Then
-            mSounds.Add(filename, aliasname)
+    Public Function AddSound(ByVal filenames As List(Of String)) As List(Of String)
+        If filenames.Count > 0 Then
+            Dim aliasnames As New List(Of String)
+            For i As Integer = 0 To filenames.Count - 1
+                'ファイル名の音声ファイルを空いているAliasNameで開き、mSoundsに加え、AliasNameの配列を返す
+                Dim cmd As String = "open """ & filenames(i) & """ alias " & "AliasName" & mSounds.Count
+                If mciSendString(cmd, Nothing, 0, 0) = 0 Then
+                    aliasnames.Add("AliasName" & mSounds.Count)
+                    mSounds.Add("AliasName" & mSounds.Count)
+                Else
+                    'ファイルオープンに失敗したら、返す配列に空白を追加する。
+                    aliasnames.Add(Nothing)
+                End If
+            Next
+            Return aliasnames
+        Else
+            Return Nothing
         End If
-    End Sub
-    Public Sub SetSoundControl(ByVal filename As String, ByVal control As String)
-        'filenameをmSoundsから検索し、SoundControlsに追加する。
+    End Function
+    Public Sub SetSoundControl(ByVal aliasname As String, ByVal control As String)
+        'SoundControlsに追加する。
         Dim scl As SoundControl
-        scl.AliasName = mSounds(filename)
+        scl.AliasName = aliasname
         scl.Control = control
         mSoundControls.Add(scl)
     End Sub
@@ -76,26 +85,26 @@ Public Class SoundPlayer
             ElseIf scl.Control = "pause" Then
                 ControlPause(scl.AliasName)
             ElseIf scl.Control = "delte" Then
-                mDeleteAliasNames.Add(scl.AliasName)
+                mDeleteSounds.Add(scl.AliasName)
             End If
         Next
         mSoundControls.Clear()
 
         '削除待ちのエイリアスが再生中でなければ、mSoundsから削除し、エイリアスを閉じる
-        If mDeleteAliasNames.Count > 0 Then
+        If mDeleteSounds.Count > 0 Then
             Dim i As Integer = 0
             Dim flag As Boolean = False
             Do While flag = False
-                Dim status As String = ControlGetStatus(mDeleteAliasNames(i))
+                Dim status As String = ControlGetStatus(mDeleteSounds(i))
                 If Strings.Left(status, 7) = "playing" Then
                     '何もしない
                 Else
-                    ControlClose(mDeleteAliasNames(i))
-                    mSounds.Remove(mDeleteAliasNames(i))
+                    ControlClose(mDeleteSounds(i))
+                    mSounds.Remove(mDeleteSounds(i))
                     i -= 1
                 End If
                 i += 1
-                If i >= mDeleteAliasNames.Count - 1 Then
+                If i >= mDeleteSounds.Count - 1 Then
                     flag = True
                 End If
             Loop
