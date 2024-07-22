@@ -178,7 +178,7 @@ Public Class Game
     End Sub
     Private Sub UnloadData()
         While mActors.Count > 0
-            mActors.Remove(mActors.Last)
+            mActors.First.Dispose()
         End While
         If mRenderer IsNot Nothing Then
             mRenderer.UnloadData()

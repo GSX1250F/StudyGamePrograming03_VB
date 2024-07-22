@@ -4,7 +4,7 @@ Imports Windows.Win32
 
 Public Class SoundPlayer
     Implements IDisposable      '明示的にクラスを開放するために必要
-    Private disposedValue As Boolean
+
 #If Win64 Then
     Private Declare PtrSafe Function mciSendString Lib "winmm.dll" Alias "mciSendStringA" (ByVal lpstrCommand As String, ByVal lpstrReturnString As String,     ByVal uReturnLength As Long, ByVal hwndCallback As Long) As Long
 #Else
@@ -19,7 +19,7 @@ Public Class SoundPlayer
     Private mSounds As New List(Of String)    'エイリアスの配列。
     Private mSoundControls As New List(Of SoundControl)     'SoundControlをまとめた配列。
     Private mDeleteSounds As New List(Of String)           '削除待ちエイリアスの配列
-
+    Private disposedValue As Boolean
     Sub New(ByRef game As Game)
     End Sub
     Protected disposed = False     '開放処理が実施済みかのフラグ
@@ -47,7 +47,7 @@ Public Class SoundPlayer
             Dim cmd As String = "close " & aliasname
         Next
     End Sub
-    Public Function AddSound(ByVal filenames As List(Of String)) As List(Of String)
+    Public Function AddSound(ByRef filenames As List(Of String)) As List(Of String)
         If filenames.Count > 0 Then
             Dim aliasnames As New List(Of String)
             For i As Integer = 0 To filenames.Count - 1
@@ -84,7 +84,7 @@ Public Class SoundPlayer
                 ControlStop(scl.AliasName)
             ElseIf scl.Control = "pause" Then
                 ControlPause(scl.AliasName)
-            ElseIf scl.Control = "delte" Then
+            ElseIf scl.Control = "delete" Then
                 mDeleteSounds.Add(scl.AliasName)
             End If
         Next
@@ -101,6 +101,7 @@ Public Class SoundPlayer
                 Else
                     ControlClose(mDeleteSounds(i))
                     mSounds.Remove(mDeleteSounds(i))
+                    mDeleteSounds.Remove(mDeleteSounds(i))
                     i -= 1
                 End If
                 i += 1

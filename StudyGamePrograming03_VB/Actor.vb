@@ -38,8 +38,8 @@ Public Class Actor
 			End If
 			'*** マネージドリソースの開放
 			mGame.RemoveActor(Me)
-			While mComponents.Count <> 0
-				mComponents.Last.Dispose()
+			While mComponents.Count > 0
+				mComponents.First.Dispose()
 			End While
 		End If
 		disposed = True
