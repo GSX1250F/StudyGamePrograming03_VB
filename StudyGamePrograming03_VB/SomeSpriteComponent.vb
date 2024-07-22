@@ -2,7 +2,7 @@
 	Inherits SpriteComponent
 
 	' テクスチャ用の画像ファイルリスト
-	Public mTextureFiles As List(Of String)
+	Public TextureFiles As List(Of String)
 
 	Sub New(ByRef owner As Actor, ByVal drawOrder As Integer)
 		MyBase.New(owner, drawOrder)

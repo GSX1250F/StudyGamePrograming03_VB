@@ -19,13 +19,13 @@ Public Class Ship
     Sub New(ByRef game As Game)
         MyBase.New(game)
         mSSC = New SomeSpriteComponent(Me, 30)
-        mSSC.mTextureFiles = New List(Of String) From {
+        mSSC.TextureFiles = New List(Of String) From {
             "Assets\Ship01.png",
             "Assets\Ship02.png",
             "Assets\Ship03.png",
             "Assets\Ship04.png",
             "Assets\Ship05.png"}
-        mSSC.SetSomeTextures(mSSC.mTextureFiles)
+        mSSC.SetSomeTextures(mSSC.TextureFiles)
 
         mIC = New InputComponent(Me, 10)
         'mIC.SetMaxForwardVelocity(200.0)
@@ -116,19 +116,19 @@ Public Class Ship
         MyBase.ActorInput(keyState)
         If mCrash = False Then
             If keyState(mIC.GetCounterClockwiseKey()) = True Then
-                mSSC.SelectTexture(mSSC.mTextureFiles(1))
+                mSSC.SelectTexture(mSSC.TextureFiles(1))
                 GetGame().GetSoundPlayer().SetSoundControl(mAliasNames(0), "play")
             ElseIf keyState(mIC.GetClockwiseKey()) = True Then
-                mSSC.SelectTexture(mSSC.mTextureFiles(2))
+                mSSC.SelectTexture(mSSC.TextureFiles(2))
                 GetGame().GetSoundPlayer().SetSoundControl(mAliasNames(1), "play")
             ElseIf keyState(mIC.GetForwardKey()) = True Then
-                mSSC.SelectTexture(mSSC.mTextureFiles(3))
+                mSSC.SelectTexture(mSSC.TextureFiles(3))
                 GetGame().GetSoundPlayer().SetSoundControl(mAliasNames(2), "play")
             ElseIf keyState(mIC.GetBackwardKey()) = True Then
-                mSSC.SelectTexture(mSSC.mTextureFiles(4))
+                mSSC.SelectTexture(mSSC.TextureFiles(4))
                 GetGame().GetSoundPlayer().SetSoundControl(mAliasNames(3), "play")
             Else
-                mSSC.SelectTexture(mSSC.mTextureFiles(0))
+                mSSC.SelectTexture(mSSC.TextureFiles(0))
             End If
 
             If (keyState(Keys.Space) = True) And (mLaserCooldown <= 0.0) Then
