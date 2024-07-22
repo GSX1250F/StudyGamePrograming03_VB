@@ -19,13 +19,13 @@ Public Class Ship
     Sub New(ByRef game As Game)
         MyBase.New(game)
         mSSC = New SomeSpriteComponent(Me, 30)
-        Dim mtexs = New List(Of Image) From {
-            game.GetRenderer().GetTexture("Assets\Ship01.png"),
-            game.GetRenderer().GetTexture("Assets\Ship02.png"),
-            game.GetRenderer().GetTexture("Assets\Ship03.png"),
-            game.GetRenderer().GetTexture("Assets\Ship04.png"),
-            game.GetRenderer().GetTexture("Assets\Ship05.png")}
-        mSSC.SetSomeTextures(mtexs)
+        mSSC.mTextureFiles = New List(Of String) From {
+            "Assets\Ship01.png",
+            "Assets\Ship02.png",
+            "Assets\Ship03.png",
+            "Assets\Ship04.png",
+            "Assets\Ship05.png"}
+        mSSC.SetSomeTextures(mSSC.mTextureFiles)
 
         mIC = New InputComponent(Me, 10)
         'mIC.SetMaxForwardVelocity(200.0)
@@ -43,13 +43,13 @@ Public Class Ship
         mCircle = New CircleComponent(Me, 10)
 
         '前進、後進、右回転、左回転それぞれに音声を設定
-        Dim files As New List(Of String)
-        files.Add("Assets/thruster.mp3")
-        files.Add("Assets/thruster.mp3")
-        files.Add("Assets/thruster.mp3")
-        files.Add("Assets/thruster.mp3")
-        files.Add("Assets/beam.mp3")
-        files.Add("Assets/explosion.mp3")
+        Dim files As New List(Of String) From {
+            "Assets/thruster.mp3",
+            "Assets/thruster.mp3",
+            "Assets/thruster.mp3",
+            "Assets/thruster.mp3",
+            "Assets/beam.mp3",
+            "Assets/explosion.mp3"}
         mAliasNames = game.GetSoundPlayer().AddSound(files)
 
         Init()
@@ -116,19 +116,19 @@ Public Class Ship
         MyBase.ActorInput(keyState)
         If mCrash = False Then
             If keyState(mIC.GetCounterClockwiseKey()) = True Then
-                mSSC.SetTextureFromId(1)
+                mSSC.SelectTexture(mSSC.mTextureFiles(1))
                 GetGame().GetSoundPlayer().SetSoundControl(mAliasNames(0), "play")
             ElseIf keyState(mIC.GetClockwiseKey()) = True Then
-                mSSC.SetTextureFromId(2)
+                mSSC.SelectTexture(mSSC.mTextureFiles(2))
                 GetGame().GetSoundPlayer().SetSoundControl(mAliasNames(1), "play")
             ElseIf keyState(mIC.GetForwardKey()) = True Then
-                mSSC.SetTextureFromId(3)
+                mSSC.SelectTexture(mSSC.mTextureFiles(3))
                 GetGame().GetSoundPlayer().SetSoundControl(mAliasNames(2), "play")
             ElseIf keyState(mIC.GetBackwardKey()) = True Then
-                mSSC.SetTextureFromId(4)
+                mSSC.SelectTexture(mSSC.mTextureFiles(4))
                 GetGame().GetSoundPlayer().SetSoundControl(mAliasNames(3), "play")
             Else
-                mSSC.SetTextureFromId(0)
+                mSSC.SelectTexture(mSSC.mTextureFiles(0))
             End If
 
             If (keyState(Keys.Space) = True) And (mLaserCooldown <= 0.0) Then
