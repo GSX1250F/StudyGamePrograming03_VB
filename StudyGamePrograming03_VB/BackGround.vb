@@ -3,56 +3,87 @@
 Public Class BackGround
 	Inherits Actor
 
-	Private mBGsprites As New List(Of BGSpriteComponent)
+	Private mBGs As New List(Of Actor)
 	Sub New(ByRef game As Game)
 		MyBase.New(game)
 
-		LoadData()
-	End Sub
-	Public Overrides Sub UpdateActor(ByVal deltaTime As Double)
-		' 各BGSpriteComponentを更新
-		For Each sprite In mBGsprites
-			sprite.Update(deltaTime)
-		Next
-	End Sub
-	Private Sub LoadData()
-		'BGSpriteComponentを作成し、配列に追加する。
 		'背景1つ目
-		Dim bgsc As New BGSpriteComponent(Me, 5)
+		Dim bgactor As New Actor(game)
 		Dim v As Vector2
-		v = New Vector2(GetGame().mWindowWidth * 0.5, GetGame().mWindowHeight * 0.5)
-		bgsc.SetTexture(GetGame().GetRenderer().GetTexture("Assets/Farback01.png"))
-		bgsc.SetBGSpritePos(v)
-		v = New Vector2(-10.0, 0.0)
-		bgsc.SetScrollSpeed(v)
-		mBGsprites.Add(bgsc)
+		v.X = 0.0
+		v.Y = game.mWindowHeight * 0.5
+		bgactor.SetPosition(v)
+		Dim sc As New SpriteComponent(bgactor, 5)
+		sc.SetTexture(GetGame().GetRenderer().GetTexture("Assets/Farback01.png"))
+		Dim mc As New MoveComponent(bgactor, 30)
+		v.X = -10.0
+		v.Y = 0.0
+		mc.SetVelocity(v)
+		mBGs.Add(bgactor)
 
 		'背景2つ目
-		bgsc = New BGSpriteComponent(Me, 5)
-		bgsc.SetTexture(GetGame().GetRenderer().GetTexture("Assets/Farback02.png"))
-		v = New Vector2(GetGame().mWindowWidth * 0.5 + bgsc.GetTexWidth(), GetGame().mWindowHeight * 0.5)
-		bgsc.SetBGSpritePos(v)
-		v = New Vector2(-10.0, 0.0)
-		bgsc.SetScrollSpeed(v)
-		mBGsprites.Add(bgsc)
+		bgactor = New Actor(game)
+		v.X = game.mWindowWidth
+		v.Y = game.mWindowHeight * 0.5
+		bgactor.SetPosition(v)
+		sc = New SpriteComponent(bgactor, 5)
+		sc.SetTexture(GetGame().GetRenderer().GetTexture("Assets/Farback02.png"))
+		mc = New MoveComponent(bgactor, 30)
+		v.X = -10.0
+		v.Y = 0.0
+		mc.SetVelocity(v)
+		mBGs.Add(bgactor)
 
 		'背景3つ目
-		bgsc = New BGSpriteComponent(Me, 10)
-		bgsc.SetTexture(GetGame().GetRenderer().GetTexture("Assets/Stars.png"))
-		v = New Vector2(GetGame().mWindowWidth * 0.5, GetGame().mWindowHeight * 0.5)
-		bgsc.SetBGSpritePos(v)
-		v = New Vector2(-20.0, 0.0)
-		bgsc.SetScrollSpeed(v)
-		mBGsprites.Add(bgsc)
+		bgactor = New Actor(game)
+		v.X = 0.0
+		v.Y = game.mWindowHeight * 0.5
+		bgactor.SetPosition(v)
+		sc = New SpriteComponent(bgactor, 10)
+		sc.SetTexture(GetGame().GetRenderer().GetTexture("Assets/Stars.png"))
+		mc = New MoveComponent(bgactor, 30)
+		v.X = -20.0
+		v.Y = 0.0
+		mc.SetVelocity(v)
+		mBGs.Add(bgactor)
 
 		'背景4つ目
-		bgsc = New BGSpriteComponent(Me, 10)
-		bgsc.SetTexture(GetGame().GetRenderer().GetTexture("Assets/Stars.png"))
-		v = New Vector2(GetGame().mWindowWidth * 0.5 + bgsc.GetTexWidth(), GetGame().mWindowHeight * 0.5)
-		bgsc.SetBGSpritePos(v)
-		v = New Vector2(-20.0, 0.0)
-		bgsc.SetScrollSpeed(v)
-		mBGsprites.Add(bgsc)
-	End Sub
+		bgactor = New Actor(game)
+		v.X = game.mWindowWidth
+		v.Y = game.mWindowHeight * 0.5
+		bgactor.SetPosition(v)
+		sc = New SpriteComponent(bgactor, 5)
+		sc.SetTexture(GetGame().GetRenderer().GetTexture("Assets/Stars.png"))
+		mc = New MoveComponent(bgactor, 30)
+		v.X = -20.0
+		v.Y = 0.0
+		mc.SetVelocity(v)
+		mBGs.Add(bgactor)
 
+
+	End Sub
+	Public Overrides Sub UpdateActor(ByVal deltaTime As Double)
+		'ラッピング処理
+		Dim v As New Vector2
+		For Each bg In mBGs
+			If (bg.GetPosition().X < GetGame().mWindowWidth * (-0.5)) Then
+				v.X = bg.GetPosition().X + 2.0 * GetGame().mWindowWidth
+				v.Y = bg.GetPosition().Y
+				bg.SetPosition(v)
+			ElseIf (bg.GetPosition().X > GetGame().mWindowWidth * 1.5) Then
+				v.X = bg.GetPosition().X - 2.0 * GetGame().mWindowWidth
+				v.Y = bg.GetPosition().Y
+				bg.SetPosition(v)
+			End If
+			If (bg.GetPosition().Y < GetGame().mWindowHeight * (-0.5)) Then
+				v.Y = bg.GetPosition().Y + 2.0 * GetGame().mWindowHeight
+				v.X = bg.GetPosition().X
+				bg.SetPosition(v)
+			ElseIf (bg.GetPosition().Y > GetGame().mWindowHeight * 1.5) Then
+				v.Y = bg.GetPosition().Y - 2.0 * GetGame().mWindowHeight
+				v.X = bg.GetPosition().X
+				bg.SetPosition(v)
+			End If
+		Next
+	End Sub
 End Class
