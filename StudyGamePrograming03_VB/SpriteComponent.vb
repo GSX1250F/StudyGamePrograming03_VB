@@ -28,7 +28,7 @@
     End Sub
 
     Public Overridable Sub Draw(ByRef mGraphics As Object)
-        If (mTexture IsNot Nothing) And (GetVisible() = True) Then
+        If (mTexture IsNot Nothing) And (mVisible = True) Then
             Dim w As Double = mTexWidth * mOwner.GetScale()
             Dim h As Double = mTexHeight * mOwner.GetScale()
             Dim x0 As Double = mOwner.GetPosition().X
